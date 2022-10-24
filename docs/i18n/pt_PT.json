@@ -1,0 +1,43 @@
+{
+    "changelog.md": {
+        "Changelog Luna": "Changelog Luna",
+        "Changelog luna": "Changelog luna",
+        "Changelog plugin luna": "Plugin de registro de alterações luna",
+        "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Relembramos que, se não houver informação sobre a atualização, significa que se trata apenas de atualização de documentação, tradução ou texto",
+        "20\/10\/2022": "20\/10\/2022",
+        "Debut du plugin": "Começo do plug-in",
+        " IMPORTANT.": " IMPORTANTE.",
+        " IMPORTANT?": " IMPORTANTE?",
+        "IMPORTANT ": "IMPORTANTE ",
+        " IMPORTANT]": " IMPORTANTE]",
+        "[IMPORTANT]": "[IMPORTANTE]",
+        "*IMPORTANT*": "*IMPORTANTE*",
+        " IMPORTANT*": " IMPORTANTE*"
+    },
+    "index.md": {
+        "Plugin luna": "Luna-plugin",
+        "Bientôt Disponible": "Em breve",
+        "Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe": "O plugin luna permite-te ligar da tua luna a uma rede Wifi (com ou sem palavra-passe",
+        "Pour ce faire, allez dans le plugin luna, puis sélectionnez l'équipement Wifi": "Para fazer isso, acesse o plugin luna e selecione o equipamento Wifi",
+        "A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2": "Aqui você pode ativar e depois selecionar o wifi que deseja (2",
+        "4Ghz et 5Ghz), puis tapez le mot de passe et sauvegarder": "4Ghz e 5Ghz), digite a senha e salve",
+        "Pour le moment, le plugin prend en compte uniquement les accès avec DHCP": "Por enquanto, o plugin só leva em conta o acesso com DHCP",
+        "Hotspot (BETA": "Ponto de acesso (BETA)",
+        "dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna": "na parte Wifi do plugin você pode marcar a caixa Hotspot que lhe permitirá criar um ponto de acesso wifi no seu Box luna",
+        "DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus": "Encaminhamento de DNS e IP (ponte entre ethernet e wifi) funcional nele",
+        " Hotspot.": " Ponto de acesso.",
+        " Hotspot?": " Ponto de acesso?",
+        "Hotspot ": "Ponto de acesso ",
+        " Hotspot]": " Ponto de acesso]",
+        "[Hotspot]": "[Ponto de acesso]",
+        "*Hotspot*": "*Ponto de acesso*",
+        " Hotspot*": " Ponto de acesso*",
+        " Recovery.": " Recuperação.",
+        " Recovery?": " Recuperação?",
+        "Recovery ": "Recuperação ",
+        " Recovery]": " Recuperação]",
+        "[Recovery]": "[Recuperação]",
+        "*Recovery*": "*Recuperação*",
+        " Recovery*": " Recuperação*"
+    }
+}

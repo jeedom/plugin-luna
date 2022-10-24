@@ -1,0 +1,43 @@
+{
+    "changelog.md": {
+        "Changelog Luna": "Änderungsprotokoll Luna",
+        "Changelog luna": "Änderungsprotokoll Luna",
+        "Changelog plugin luna": "Änderungsprotokoll Luna-Plugin",
+        "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Zur Erinnerung: Wenn es keine Informationen über die Aktualisierung gibt, bedeutet dies, dass es sich nur um die Aktualisierung von Dokumentation, Übersetzung oder Text handelt",
+        "20\/10\/2022": "20.10.2022",
+        "Debut du plugin": "Beginn des Plugins",
+        " IMPORTANT.": " WICHTIG.",
+        " IMPORTANT?": " WICHTIG?",
+        "IMPORTANT ": "WICHTIG ",
+        " IMPORTANT]": " WICHTIG]",
+        "[IMPORTANT]": "[WICHTIG]",
+        "*IMPORTANT*": "*WICHTIG*",
+        " IMPORTANT*": " WICHTIG*"
+    },
+    "index.md": {
+        "Plugin luna": "Luna-Plugin",
+        "Bientôt Disponible": "Demnächst",
+        "Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe": "Mit dem Luna-Plugin können Sie sich von Ihrem Luna aus mit einem WLAN-Netzwerk verbinden (mit oder ohne Passwort",
+        "Pour ce faire, allez dans le plugin luna, puis sélectionnez l'équipement Wifi": "Gehen Sie dazu zum Luna-Plugin und wählen Sie dann die WLAN-Ausrüstung aus",
+        "A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2": "Hier können Sie das gewünschte WLAN aktivieren und anschließend auswählen (2",
+        "4Ghz et 5Ghz), puis tapez le mot de passe et sauvegarder": "4 GHz und 5 GHz), geben Sie dann das Passwort ein und speichern Sie es",
+        "Pour le moment, le plugin prend en compte uniquement les accès avec DHCP": "Im Moment berücksichtigt das Plugin nur Zugriffe mit DHCP",
+        "Hotspot (BETA": "Hotspot (BETA)",
+        "dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna": "Im WLAN-Teil des Plugins können Sie das Kontrollkästchen Hotspot aktivieren, mit dem Sie einen WLAN-Zugangspunkt auf Ihrer Box Luna erstellen können",
+        "DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus": "DNS- und IP-Weiterleitung (Brücke zwischen Ethernet und WLAN) funktionieren darauf",
+        " Hotspot.": " Hotspot.",
+        " Hotspot?": " Hotspot?",
+        "Hotspot ": "Hotspot ",
+        " Hotspot]": " Hotspot]",
+        "[Hotspot]": "[Hotspot]",
+        "*Hotspot*": "*Hotspot*",
+        " Hotspot*": " Hotspot*",
+        " Recovery.": " Wiederherstellung.",
+        " Recovery?": " Wiederherstellung?",
+        "Recovery ": "Wiederherstellung ",
+        " Recovery]": " Wiederherstellung]",
+        "[Recovery]": "[Wiederherstellung]",
+        "*Recovery*": "*Wiederherstellung*",
+        " Recovery*": " Wiederherstellung*"
+    }
+}

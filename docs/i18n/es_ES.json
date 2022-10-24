@@ -1,0 +1,43 @@
+{
+    "changelog.md": {
+        "Changelog Luna": "Registro de cambios Luna",
+        "Changelog luna": "Registro de cambios luna",
+        "Changelog plugin luna": "Complemento luna registro de cambios",
+        "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Como recordatorio, si no hay información sobre la actualización, significa que solo se trata de la actualización de la documentación, la traducción o el texto",
+        "20\/10\/2022": "20\/10\/2022",
+        "Debut du plugin": "Comienzo del complemento",
+        " IMPORTANT.": " IMPORTANTE.",
+        " IMPORTANT?": " IMPORTANTE?",
+        "IMPORTANT ": "IMPORTANTE ",
+        " IMPORTANT]": " IMPORTANTE]",
+        "[IMPORTANT]": "[IMPORTANTE]",
+        "*IMPORTANT*": "*IMPORTANTE*",
+        " IMPORTANT*": " IMPORTANTE*"
+    },
+    "index.md": {
+        "Plugin luna": "Luna-complemento",
+        "Bientôt Disponible": "Próximamente, en breve, pronto",
+        "Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe": "El complemento luna le permite conectarse desde su luna a una red Wifi (con o sin contraseña",
+        "Pour ce faire, allez dans le plugin luna, puis sélectionnez l'équipement Wifi": "Para hacer esto, vaya al complemento luna, luego seleccione el equipo Wifi",
+        "A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2": "Aquí puede activar y luego seleccionar el wifi que desea (2",
+        "4Ghz et 5Ghz), puis tapez le mot de passe et sauvegarder": "4Ghz y 5Ghz), luego escriba la contraseña y guarde",
+        "Pour le moment, le plugin prend en compte uniquement les accès avec DHCP": "Por el momento, el complemento solo tiene en cuenta el acceso con DHCP",
+        "Hotspot (BETA": "Punto de acceso (BETA)",
+        "dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna": "en la parte Wifi del complemento, puede marcar la casilla Hotspot que le permitirá crear un punto de acceso wifi en su Box luna",
+        "DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus": "El reenvío de DNS e IP (puente entre ethernet y wifi) funciona en él",
+        " Hotspot.": " Punto de acceso.",
+        " Hotspot?": " Punto de acceso?",
+        "Hotspot ": "Punto de acceso ",
+        " Hotspot]": " Punto de acceso]",
+        "[Hotspot]": "[Punto de acceso]",
+        "*Hotspot*": "*Punto de acceso*",
+        " Hotspot*": " Punto de acceso*",
+        " Recovery.": " Recuperación.",
+        " Recovery?": " Recuperación?",
+        "Recovery ": "Recuperación ",
+        " Recovery]": " Recuperación]",
+        "[Recovery]": "[Recuperación]",
+        "*Recovery*": "*Recuperación*",
+        " Recovery*": " Recuperación*"
+    }
+}

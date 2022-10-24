@@ -1,0 +1,25 @@
+{
+    "changelog.md": {
+        "Changelog Luna": "Changelog Luna",
+        "Changelog luna": "Changelog luna",
+        "Changelog plugin luna": "Changelog plugin luna",
+        "IMPORTANT": "IMPORTANT",
+        "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte",
+        "20\/10\/2022": "20\/10\/2022",
+        "Debut du plugin": "Debut du plugin"
+    },
+    "index.md": {
+        "Plugin luna": "Plugin luna",
+        "Bientôt Disponible": "Bientôt Disponible",
+        "Hotspot": "Hotspot",
+        "Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe": "Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe",
+        "Pour ce faire, allez dans le plugin luna, puis sélectionnez l'équipement Wifi": "Pour ce faire, allez dans le plugin luna, puis sélectionnez l'équipement Wifi",
+        "A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2": "A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2",
+        "4Ghz et 5Ghz), puis tapez le mot de passe et sauvegarder": "4Ghz et 5Ghz), puis tapez le mot de passe et sauvegarder",
+        "Pour le moment, le plugin prend en compte uniquement les accès avec DHCP": "Pour le moment, le plugin prend en compte uniquement les accès avec DHCP",
+        "Recovery": "Recovery",
+        "Hotspot (BETA": "Hotspot (BETA",
+        "dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna": "dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna",
+        "DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus": "DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus"
+    }
+}

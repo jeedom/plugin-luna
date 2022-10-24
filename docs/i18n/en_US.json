@@ -1,0 +1,43 @@
+{
+    "changelog.md": {
+        "Changelog Luna": "Changelog Luna",
+        "Changelog luna": "Changelog luna",
+        "Changelog plugin luna": "Changelog luna plugin",
+        "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "As a reminder, if there is no information on the update, it means that it only concerns the update of documentation, translation or text",
+        "20\/10\/2022": "20\/10\/2022",
+        "Debut du plugin": "Beginning of the plugin",
+        " IMPORTANT.": " IMPORTANT.",
+        " IMPORTANT?": " IMPORTANT?",
+        "IMPORTANT ": "IMPORTANT ",
+        " IMPORTANT]": " IMPORTANT]",
+        "[IMPORTANT]": "[IMPORTANT]",
+        "*IMPORTANT*": "*IMPORTANT*",
+        " IMPORTANT*": " IMPORTANT*"
+    },
+    "index.md": {
+        "Plugin luna": "Luna-plugin",
+        "Bientôt Disponible": "Coming soon",
+        "Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe": "The luna plugin allows you to connect from your luna to a Wifi network (with or without a password",
+        "Pour ce faire, allez dans le plugin luna, puis sélectionnez l'équipement Wifi": "To do this, go to the luna plugin, then select the Wifi equipment",
+        "A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2": "Here you can activate and then select the wifi you want (2",
+        "4Ghz et 5Ghz), puis tapez le mot de passe et sauvegarder": "4Ghz and 5Ghz), then type the password and save",
+        "Pour le moment, le plugin prend en compte uniquement les accès avec DHCP": "For the moment, the plugin only takes into account access with DHCP",
+        "Hotspot (BETA": "Hotspot (BETA)",
+        "dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna": "in the Wifi part of the plugin you can check the Hotspot box which will allow you to create a wifi access point on your Box luna",
+        "DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus": "DNS and IP forwarding (bridge between ethernet and wifi) functional on it",
+        " Hotspot.": " Hotspot.",
+        " Hotspot?": " Hotspot?",
+        "Hotspot ": "Hotspot ",
+        " Hotspot]": " Hotspot]",
+        "[Hotspot]": "[Hotspot]",
+        "*Hotspot*": "*Hotspot*",
+        " Hotspot*": " Hotspot*",
+        " Recovery.": " Recovery.",
+        " Recovery?": " Recovery?",
+        "Recovery ": "Recovery ",
+        " Recovery]": " Recovery]",
+        "[Recovery]": "[Recovery]",
+        "*Recovery*": "*Recovery*",
+        " Recovery*": " Recovery*"
+    }
+}
