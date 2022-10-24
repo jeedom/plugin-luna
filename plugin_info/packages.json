@@ -1,0 +1,18 @@
+{
+  "apt" : {
+    "rsync" : {},
+    "cloud-guest-utils" : {},
+    "ethtool": {},
+    "hostapd": {},
+    "dnsmasq": {},
+    "procps": {},
+    "iproute2": {},
+    "iptables" : {},
+    "hostapd" : {},
+    "iw": {},
+    "haveged": {},
+    "qrencode": {},
+    "network-manager": {}
+  },
+  "post-install" : {}
+}
