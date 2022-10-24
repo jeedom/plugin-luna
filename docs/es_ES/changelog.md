@@ -1,6 +1,6 @@
 # Registro de cambios Luna
 
-# Registro de cambios luna
+# Registro de cambios Luna
 
 # Complemento luna registro de cambios
 

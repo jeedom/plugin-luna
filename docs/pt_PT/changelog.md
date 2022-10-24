@@ -1,6 +1,6 @@
 # Changelog Luna
 
-# Changelog luna
+# Changelog Luna
 
 # Plugin de registro de alterações luna
 
