@@ -77,7 +77,6 @@ class luna extends eqLogic {
     }
   }
 
-
   public static function ddImg() {
     log::add(__CLASS__, 'debug', 'IN CREATE LOG');
     config::save('migrationText', 'verifdd');
@@ -439,7 +438,21 @@ class luna extends eqLogic {
 
 
 
-  /* ----- FIN ----- */
+  /* ----- FIN Hotspot ----- */
+
+  /* ----- DSLED ----- */
+  
+  public function dsLed ($demande = 'g on'){
+    $dsledExe = __DIR__ . '/../../resources/dsled/dsled';
+      exec($dsledExe.' g off');
+      exec($dsledExe.' r off');
+      exec($dsledExe.' b off');
+      if($demande !== 'off'){
+        exec($dsledExe.' '.demande);
+      }
+  }
+
+  /* ----- FIN DSLED ----- */
 
   public function postSave() {
     $connect = $this->getCmd(null, 'connect');
@@ -531,6 +544,18 @@ class luna extends eqLogic {
     $refresh->setType('action');
     $refresh->setSubType('other');
     $refresh->save();
+
+    $dsled = $this->getCmd(null, 'dsled');
+    if (!is_object($dsled)) {
+      $dsled = new lunaCmd();
+    }
+    $dsled->setName(__('Led', __FILE__));
+    $dsled->setLogicalId('dsled');
+    $dsled->setEqLogic_id($this->getId());
+    $dsled->setType('action');
+    $dsled->setSubType('select');
+    $dsled->setConfiguration('listValue','g on|Vert On;r on|Rouge On;b on|Bleu On;off|Off');
+    $dsled->save();
   }
 
   public function postAjax() {
@@ -566,6 +591,9 @@ class lunaCmd extends cmd {
         message::add('luna', __('Suppression des profils pour', __FILE__) . ' ' . $connFile);
         shell_exec('sudo find /etc/NetworkManager/system-connections -type f ! -name "' . $connFile . '" -delete');
         message::add('luna', __('Suppression effectuée, veuillez redémarrer.', __FILE__));
+        break;
+      case 'dsled':
+        luna::dsLed( $_options['select']);
         break;
     }
     $eqLogic->cron5($eqLogic->getId());
