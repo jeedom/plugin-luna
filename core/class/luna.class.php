@@ -444,11 +444,11 @@ class luna extends eqLogic {
   
   public function dsLed ($demande = 'g on'){
     $dsledExe = __DIR__ . '/../../resources/dsled/dsled';
-      exec($dsledExe.' g off');
-      exec($dsledExe.' r off');
-      exec($dsledExe.' b off');
+      exec('sudo '.$dsledExe.' g off');
+      exec('sudo '.$dsledExe.' r off');
+      exec('sudo '.$dsledExe.' b off');
       if($demande !== 'off'){
-        exec($dsledExe.' '.demande);
+        exec('sudo '.$dsledExe.' '.$demande);
       }
   }
 
