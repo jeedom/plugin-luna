@@ -447,6 +447,7 @@ class luna extends eqLogic {
       exec('sudo '.$dsledExe.' g off');
       exec('sudo '.$dsledExe.' r off');
       exec('sudo '.$dsledExe.' b off');
+      exec('sudo pkill -9 dsled');
       if($demande !== 'off'){
         exec('sudo '.$dsledExe.' '.$demande);
       }
@@ -554,7 +555,7 @@ class luna extends eqLogic {
     $dsled->setEqLogic_id($this->getId());
     $dsled->setType('action');
     $dsled->setSubType('select');
-    $dsled->setConfiguration('listValue','g on|Vert On;r on|Rouge On;b on|Bleu On;off|Off');
+    $dsled->setConfiguration('listValue','g blink_slow|Vert Clignotant lent;r blink_slow|Rouge Clignotant lent;b blink_slow|Bleu Clignotant lent;g on|Vert On;r on|Rouge On;b on|Bleu On;off|Off');
     $dsled->save();
   }
 
