@@ -119,6 +119,7 @@
         "Rafraichir": "Refresh",
         "Led": "LEDs",
         "Battery": "Battery",
+        "Status alimentation": "Power status",
         "Sauvegarde du SSID": "Backup SSID",
         "Suppression des profils pour": "Deleting profiles for",
         "Suppression effectuée, veuillez redémarrer.": "Deleted, please reboot",
