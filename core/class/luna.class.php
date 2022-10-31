@@ -568,7 +568,7 @@ class luna extends eqLogic {
     $dsled->save();
 
     $battery = $this->getCmd(null, 'battery');
-    if (!is_object($ssid)) {
+    if (!is_object($battery)) {
       $battery = new lunaCmd();
       $battery->setName(__('Battery', __FILE__));
     }
