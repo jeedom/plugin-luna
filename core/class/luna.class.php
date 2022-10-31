@@ -265,6 +265,7 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('signal', $wifisignal);
       $luna->checkAndUpdateCmd('lanip', $lanIp);
       $luna->checkAndUpdateCmd('wifiip', $wifiIp);
+      $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       if ($luna->getConfiguration('wifiEnabled', 0) == 1) {
         $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifiSsid', ''));
       } else {
@@ -575,7 +576,7 @@ class luna extends eqLogic {
     $battery->setEqLogic_id($this->getId());
     $battery->setLogicalId('battery');
     $battery->setType('info');
-    $battery->setSubType('number');
+    $battery->setSubType('numeric');
     $battery->setUnite('%');
     $battery->save();
   }
