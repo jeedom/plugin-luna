@@ -455,6 +455,15 @@ class luna extends eqLogic {
 
   /* ----- FIN DSLED ----- */
 
+   /* ----- BATTERY ----- */
+  
+   public function batteryPourcentage (){
+    return exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
+  }
+
+  /* ----- FIN BATTERY ----- */
+
+
   public function postSave() {
     $connect = $this->getCmd(null, 'connect');
     if (!is_object($connect)) {
@@ -557,6 +566,18 @@ class luna extends eqLogic {
     $dsled->setSubType('select');
     $dsled->setConfiguration('listValue','g breathe|Vert Respiration;r breathe|Rouge Respiration;b breathe|Bleu Respiration;g blink_fast|Vert Clignotant Rapidement;r blink_fast|Rouge Clignotant Rapidement;b blink_fast|Bleu Clignotant Rapidement;g blink_slow|Vert Clignotant lent;r blink_slow|Rouge Clignotant lent;b blink_slow|Bleu Clignotant lent;g on|Vert On;r on|Rouge On;b on|Bleu On;off|Off');
     $dsled->save();
+
+    $battery = $this->getCmd(null, 'battery');
+    if (!is_object($ssid)) {
+      $battery = new lunaCmd();
+      $battery->setName(__('Battery', __FILE__));
+    }
+    $battery->setEqLogic_id($this->getId());
+    $battery->setLogicalId('battery');
+    $battery->setType('info');
+    $battery->setSubType('number');
+    $battery->setUnite('%');
+    $battery->save();
   }
 
   public function postAjax() {
