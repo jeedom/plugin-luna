@@ -555,7 +555,7 @@ class luna extends eqLogic {
     $dsled->setEqLogic_id($this->getId());
     $dsled->setType('action');
     $dsled->setSubType('select');
-    $dsled->setConfiguration('listValue','g blink_slow|Vert Clignotant lent;r blink_slow|Rouge Clignotant lent;b blink_slow|Bleu Clignotant lent;g on|Vert On;r on|Rouge On;b on|Bleu On;off|Off');
+    $dsled->setConfiguration('listValue','g breathe|Vert Respiration;r breathe|Rouge Respiration;b breathe|Bleu Respiration;g blink_fast|Vert Clignotant Rapidement;r blink_fast|Rouge Clignotant Rapidement;b blink_fast|Bleu Clignotant Rapidement;g blink_slow|Vert Clignotant lent;r blink_slow|Rouge Clignotant lent;b blink_slow|Bleu Clignotant lent;g on|Vert On;r on|Rouge On;b on|Bleu On;off|Off');
     $dsled->save();
   }
 
