@@ -1,8 +1,8 @@
 {
     "plugins\/luna\/plugin_info\/install.php": {
-        "Installation du Wifi": "Instalação wi fi",
-        "Wifi": "Sem fio",
-        "Mise à jour du Wifi": "Atualização de Wi-Fi"
+        "Installation du module Luna": "Instalando o módulo Luna",
+        "Luna": "Lua",
+        "Mise à jour du module Luna": "Atualização do mod Luna"
     },
     "plugins\/luna\/desktop\/modal\/recovery.luna.php": {
         "401 - Accès non autorisé": "401 - Acesso não autorizado",
@@ -118,6 +118,7 @@
         "SSID": "SSID",
         "Rafraichir": "Atualizar",
         "Led": "LEDs",
+        "Battery": "Bateria",
         "Sauvegarde du SSID": "Backup SSID",
         "Suppression des profils pour": "Excluindo perfis de",
         "Suppression effectuée, veuillez redémarrer.": "Excluído, reinicie",

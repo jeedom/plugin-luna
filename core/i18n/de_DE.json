@@ -1,8 +1,8 @@
 {
     "plugins\/luna\/plugin_info\/install.php": {
-        "Installation du Wifi": "Wi-Fi-Installation",
-        "Wifi": "Kabellos",
-        "Mise à jour du Wifi": "WLAN-Update"
+        "Installation du module Luna": "Installieren des Luna-Moduls",
+        "Luna": "Luna",
+        "Mise à jour du module Luna": "Luna-Mod-Update"
     },
     "plugins\/luna\/desktop\/modal\/recovery.luna.php": {
         "401 - Accès non autorisé": "401 – Unbefugter Zugriff",
@@ -118,6 +118,7 @@
         "SSID": "SSID",
         "Rafraichir": "Aktualisierung",
         "Led": "Leuchtdioden",
+        "Battery": "Batterie",
         "Sauvegarde du SSID": "Sicherungs-SSID",
         "Suppression des profils pour": "Löschen von Profilen für",
         "Suppression effectuée, veuillez redémarrer.": "Gelöscht, bitte neu starten",
