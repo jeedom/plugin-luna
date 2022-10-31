@@ -266,6 +266,7 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('lanip', $lanIp);
       $luna->checkAndUpdateCmd('wifiip', $wifiIp);
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
+      $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       if ($luna->getConfiguration('wifiEnabled', 0) == 1) {
         $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifiSsid', ''));
       } else {
@@ -462,6 +463,10 @@ class luna extends eqLogic {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
   }
 
+  public function batteryStatus (){
+    return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
+  }
+
   /* ----- FIN BATTERY ----- */
 
 
@@ -579,6 +584,17 @@ class luna extends eqLogic {
     $battery->setSubType('numeric');
     $battery->setUnite('%');
     $battery->save();
+
+    $status = $this->getCmd(null, 'status');
+    if (!is_object($status)) {
+      $status = new lunaCmd();
+      $status->setName(__('Status alimentation', __FILE__));
+    }
+    $status->setEqLogic_id($this->getId());
+    $status->setLogicalId('status');
+    $status->setType('info');
+    $status->setSubType('string');
+    $status->save();
   }
 
   public function postAjax() {
