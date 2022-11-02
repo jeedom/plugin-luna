@@ -477,6 +477,7 @@ class luna extends eqLogic {
       $connect->setLogicalId('connect');
       $connect->setIsVisible(1);
       $connect->setName(__('Connecter Wifi', __FILE__));
+      $connect->setOrder(20);
     }
     $connect->setType('action');
     $connect->setSubType('other');
@@ -489,6 +490,7 @@ class luna extends eqLogic {
       $disconnect->setLogicalId('disconnect');
       $disconnect->setIsVisible(1);
       $disconnect->setName(__('Déconnecter Wifi', __FILE__));
+      $disconnect->setOrder(21);
     }
     $disconnect->setType('action');
     $disconnect->setSubType('other');
@@ -499,6 +501,7 @@ class luna extends eqLogic {
     if (!is_object($isconnect)) {
       $isconnect = new lunaCmd();
       $isconnect->setName(__('Etat Wifi', __FILE__));
+      $isconnect->setOrder(22);
     }
     $isconnect->setEqLogic_id($this->getId());
     $isconnect->setLogicalId('isconnect');
@@ -510,6 +513,7 @@ class luna extends eqLogic {
     if (!is_object($signal)) {
       $signal = new lunaCmd();
       $signal->setName(__('Signal', __FILE__));
+      $signal->setOrder(23);
     }
     $signal->setEqLogic_id($this->getId());
     $signal->setLogicalId('signal');
@@ -521,6 +525,7 @@ class luna extends eqLogic {
     if (!is_object($lanip)) {
       $lanip = new lunaCmd();
       $lanip->setName(__('Lan IP', __FILE__));
+      $lanip->setOrder(24);
     }
     $lanip->setEqLogic_id($this->getId());
     $lanip->setLogicalId('lanip');
@@ -532,6 +537,7 @@ class luna extends eqLogic {
     if (!is_object($wifiip)) {
       $wifiip = new lunaCmd();
       $wifiip->setName(__('Wifi IP', __FILE__));
+      $wifiip->setOrder(25);
     }
     $wifiip->setEqLogic_id($this->getId());
     $wifiip->setLogicalId('wifiip');
@@ -543,6 +549,7 @@ class luna extends eqLogic {
     if (!is_object($ssid)) {
       $ssid = new lunaCmd();
       $ssid->setName(__('SSID', __FILE__));
+      $ssid->setOrder(26);
     }
     $ssid->setEqLogic_id($this->getId());
     $ssid->setLogicalId('ssid');
@@ -564,6 +571,7 @@ class luna extends eqLogic {
     $dsled = $this->getCmd(null, 'dsled');
     if (!is_object($dsled)) {
       $dsled = new lunaCmd();
+      $dsled->setOrder(10);
     }
     $dsled->setName(__('Led', __FILE__));
     $dsled->setLogicalId('dsled');
@@ -577,6 +585,7 @@ class luna extends eqLogic {
     if (!is_object($battery)) {
       $battery = new lunaCmd();
       $battery->setName(__('Battery', __FILE__));
+      $battery->setOrder(2);
     }
     $battery->setEqLogic_id($this->getId());
     $battery->setLogicalId('battery');
@@ -589,6 +598,7 @@ class luna extends eqLogic {
     if (!is_object($status)) {
       $status = new lunaCmd();
       $status->setName(__('Status alimentation', __FILE__));
+      $status->setOrder(1);
     }
     $status->setEqLogic_id($this->getId());
     $status->setLogicalId('status');
