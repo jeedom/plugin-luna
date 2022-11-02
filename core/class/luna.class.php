@@ -407,14 +407,14 @@ class luna extends eqLogic {
     if ($luna->getConfiguration('hotspotEnabled') == true) {
 
       log::add(__CLASS__, 'debug', __('Hotspot activé.', __FILE__));
-      log::add(__CLASS__, 'debug', 'Executing sudo nmcli dev disconnect wlan0');
+      log::add(__CLASS__, 'debug', 'Executing sudo nmcli dev disconnect wlan1');
 
-      shell_exec('sudo nmcli dev disconnect wlan0');
+      shell_exec('sudo nmcli dev disconnect wlan1');
       shell_exec('sudo systemctl daemon-reload');
       $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
       $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
       log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
-      $luna->setConfiguration('dns', 'wlan0');
+      $luna->setConfiguration('dns', 'wlan1');
       $luna->setConfiguration('forwardingIPV4', true);
       $ssid = $luna->getConfiguration('ssidHotspot', 'Jeedomluna-' . $wifiPostFix);
       $mdp = $luna->getConfiguration('mdpHotspot', $strMac);
