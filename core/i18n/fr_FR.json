@@ -38,6 +38,7 @@
         "Configuration": "Configuration",
         "Lancement Recovery": "Lancement Recovery",
         "Mettre à jour le Recovery": "Mettre à jour le Recovery",
+        "Partition carte SD": "Partition carte SD",
         "Mes Modules luna": "Mes Modules luna",
         "Aucun équipement luna n\\'a été trouvé.": "Aucun équipement luna n\\'a été trouvé.",
         "Rechercher": "Rechercher",
@@ -77,7 +78,11 @@
         "Historiser": "Historiser",
         "Tester": "Tester",
         "Démarrage de la restauration": "Démarrage de la restauration",
-        "Mise à jours de l'image de recovery": "Mise à jours de l'image de recovery"
+        "Mise à jours de l'image de recovery": "Mise à jours de l'image de recovery",
+        "partition de la carte SD": "partition de la carte SD",
+        "attetion cela supprimera tout sur votre carte SD": "attetion cela supprimera tout sur votre carte SD",
+        "Annuler": "Annuler",
+        "Démarrer": "Démarrer"
     },
     "plugins\/luna\/core\/ajax\/luna.ajax.php": {
         "401 - Accès non autorisé": "401 - Accès non autorisé",
@@ -108,7 +113,7 @@
         "Activation du Hotspot.": "Activation du Hotspot.",
         "Hotspot : erreur 1.": "Hotspot : erreur 1.",
         "Hotspot activé.": "Hotspot activé.",
-        "Mise en plance du Profil Hotspot.": "Mise en plance du Profil Hotspot.",
+        "Mise en place du Profil Hotspot.": "Mise en place du Profil Hotspot.",
         "Connecter Wifi": "Connecter Wifi",
         "Déconnecter Wifi": "Déconnecter Wifi",
         "Etat Wifi": "Etat Wifi",
