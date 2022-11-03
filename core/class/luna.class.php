@@ -397,7 +397,8 @@ class luna extends eqLogic {
     $wlanLink = 'wlan0';
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     $interfaceInfo = luna::getMac();
-    $macAddress = $interfaceInfo[1];
+    $macAddress = $interfaceInfo[0];
+    log::add(__CLASS__, 'debug', 'Informations getMac > '.json_encode($interfaceInfo));
     $strMac = str_replace(':', '', $macAddress);
     $wifiPostFix = substr($strMac, -4);
     if (!is_object($luna)) {
@@ -413,7 +414,9 @@ class luna extends eqLogic {
       shell_exec('sudo systemctl daemon-reload');
       $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
       $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
-      log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
+      log::add(__CLASS__, 'debug', 'Hotspot PID > ' . $pid);
+      log::add(__CLASS__, 'debug', 'Hotspot LOG instance sup > ' . $log);
+      log::add(__CLASS__, 'debug', 'Hotspot macAddress > ' . $strMac);
       $luna->setConfiguration('dns', 'wlan1');
       $luna->setConfiguration('forwardingIPV4', true);
       $ssid = $luna->getConfiguration('ssidHotspot', 'Jeedomluna-' . $wifiPostFix);
@@ -426,13 +429,13 @@ class luna extends eqLogic {
       }
       $luna->save();
 
-      log::add(__CLASS__, 'debug', __('Mise en plance du Profil Hotspot.', __FILE__));
-      log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
+      log::add(__CLASS__, 'debug', __('Mise en place du Profil Hotspot.', __FILE__));
+      log::add(__CLASS__, 'debug', 'sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
       $log = shell_exec('sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
       log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
     } else {
       shell_exec('sudo systemctl daemon-reload');
-      shell_exec('sudo ifconfig wlan0 up');
+      shell_exec('sudo ifconfig wlan1 up');
       $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
       $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
     }

@@ -410,7 +410,7 @@ if (!isConnect()) {
           progress(100);
           setTimeout(function() {
             top.location.href = 'http://' + ip;
-          }, 5000);
+          }, 9000);
         }
       }
     });
