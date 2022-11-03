@@ -478,7 +478,7 @@ class luna extends eqLogic {
       $sdSector = "/dev/mmcblk2";
       $montage = "/media/";
       $partition = "primary";
-      $systemType = "ext3"
+      $systemType = "ext3";
       $sectorStart = "0%";
       $sectorEnd = "-1s";
       $mklabel = "msdos";
