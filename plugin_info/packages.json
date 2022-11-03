@@ -11,7 +11,8 @@
     "iw": {},
     "haveged": {},
     "qrencode": {},
-    "network-manager": {}
+    "network-manager": {},
+    "parted": {}
   },
   "post-install" : {
     "script" : "plugins/luna/resources/post_install.sh"
