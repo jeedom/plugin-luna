@@ -50,6 +50,11 @@ try {
     ajax::success();
   }
 
+  if (init('action') == 'partitionSD') {
+    luna::partitionSD();
+    ajax::success();
+  }
+
   if (init('action') == 'listWifi') {
 		$forced = init('mode');
 		ajax::success(luna::listWifi($forced));

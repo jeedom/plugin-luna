@@ -431,7 +431,7 @@ class luna extends eqLogic {
 
       log::add(__CLASS__, 'debug', __('Mise en place du Profil Hotspot.', __FILE__));
       log::add(__CLASS__, 'debug', 'sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
-      $log = shell_exec('sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
+      $log = shell_exec('sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' --no-virt > /dev/null 2>&1');
       log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
     } else {
       shell_exec('sudo systemctl daemon-reload');
@@ -471,6 +471,45 @@ class luna extends eqLogic {
   }
 
   /* ----- FIN BATTERY ----- */
+
+     /* ----- SD ----- */
+  
+     public function partitionSD (){
+      $sdSector = "/dev/mmcblk2";
+      $montage = "/media/";
+      $partition = "primary";
+      $systemType = "ext3"
+      $sectorStart = "0%";
+      $sectorEnd = "-1s";
+      $mklabel = "msdos";
+
+      exec('sudo unmount '.$sdSector);
+      exec('sudo parted '.$sdSector.' mklabel '.$mklabel);
+      exec('sudo parted '.$sdSector.' mkpart '.$partition.' ['.$systemType.'] '.$sectorStart.' '.$sectorEnd);
+    }
+
+    public function presentSD (){
+      $sdSector = "/dev/mmcblk2";
+      if(file_exists($sdSector)){
+        return true;
+      }
+      return false;
+    }
+
+    public function mountSD (){
+      $sdSector = "/dev/mmcblk2";
+      $montage = "/media/";
+      exec('sudo unmount '.$sdSector);
+      exec('sudo mount '.$sdSector.' '.$montage);
+    }
+
+    public function changeBackupToSD (){
+      $montage = "/media/";
+      config::save('backup::path', $montage);
+    }
+  
+  
+    /* ----- FIN SD ----- */
 
 
   public function postSave() {

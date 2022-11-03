@@ -33,7 +33,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					<br>
 					<span>{{Mettre à jour le Recovery}}</span>
 				</div>
-			<?php } ?>
+			<?php }
+			
+			if(luna::presentSD()){
+				?>
+					<div class="cursor logoSecondary" id="bt_partitionSD">
+						<i class="fas fa-sd-card"></i>
+						<br>
+						<span>{{Partition carte SD}}</span>
+					</div>
+				<?php
+			}
+			?>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes Modules luna}}</legend>
 		<?php
