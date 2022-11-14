@@ -470,6 +470,15 @@ class luna extends eqLogic {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
   }
 
+  public function batterySwitchMaj(){
+    message::add('luna', __('Mise à jour batterie Luna', __FILE__));
+    exec('sudo cp '. __DIR__ . '/../../data/patchs/batterySwitch /usr/bin/');
+    exec('sudo cp '. __DIR__ . '/../../data/patchs/batterySwitch.service /etc/systemd/system/');
+    exec('sudo chmod 755 /usr/bin/batterySwitch');
+    exec('sudo chmod 755 /etc/systemd/system/batterySwitch.service');
+    exec('sudo systemctl enable batterySwitch.service');
+  }
+
   /* ----- FIN BATTERY ----- */
 
      /* ----- SD ----- */

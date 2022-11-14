@@ -20,27 +20,39 @@ led_blink() {
   echo 0,$2,0 > /sys/class/leds/$1/rgb_value
 }
 
+led_off() {
+  echo none > /sys/class/leds/$1/trigger
+  echo 0,0,0 > /sys/class/leds/$1/brightness
+}
+
 batterySwitch()
 {
 case "$1" in
      start|restart|reload|force-reload)
-         i2cset -f -y 0 0x6a 0x09 0x44
-         return 0
-         ;;
+        i2cset -f -y 0 0x6a 0x09 0x44
+        return 0
+        ;;
      stop)
-         led_blink led0 1
-         led_blink led1 1
-         led_blink led2 1
-         led_blink led3 1
-         led_blink led4 1
-         led_blink led5 1
-         sleep 2
-         i2cset -f -y 0 0x6a 0x09 0x20
-         return 0
-         ;;
+        led_blink led0 1
+        led_blink led1 1
+        led_blink led2 1
+        led_blink led3 1
+        led_blink led4 1
+        led_blink led5 1
+        sleep 2
+        i2cset -f -y 0 0x6a 0x09 0x20
+        sleep 1
+        led_off led0 
+	    led_off led1 
+	    led_off led2
+	    led_off led3 
+	    led_off led4 
+	    led_off led5 
+        return 0
+        ;;
      show)
-        STATUS_BATTERY = i2cget -f -y 0 0x6a 0x09
-        if STATUS_BATTERY == 0x44 then
+        val=`i2cget -f -y 0 0x6a 0x09`
+        if [ "$val" = "0x44" ]; then # 
             echo "Activated"
         else
             echo "Desactivated"
@@ -51,6 +63,5 @@ case "$1" in
          return 1
          ;;
  esac
-
 }
 batterySwitch "$@"

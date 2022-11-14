@@ -18,11 +18,6 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-function batterySwitchMaj(){
-	exec('sudo cp '. dirname(__FILE__) . '../data/patchs/batterySwitch.sh /etc/init.d/');
-	exec('sudo chmod 755 /etc/init.d/batterySwitch.sh');
-	exec('sudo update-rc.d batterySwitch.sh defaults');
-}
 
 function luna_install() {
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
@@ -40,7 +35,7 @@ function luna_install() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
-	batterySwitchMaj();
+	luna::batterySwitchMaj();
 }
 
 function luna_update() {
@@ -59,5 +54,5 @@ function luna_update() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
-	batterySwitchMaj();
+	luna::batterySwitchMaj();
 }
