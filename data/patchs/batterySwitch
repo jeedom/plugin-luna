@@ -33,6 +33,7 @@ case "$1" in
         return 0
         ;;
      stop)
+        systemctl list-jobs | egrep -q 'reboot.target.*start' && return 1
         led_blink led0 1
         led_blink led1 1
         led_blink led2 1
