@@ -476,7 +476,7 @@ class luna extends eqLogic {
     exec('sudo cp '. __DIR__ . '/../../data/patchs/batterySwitch.service /etc/systemd/system/');
     exec('sudo chmod 755 /usr/bin/batterySwitch');
     exec('sudo chmod 755 /etc/systemd/system/batterySwitch.service');
-    exec('sudo systemctl enable batterySwitch.service');
+    exec('sudo systemctl enable --now batterySwitch.service');
   }
 
   /* ----- FIN BATTERY ----- */
