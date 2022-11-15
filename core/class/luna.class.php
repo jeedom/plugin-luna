@@ -493,15 +493,21 @@ class luna extends eqLogic {
       $mklabel = "msdos";
 
       exec('sudo unmount '.$sdSector);
+      message::add('luna', __('Patitionnage en cours', __FILE__));
       exec('sudo parted '.$sdSector.' mklabel '.$mklabel);
       exec('sudo parted '.$sdSector.' mkpart '.$partition.' ['.$systemType.'] '.$sectorStart.' '.$sectorEnd);
+      message::add('luna', __('Carte SD bien partitionnée', __FILE__));
     }
 
     public function checkPartitionSD () {
-      $jsonVolumes = exec('sudo lsblk -f -J');
+      exec('sudo lsblk -f -J 2>&1', $jsonVolumes);
       $response = false;
       foreach($jsonVolumes as $volume){
-        if($volume['name'] === 'mmcblk2' && $volume['fstype'] === 'ext3'){
+        log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . json_decode($volume, true));
+        log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . $volume);
+        $valueVolume = json_decode($volume, true);
+        if($valueVolume['name'] === 'mmcblk2' && $valueVolume['fstype'] === 'ext3'){
+          log::add(__CLASS__, 'debug', 'trouvé');
           $response = true;
         }
       }

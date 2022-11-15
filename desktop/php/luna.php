@@ -23,12 +23,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			$hostname = trim(shell_exec('cat /etc/hostname'));
 			
 			if($hostname == 'JeedomLuna' || $hostname == 'jeedomluna'){ ?>
-				<div class="cursor logoSecondary" id="bt_recovery">
+				<div class="cursor logoSecondary alert" id="bt_recovery">
 					<i class="fas fa-clone"></i>
 					<br>
 					<span>{{Lancement Recovery}}</span>
 				</div>
-				<div class="cursor logoSecondary" id="bt_recoveryUpdate">
+				<div class="cursor logoSecondary warning" id="bt_recoveryUpdate">
 					<i class="fas fa-highlighter"></i>
 					<br>
 					<span>{{Mettre à jour le Recovery}}</span>
@@ -60,7 +60,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					echo '<div class="cursor logoSecondary alert">';
 				}
 				?>
-						<i class="fas fa-floppy-disk-pen"></i>
+						<i class="fas fa-floppy-disk"></i>
 						<br>
 						<span>{{Activer backup sur la SD}}</span>
 					</div>
