@@ -41,6 +41,8 @@
         "Effacer carte SD": "Effacer carte SD",
         "Partition carte SD": "Partition carte SD",
         "Activer backup sur la SD": "Activer backup sur la SD",
+        "Backup Jeedom activé sur SD": "Backup Jeedom activé sur SD",
+        "Impossible d\\'activer le backup sur la SD": "Impossible d\\'activer le backup sur la SD",
         "Mes Modules luna": "Mes Modules luna",
         "Aucun équipement luna n\\'a été trouvé.": "Aucun équipement luna n\\'a été trouvé",
         "Rechercher": "Rechercher",
