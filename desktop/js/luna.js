@@ -186,10 +186,10 @@ $('#bt_recoveryUpdate').off('click').on('click', function() {
 $('#wifiEnabledCheck').change(function() {
   if (this.checked == true) {
     $('.wifi').css('display', 'block')
-    $('.wifihot').css('display', 'block')
+    //$('.wifihot').css('display', 'block')
   } else {
     $('.wifi').css('display', 'none')
-    $('.wifihot').css('display', 'none')
+    //$('.wifihot').css('display', 'none')
     $('#hotspotEnabledCheck').prop('checked', false)
     $('.wifihotspot').css('display', 'none')
     $('.nohotspot').prop('disabled', false)
