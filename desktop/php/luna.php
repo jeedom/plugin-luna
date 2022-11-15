@@ -23,7 +23,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			$hostname = trim(shell_exec('cat /etc/hostname'));
 			
 			if($hostname == 'JeedomLuna' || $hostname == 'jeedomluna'){ ?>
-				<div class="cursor logoSecondary alert" id="bt_recovery">
+				<div class="cursor logoSecondary danger" id="bt_recovery">
 					<i class="fas fa-clone"></i>
 					<br>
 					<span>{{Lancement Recovery}}</span>
@@ -57,10 +57,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				if(luna::checkPartitionSD()){
 					echo '<div class="cursor logoSecondary warning" id="bt_changeBackupToSD">';
 				}else{
-					echo '<div class="cursor logoSecondary alert">';
+					echo '<div class="cursor logoSecondary danger">';
 				}
 				?>
-						<i class="fas fa-floppy-disk"></i>
+						<i class="fas fa-download"></i>
 						<br>
 						<span>{{Activer backup sur la SD}}</span>
 					</div>
