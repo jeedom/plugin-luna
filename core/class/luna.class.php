@@ -497,13 +497,33 @@ class luna extends eqLogic {
       exec('sudo parted '.$sdSector.' mkpart '.$partition.' ['.$systemType.'] '.$sectorStart.' '.$sectorEnd);
     }
 
+    public function checkPartitionSD () {
+      $jsonVolumes = exec('sudo lsblk -f -J');
+      $response = false;
+      foreach($jsonVolumes as $volume){
+        if($volume['name'] === 'mmcblk2' && $volume['fstype'] === 'ext3'){
+          $response = true;
+        }
+      }
+      return $response;
+    }
+
     public function presentSD (){
       $sdSector = "/dev/mmcblk2";
       if(file_exists($sdSector)){
         return true;
       }
+      luna::changeBackupToEmmc();
       return false;
     }
+
+    public function BackupOkInSd(){
+      if(config::byKey('backup::path') == "/media/"){
+        return true;
+      }else{
+        return false;
+      }
+    };
 
     public function mountSD (){
       $sdSector = "/dev/mmcblk2";
@@ -515,6 +535,13 @@ class luna extends eqLogic {
     public function changeBackupToSD (){
       $montage = "/media/";
       config::save('backup::path', $montage);
+    }
+
+    public function changeBackupToEmmc (){
+      if(luna::BackupOkInSd()){
+        $montage = "/var/www/html/backup/";
+        config::save('backup::path', $montage);
+      }
     }
   
   

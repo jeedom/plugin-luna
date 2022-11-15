@@ -36,13 +36,36 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<?php }
 			
 			if(luna::presentSD()){
-				?>
-					<div class="cursor logoSecondary" id="bt_partitionSD">
+				if(luna::checkPartitionSD()){
+					?>
+					<div class="cursor logoSecondary success" id="bt_partitionSD">
+						<i class="fas fa-sd-card"></i>
+						<br>
+						<span>{{Effacer carte SD}}</span>
+					</div>
+				<?php
+				}else{
+					?>
+					<div class="cursor logoSecondary warning" id="bt_partitionSD">
 						<i class="fas fa-sd-card"></i>
 						<br>
 						<span>{{Partition carte SD}}</span>
 					</div>
 				<?php
+				}
+			if(!luna::BackupOkInSd()){
+				if(luna::checkPartitionSD()){
+					echo '<div class="cursor logoSecondary warning" id="bt_changeBackupToSD">';
+				}else{
+					echo '<div class="cursor logoSecondary alert">';
+				}
+				?>
+						<i class="fas fa-floppy-disk-pen"></i>
+						<br>
+						<span>{{Activer backup sur la SD}}</span>
+					</div>
+				<?php
+			}
 			}
 			?>
 		</div>
