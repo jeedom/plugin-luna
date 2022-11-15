@@ -38,7 +38,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			if(luna::presentSD()){
 				if(luna::checkPartitionSD()){
 					?>
-					<div class="cursor logoSecondary success" id="bt_partitionSD">
+					<div class="cursor logoSecondary warning" id="bt_partitionSD">
 						<i class="fas fa-sd-card"></i>
 						<br>
 						<span>{{Effacer carte SD}}</span>
@@ -46,26 +46,34 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<?php
 				}else{
 					?>
-					<div class="cursor logoSecondary warning" id="bt_partitionSD">
+					<div class="cursor logoSecondary danger" id="bt_partitionSD">
 						<i class="fas fa-sd-card"></i>
 						<br>
 						<span>{{Partition carte SD}}</span>
 					</div>
 				<?php
 				}
-			if(!luna::BackupOkInSd()){
-				if(luna::checkPartitionSD()){
+				if(luna::checkPartitionSD() && !luna::BackupOkInSd()){
 					echo '<div class="cursor logoSecondary warning" id="bt_changeBackupToSD">';
+				}elseif(luna::BackupOkInSd() && luna::checkPartitionSD()){
+					echo '<div class="cursor logoSecondary success" id="bt_changeBackupToEmmc">';
 				}else{
 					echo '<div class="cursor logoSecondary danger">';
 				}
 				?>
 						<i class="fas fa-download"></i>
 						<br>
-						<span>{{Activer backup sur la SD}}</span>
+						<?php
+						if(luna::checkPartitionSD() && !luna::BackupOkInSd()){
+							echo '<span>{{Activer backup sur la SD}}</span>';
+						}elseif(luna::BackupOkInSd() && luna::checkPartitionSD()){
+							echo '<span>{{Backup Jeedom activé sur SD}}</span>';
+						}else{
+							echo '<span>{{Impossible d\'activer le backup sur la SD}}</span>';
+						}
+						?>
 					</div>
 				<?php
-			}
 			}
 			?>
 		</div>

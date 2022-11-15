@@ -60,6 +60,11 @@ try {
     ajax::success();
   }
 
+  if (init('action') == 'changeBackupToEmmc') {
+    luna::changeBackupToEmmc();
+    ajax::success();
+  }
+
   if (init('action') == 'listWifi') {
 		$forced = init('mode');
 		ajax::success(luna::listWifi($forced));
