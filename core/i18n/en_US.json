@@ -38,7 +38,9 @@
         "Configuration": "Configuration",
         "Lancement Recovery": "Launch Recovery",
         "Mettre à jour le Recovery": "Update Recovery",
+        "Effacer carte SD": "Erase SD card",
         "Partition carte SD": "SD card partition",
+        "Activer backup sur la SD": "Activate backup on SD",
         "Mes Modules luna": "My Luna Modules",
         "Aucun équipement luna n\\'a été trouvé.": "No luna equipment was found",
         "Rechercher": "To research",
@@ -80,9 +82,11 @@
         "Démarrage de la restauration": "Starting the restore",
         "Mise à jours de l'image de recovery": "Updating the recovery image",
         "partition de la carte SD": "SD card partition",
-        "attetion cela supprimera tout sur votre carte SD": "be careful this will delete everything on your SD card",
+        "attention cela supprimera tout sur votre carte SD": "be careful this will delete everything on your SD card",
         "Annuler": "To cancel",
-        "Démarrer": "To start up"
+        "Démarrer": "To start up",
+        "Activer backup sur la SD": "Activate backup on SD",
+        "les backups seront maintenant archivés sur cette carte SD.": "the backups will now be archived on this SD card"
     },
     "plugins\/luna\/core\/ajax\/luna.ajax.php": {
         "401 - Accès non autorisé": "401 - Unauthorized Access",
