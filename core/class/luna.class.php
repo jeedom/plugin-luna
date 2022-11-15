@@ -523,7 +523,7 @@ class luna extends eqLogic {
       }else{
         return false;
       }
-    };
+    }
 
     public function mountSD (){
       $sdSector = "/dev/mmcblk2";
