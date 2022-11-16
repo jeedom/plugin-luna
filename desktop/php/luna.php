@@ -23,17 +23,59 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			$hostname = trim(shell_exec('cat /etc/hostname'));
 			
 			if($hostname == 'JeedomLuna' || $hostname == 'jeedomluna'){ ?>
-				<div class="cursor logoSecondary" id="bt_recovery">
+				<div class="cursor logoSecondary danger" id="bt_recovery">
 					<i class="fas fa-clone"></i>
 					<br>
 					<span>{{Lancement Recovery}}</span>
 				</div>
-				<div class="cursor logoSecondary" id="bt_recoveryUpdate">
+				<div class="cursor logoSecondary warning" id="bt_recoveryUpdate">
 					<i class="fas fa-highlighter"></i>
 					<br>
 					<span>{{Mettre à jour le Recovery}}</span>
 				</div>
-			<?php } ?>
+			<?php }
+			
+			if(luna::presentSD()){
+				if(luna::checkPartitionSD()){
+					?>
+					<div class="cursor logoSecondary warning" id="bt_partitionSD">
+						<i class="fas fa-sd-card"></i>
+						<br>
+						<span>{{Effacer carte SD}}</span>
+					</div>
+				<?php
+				}else{
+					?>
+					<div class="cursor logoSecondary danger" id="bt_partitionSD">
+						<i class="fas fa-sd-card"></i>
+						<br>
+						<span>{{Partition carte SD}}</span>
+					</div>
+				<?php
+				}
+				if(luna::checkPartitionSD() && !luna::BackupOkInSd()){
+					echo '<div class="cursor logoSecondary warning" id="bt_changeBackupToSD">';
+				}elseif(luna::BackupOkInSd() && luna::checkPartitionSD()){
+					echo '<div class="cursor logoSecondary success" id="bt_changeBackupToEmmc">';
+				}else{
+					echo '<div class="cursor logoSecondary danger">';
+				}
+				?>
+						<i class="fas fa-download"></i>
+						<br>
+						<?php
+						if(luna::checkPartitionSD() && !luna::BackupOkInSd()){
+							echo '<span>{{Activer backup sur la SD}}</span>';
+						}elseif(luna::BackupOkInSd() && luna::checkPartitionSD()){
+							echo '<span>{{Backup Jeedom activé sur SD}}</span>';
+						}else{
+							echo '<span>{{Impossible d\'activer le backup sur la SD}}</span>';
+						}
+						?>
+					</div>
+				<?php
+			}
+			?>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes Modules luna}}</legend>
 		<?php

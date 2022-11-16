@@ -77,7 +77,6 @@ class luna extends eqLogic {
     }
   }
 
-
   public static function ddImg() {
     log::add(__CLASS__, 'debug', 'IN CREATE LOG');
     config::save('migrationText', 'verifdd');
@@ -266,6 +265,8 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('signal', $wifisignal);
       $luna->checkAndUpdateCmd('lanip', $lanIp);
       $luna->checkAndUpdateCmd('wifiip', $wifiIp);
+      $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
+      $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       if ($luna->getConfiguration('wifiEnabled', 0) == 1) {
         $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifiSsid', ''));
       } else {
@@ -396,7 +397,8 @@ class luna extends eqLogic {
     $wlanLink = 'wlan0';
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     $interfaceInfo = luna::getMac();
-    $macAddress = $interfaceInfo[1];
+    $macAddress = $interfaceInfo[0];
+    log::add(__CLASS__, 'debug', 'Informations getMac > '.json_encode($interfaceInfo));
     $strMac = str_replace(':', '', $macAddress);
     $wifiPostFix = substr($strMac, -4);
     if (!is_object($luna)) {
@@ -406,14 +408,16 @@ class luna extends eqLogic {
     if ($luna->getConfiguration('hotspotEnabled') == true) {
 
       log::add(__CLASS__, 'debug', __('Hotspot activé.', __FILE__));
-      log::add(__CLASS__, 'debug', 'Executing sudo nmcli dev disconnect wlan0');
+      log::add(__CLASS__, 'debug', 'Executing sudo nmcli dev disconnect wlan1');
 
-      shell_exec('sudo nmcli dev disconnect wlan0');
+      shell_exec('sudo nmcli dev disconnect wlan1');
       shell_exec('sudo systemctl daemon-reload');
       $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
       $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
-      log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
-      $luna->setConfiguration('dns', 'wlan0');
+      log::add(__CLASS__, 'debug', 'Hotspot PID > ' . $pid);
+      log::add(__CLASS__, 'debug', 'Hotspot LOG instance sup > ' . $log);
+      log::add(__CLASS__, 'debug', 'Hotspot macAddress > ' . $strMac);
+      $luna->setConfiguration('dns', 'wlan1');
       $luna->setConfiguration('forwardingIPV4', true);
       $ssid = $luna->getConfiguration('ssidHotspot', 'Jeedomluna-' . $wifiPostFix);
       $mdp = $luna->getConfiguration('mdpHotspot', $strMac);
@@ -425,13 +429,13 @@ class luna extends eqLogic {
       }
       $luna->save();
 
-      log::add(__CLASS__, 'debug', __('Mise en plance du Profil Hotspot.', __FILE__));
-      log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
-      $log = shell_exec('sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
+      log::add(__CLASS__, 'debug', __('Mise en place du Profil Hotspot.', __FILE__));
+      log::add(__CLASS__, 'debug', 'sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
+      $log = shell_exec('sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' --no-virt > /dev/null 2>&1');
       log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
     } else {
       shell_exec('sudo systemctl daemon-reload');
-      shell_exec('sudo ifconfig wlan0 up');
+      shell_exec('sudo ifconfig wlan1 up');
       $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
       $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
     }
@@ -439,7 +443,116 @@ class luna extends eqLogic {
 
 
 
-  /* ----- FIN ----- */
+  /* ----- FIN Hotspot ----- */
+
+  /* ----- DSLED ----- */
+  
+  public function dsLed ($demande = 'g on'){
+    $dsledExe = __DIR__ . '/../../resources/dsled/dsled';
+      exec('sudo '.$dsledExe.' g off');
+      exec('sudo '.$dsledExe.' r off');
+      exec('sudo '.$dsledExe.' b off');
+      exec('sudo pkill -9 dsled');
+      if($demande !== 'off'){
+        exec('sudo '.$dsledExe.' '.$demande);
+      }
+  }
+
+  /* ----- FIN DSLED ----- */
+
+   /* ----- BATTERY ----- */
+  
+   public function batteryPourcentage (){
+    return exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
+  }
+
+  public function batteryStatus (){
+    return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
+  }
+
+  public function batterySwitchMaj(){
+    message::add('luna', __('Mise à jour batterie Luna', __FILE__));
+    exec('sudo cp '. __DIR__ . '/../../data/patchs/batterySwitch /usr/bin/');
+    exec('sudo cp '. __DIR__ . '/../../data/patchs/batterySwitch.service /etc/systemd/system/');
+    exec('sudo chmod 755 /usr/bin/batterySwitch');
+    exec('sudo chmod 755 /etc/systemd/system/batterySwitch.service');
+    exec('sudo systemctl enable --now batterySwitch.service');
+  }
+
+  /* ----- FIN BATTERY ----- */
+
+     /* ----- SD ----- */
+  
+     public function partitionSD (){
+      $sdSector = "/dev/mmcblk2";
+      $montage = "/media/";
+      $partition = "primary";
+      $systemType = "ext3";
+      $sectorStart = "0%";
+      $sectorEnd = "-1s";
+      $mklabel = "msdos";
+
+      exec('sudo unmount '.$sdSector);
+      message::add('luna', __('Patitionnage en cours', __FILE__));
+      exec('sudo parted '.$sdSector.' mklabel '.$mklabel);
+      exec('sudo parted '.$sdSector.' mkpart '.$partition.' ['.$systemType.'] '.$sectorStart.' '.$sectorEnd);
+      message::add('luna', __('Carte SD bien partitionnée', __FILE__));
+    }
+
+    public function checkPartitionSD () {
+      exec('sudo lsblk -f -J 2>&1', $jsonVolumes);
+      $response = false;
+      foreach($jsonVolumes as $volume){
+        log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . json_decode($volume, true));
+        log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . $volume);
+        $valueVolume = json_decode($volume, true);
+        if($valueVolume['name'] === 'mmcblk2' && $valueVolume['fstype'] === 'ext3'){
+          log::add(__CLASS__, 'debug', 'trouvé');
+          $response = true;
+        }
+      }
+      return $response;
+    }
+
+    public function presentSD (){
+      $sdSector = "/dev/mmcblk2";
+      if(file_exists($sdSector)){
+        return true;
+      }
+      luna::changeBackupToEmmc();
+      return false;
+    }
+
+    public function BackupOkInSd(){
+      if(config::byKey('backup::path') == "/media/"){
+        return true;
+      }else{
+        return false;
+      }
+    }
+
+    public function mountSD (){
+      $sdSector = "/dev/mmcblk2";
+      $montage = "/media/";
+      exec('sudo unmount '.$sdSector);
+      exec('sudo mount '.$sdSector.' '.$montage);
+    }
+
+    public function changeBackupToSD (){
+      $montage = "/media/";
+      config::save('backup::path', $montage);
+    }
+
+    public function changeBackupToEmmc (){
+      if(luna::BackupOkInSd()){
+        $montage = "/var/www/html/backup/";
+        config::save('backup::path', $montage);
+      }
+    }
+  
+  
+    /* ----- FIN SD ----- */
+
 
   public function postSave() {
     $connect = $this->getCmd(null, 'connect');
@@ -448,6 +561,7 @@ class luna extends eqLogic {
       $connect->setLogicalId('connect');
       $connect->setIsVisible(1);
       $connect->setName(__('Connecter Wifi', __FILE__));
+      $connect->setOrder(20);
     }
     $connect->setType('action');
     $connect->setSubType('other');
@@ -460,6 +574,7 @@ class luna extends eqLogic {
       $disconnect->setLogicalId('disconnect');
       $disconnect->setIsVisible(1);
       $disconnect->setName(__('Déconnecter Wifi', __FILE__));
+      $disconnect->setOrder(21);
     }
     $disconnect->setType('action');
     $disconnect->setSubType('other');
@@ -470,6 +585,7 @@ class luna extends eqLogic {
     if (!is_object($isconnect)) {
       $isconnect = new lunaCmd();
       $isconnect->setName(__('Etat Wifi', __FILE__));
+      $isconnect->setOrder(22);
     }
     $isconnect->setEqLogic_id($this->getId());
     $isconnect->setLogicalId('isconnect');
@@ -481,6 +597,7 @@ class luna extends eqLogic {
     if (!is_object($signal)) {
       $signal = new lunaCmd();
       $signal->setName(__('Signal', __FILE__));
+      $signal->setOrder(23);
     }
     $signal->setEqLogic_id($this->getId());
     $signal->setLogicalId('signal');
@@ -492,6 +609,7 @@ class luna extends eqLogic {
     if (!is_object($lanip)) {
       $lanip = new lunaCmd();
       $lanip->setName(__('Lan IP', __FILE__));
+      $lanip->setOrder(24);
     }
     $lanip->setEqLogic_id($this->getId());
     $lanip->setLogicalId('lanip');
@@ -503,6 +621,7 @@ class luna extends eqLogic {
     if (!is_object($wifiip)) {
       $wifiip = new lunaCmd();
       $wifiip->setName(__('Wifi IP', __FILE__));
+      $wifiip->setOrder(25);
     }
     $wifiip->setEqLogic_id($this->getId());
     $wifiip->setLogicalId('wifiip');
@@ -514,6 +633,7 @@ class luna extends eqLogic {
     if (!is_object($ssid)) {
       $ssid = new lunaCmd();
       $ssid->setName(__('SSID', __FILE__));
+      $ssid->setOrder(26);
     }
     $ssid->setEqLogic_id($this->getId());
     $ssid->setLogicalId('ssid');
@@ -531,6 +651,44 @@ class luna extends eqLogic {
     $refresh->setType('action');
     $refresh->setSubType('other');
     $refresh->save();
+
+    $dsled = $this->getCmd(null, 'dsled');
+    if (!is_object($dsled)) {
+      $dsled = new lunaCmd();
+      $dsled->setOrder(10);
+    }
+    $dsled->setName(__('Led', __FILE__));
+    $dsled->setLogicalId('dsled');
+    $dsled->setEqLogic_id($this->getId());
+    $dsled->setType('action');
+    $dsled->setSubType('select');
+    $dsled->setConfiguration('listValue','g breathe|Vert Respiration;r breathe|Rouge Respiration;b breathe|Bleu Respiration;g blink_fast|Vert Clignotant Rapidement;r blink_fast|Rouge Clignotant Rapidement;b blink_fast|Bleu Clignotant Rapidement;g blink_slow|Vert Clignotant lent;r blink_slow|Rouge Clignotant lent;b blink_slow|Bleu Clignotant lent;g on|Vert On;r on|Rouge On;b on|Bleu On;off|Off');
+    $dsled->save();
+
+    $battery = $this->getCmd(null, 'battery');
+    if (!is_object($battery)) {
+      $battery = new lunaCmd();
+      $battery->setName(__('Battery', __FILE__));
+      $battery->setOrder(2);
+    }
+    $battery->setEqLogic_id($this->getId());
+    $battery->setLogicalId('battery');
+    $battery->setType('info');
+    $battery->setSubType('numeric');
+    $battery->setUnite('%');
+    $battery->save();
+
+    $status = $this->getCmd(null, 'status');
+    if (!is_object($status)) {
+      $status = new lunaCmd();
+      $status->setName(__('Status alimentation', __FILE__));
+      $status->setOrder(1);
+    }
+    $status->setEqLogic_id($this->getId());
+    $status->setLogicalId('status');
+    $status->setType('info');
+    $status->setSubType('string');
+    $status->save();
   }
 
   public function postAjax() {
@@ -566,6 +724,9 @@ class lunaCmd extends cmd {
         message::add('luna', __('Suppression des profils pour', __FILE__) . ' ' . $connFile);
         shell_exec('sudo find /etc/NetworkManager/system-connections -type f ! -name "' . $connFile . '" -delete');
         message::add('luna', __('Suppression effectuée, veuillez redémarrer.', __FILE__));
+        break;
+      case 'dsled':
+        luna::dsLed( $_options['select']);
         break;
     }
     $eqLogic->cron5($eqLogic->getId());

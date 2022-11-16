@@ -18,14 +18,15 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
+
 function luna_install() {
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
-		message::add('luna', __('Installation du Wifi', __FILE__));
+		message::add('luna', __('Installation du module Luna', __FILE__));
 		$eqLogic = new luna();
 		$eqLogic->setLogicalId('wifi');
 		$eqLogic->setCategory('multimedia', 1);
-		$eqLogic->setName(__('Wifi', __FILE__));
+		$eqLogic->setName(__('Luna', __FILE__));
 		$eqLogic->setEqType_name('luna');
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
@@ -34,16 +35,17 @@ function luna_install() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
+	luna::batterySwitchMaj();
 }
 
 function luna_update() {
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
-		message::add('luna', __('Mise à jour du Wifi', __FILE__));
+		message::add('luna', __('Mise à jour du module Luna', __FILE__));
 		$eqLogic = new luna();
 		$eqLogic->setLogicalId('wifi');
 		$eqLogic->setCategory('multimedia', 1);
-		$eqLogic->setName(__('Wifi', __FILE__));
+		$eqLogic->setName(__('Luna', __FILE__));
 		$eqLogic->setEqType_name('luna');
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
@@ -52,4 +54,5 @@ function luna_update() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
+	luna::batterySwitchMaj();
 }

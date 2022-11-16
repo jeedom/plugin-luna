@@ -378,7 +378,7 @@ if (!isConnect()) {
     $('.textluna').text('{{Mise à jour en cours, vous serez automatiquement redirigés vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
     setTimeout(function() {
       redirectIP('jeedomluna.local');
-    }, 10000);
+    }, 30000);
     lancementMajRestauration();
   });
   $('#bt_reset').off('click').on('click', function() {
@@ -386,7 +386,7 @@ if (!isConnect()) {
     $('.textluna').text('{{Remise à zéro en cours, vous serez automatiquement redirigés vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
     setTimeout(function() {
       redirectIP('jeedomluna.local');
-    }, 10000);
+    }, 30000);
     lancementRaZ();
   });
 
@@ -410,7 +410,7 @@ if (!isConnect()) {
           progress(100);
           setTimeout(function() {
             top.location.href = 'http://' + ip;
-          }, 5000);
+          }, 9000);
         }
       }
     });

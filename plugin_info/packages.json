@@ -8,11 +8,13 @@
     "procps": {},
     "iproute2": {},
     "iptables" : {},
-    "hostapd" : {},
     "iw": {},
     "haveged": {},
     "qrencode": {},
-    "network-manager": {}
+    "network-manager": {},
+    "parted": {}
   },
-  "post-install" : {}
+  "post-install" : {
+    "script" : "plugins/luna/resources/post_install.sh"
+  }
 }

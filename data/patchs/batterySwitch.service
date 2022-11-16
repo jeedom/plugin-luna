@@ -1,0 +1,11 @@
+[Unit]
+Description=Battery Switch
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/batterySwitch start
+ExecStop=/usr/bin/batterySwitch stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
