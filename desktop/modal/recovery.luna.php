@@ -38,7 +38,7 @@ if (!isConnect()) {
   if (typeDemande == 'maj') {
     $('.textluna').text('{{Vous pouvez démarrer la Mise à jour du recovery de votre Box.}}');
   }else{
-    $('.textluna').text('{{Vous pouvez Lancer un factory reset sur votre Box.}}');
+    $('.textluna').text('{{Vous pouvez lancer un factory reset sur votre Box.}}');
     $('.textlunaaddons').text('{{Attention merci de garder sur votre PC un backup de votre Jeedom car celle-ci sera remise à ZERO.}}');
     $('#bt_go').hide();
     $('#bt_relancer').hide();
@@ -259,7 +259,7 @@ if (!isConnect()) {
         break;
       case 'dd':
         return {
-          'text': '{{Image finalisé validation en cours}}', 'type': 'start'
+          'text': '{{Image finalisée, validation en cours}}', 'type': 'start'
         };
         break;
       case 'errorDd':
@@ -284,7 +284,7 @@ if (!isConnect()) {
         break;
       case 'endEMMC':
         return {
-          'text': '{{Pour finalisé la mise à jour de l\'image de restoration, il faut cliquer sur le bouton ci-dessous la box ne sera plus accessible pandant quelques minutes.}}', 'type': 'end'
+          'text': '{{Pour finaliser la mise à jour de l\'image de restauration, il faut cliquer sur le bouton ci-dessous. La box ne sera plus accessible pandant quelques minutes.}}', 'type': 'end'
         };
         break;
       default:
@@ -375,7 +375,7 @@ if (!isConnect()) {
   });
   $('#bt_maj').off('click').on('click', function() {
     $('#bt_maj').hide();
-    $('.textluna').text('{{Mise à jour en cours, vous serez automatiquement redirigés vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
+    $('.textluna').text('{{Mise à jour en cours, vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
     setTimeout(function() {
       redirectIP('jeedomluna.local');
     }, 30000);
@@ -383,7 +383,7 @@ if (!isConnect()) {
   });
   $('#bt_reset').off('click').on('click', function() {
     $('#bt_reset').hide();
-    $('.textluna').text('{{Remise à zéro en cours, vous serez automatiquement redirigés vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
+    $('.textluna').text('{{Remise à zéro en cours, vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
     setTimeout(function() {
       redirectIP('jeedomluna.local');
     }, 30000);
