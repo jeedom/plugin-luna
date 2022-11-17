@@ -38,8 +38,8 @@ if (!isConnect()) {
   if (typeDemande == 'maj') {
     $('.textluna').text('{{Vous pouvez démarrer la Mise à jour du recovery de votre Box.}}');
   }else{
-    $('.textluna').text('{{Vous pouvez lancer un factory reset sur votre Box.}}');
-    $('.textlunaaddons').text('{{Attention merci de garder sur votre PC un backup de votre Jeedom car celle-ci sera remise à ZERO.}}');
+    $('.textluna').text('{{Vous pouvez lancer un Factory reset sur votre Box}}');
+    $('.textlunaaddons').text('{{Attention. Pensez à recuperer les backups de votre Jeedom en local sur votre PC avant d\effectuer le reset}}');
     $('#bt_go').hide();
     $('#bt_relancer').hide();
     $('#bt_maj').hide();
