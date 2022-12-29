@@ -39,7 +39,7 @@ if (!isConnect()) {
     $('.textluna').text('{{Vous pouvez démarrer la Mise à jour du recovery de votre Box.}}');
   }else{
     $('.textluna').text('{{Vous pouvez lancer un Factory reset sur votre Box}}');
-    $('.textlunaaddons').text('{{Attention. Pensez à recuperer les backups de votre Jeedom en local sur votre PC avant d\effectuer le reset}}');
+    $('.textlunaaddons').text('{{Attention. Pensez à recuperer les backups de votre Jeedom en local sur votre PC avant d\'effectuer le reset}}');
     $('#bt_go').hide();
     $('#bt_relancer').hide();
     $('#bt_maj').hide();
@@ -383,7 +383,7 @@ if (!isConnect()) {
   });
   $('#bt_reset').off('click').on('click', function() {
     $('#bt_reset').hide();
-    $('.textluna').text('{{Remise à zéro en cours, vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
+    $('.textluna').text('{{Remise à zéro en cours.. Vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
     setTimeout(function() {
       redirectIP('jeedomluna.local');
     }, 30000);
