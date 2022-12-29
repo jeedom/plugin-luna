@@ -1,5 +1,20 @@
 # Plugin luna
 
+Nous avons eu un retour sur une erreur de flashage de certaines Luna. (uniquement celle expediée avant 2023),
+Nous en sommes désolés et nous avons prévenu notre revendeur Domadoo.
+
+Si vous arrivez à rentrer dans Jeedom, merci de lancer le plugin Luna et d'aller dans : 
+  - Mise à jour du module de Recovery
+Puis faire le recovery dans :
+  - Recovery (Reset Factory)
+Cela mettra a jour votre Box completement.
+
+Si vous n'avez pas d'accés a votre Box merci de rester appuyer sur le bouton reset de la box pendant plus de 10 secondes, au relacher la box doit clignoté laisser la finir. normalement Jeedom devrai revenir faire du coup la procedure si dessus. pour une mise à jour complete.
+
+Si elle ne clignote pas : 
+ - Veuillez les contacter svp sur ce lien, l'équipe Domadoo vous fourniront une étiquette de retour et vous réexpédieront une Luna correctement flashée :
+https://www.domadoo.fr/rma
+
 # Bientôt Disponible : Hotspot
 
 > Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe).
