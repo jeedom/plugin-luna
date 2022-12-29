@@ -47,6 +47,12 @@ Vous pouvez via deux retours d’informations avoir le pourcentage de batterie a
 
 Permet la gestion (formatage) de la carte micro-SD que vous pouvez ajouter à la box, ainsi que le transfert vers cette carte SD des backups Jeedom.
 
+> Les boutons Alimentation et Reset
+
+- Reset : moins de 1 secondes reboot forcer de la box.
+- Reset : plus de 10 secondes Reset Factory de la box.
+- Alimentation : plus de 10 secondes arret de la fox forcer avec arret de la batterie (il faut avoir enlever l'alimentation electrique pour le faire)
+
 > Hotspot (ALPHA)
 
 Dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna. (DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus).
