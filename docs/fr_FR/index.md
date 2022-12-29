@@ -1,5 +1,7 @@
 # Plugin luna
 
+# Attention souci de Flashage des Luna
+
 Nous avons eu un retour sur une erreur de flashage de certaines Luna. (uniquement celle expediée avant 2023),
 Nous en sommes désolés et nous avons prévenu notre revendeur Domadoo.
 
