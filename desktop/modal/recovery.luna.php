@@ -382,12 +382,17 @@ if (!isConnect()) {
     lancementMajRestauration();
   });
   $('#bt_reset').off('click').on('click', function() {
-    $('#bt_reset').hide();
-    $('.textluna').text('{{Remise à zéro en cours.. Vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
-    setTimeout(function() {
-      redirectIP('jeedomluna.local');
-    }, 30000);
-    lancementRaZ();
+    bootbox.confirm('{{Etes-vous sûr de vouloir faire un reset de votre box ? Vos backups seront également supprimés}}',
+    function (result) {
+            if (result) {
+                $('#bt_reset').hide();
+                $('.textluna').text('{{Remise à zéro en cours.. Vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.}}');
+                setTimeout(function() {
+                  redirectIP('jeedomluna.local');
+                }, 30000);
+                lancementRaZ();
+              }
+     });
   });
 
   function redirectIP(ip) {
