@@ -24,6 +24,7 @@
         "Erreur : veuillez fermer puis relancer la demande.": "Error: please close and relaunch the request",
         "FIN": "END",
         "Mise à jour en cours, vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.": "Update in progress, you will be automatically redirected to the login page when the box is operational again",
+        "Etes-vous sûr de vouloir faire un reset de votre box ? Vos backups seront également supprimés": "Are you sure you want to reset your box? Your backups will also be deleted",
         "Remise à zéro en cours.. Vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.": "Reset in progress. You will be automatically redirected to the login page when the box is operational again",
         "Impossible de trouver la box sur le réseau suite au redémarrage...": "Unable to find the box on the network after restarting",
         "Redirection en cours vers": "Redirection in progress to",

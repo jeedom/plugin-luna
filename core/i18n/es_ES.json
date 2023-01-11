@@ -24,6 +24,7 @@
         "Erreur : veuillez fermer puis relancer la demande.": "Error: cierre y reinicie la solicitud",
         "FIN": "FINAL",
         "Mise à jour en cours, vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.": "Actualización en curso, se le redirigirá automáticamente a la página de inicio de sesión cuando la casilla vuelva a estar operativa",
+        "Etes-vous sûr de vouloir faire un reset de votre box ? Vos backups seront également supprimés": "¿Está seguro de que desea restablecer su caja? Tus copias de seguridad también se eliminarán",
         "Remise à zéro en cours.. Vous serez automatiquement redirigé vers la page de connexion quand la box sera de nouveau opérationnelle.": "Restablecimiento en curso. Se te redirigirá automáticamente a la página de inicio de sesión cuando la casilla vuelva a estar operativa",
         "Impossible de trouver la box sur le réseau suite au redémarrage...": "No se puede encontrar la caja en la red después de reiniciar",
         "Redirection en cours vers": "Redirección en progreso a",
