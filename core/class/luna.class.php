@@ -494,7 +494,7 @@ class luna extends eqLogic {
 
       exec('sudo unmount '.$sdSector);
       message::add('luna', __('Patitionnage en cours', __FILE__));
-      exec('sudo parted '.$sdSector.' mklabel '.$mklabel);
+      exec('parted -a optimal -s '.$sdSector.' mklabel '.$mklabel);
       exec('sudo parted '.$sdSector.' mkpart '.$partition.' ['.$systemType.'] '.$sectorStart.' '.$sectorEnd);
       message::add('luna', __('Carte SD bien partitionnée', __FILE__));
     }
