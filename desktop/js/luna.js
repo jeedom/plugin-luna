@@ -180,7 +180,7 @@ $('#bt_recovery').off('click').on('click', function() {
 })
 
 $('#bt_recoveryUpdate').off('click').on('click', function() {
-  $('#md_modal').dialog({ title: "{{Mise à jours de l'image de recovery}}" }).load('index.php?v=d&plugin=luna&modal=recovery.luna&typeDemande=maj').dialog('open')
+  $('#md_modal').dialog({ title: "{{Mise à jour de l'image de recovery}}" }).load('index.php?v=d&plugin=luna&modal=recovery.luna&typeDemande=maj').dialog('open')
 })
 
 $('#wifiEnabledCheck').change(function() {
@@ -222,8 +222,8 @@ $('#hotspotEnabledCheck').change(function() {
 })
 
 $('#bt_partitionSD').off('click').on('click', function() {
-  var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{partition de la carte SD}}'
-  var dialog_message = '<center>{{attention cela supprimera tout sur votre carte SD}}</center>'
+  var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Partition de la carte SD}}'
+  var dialog_message = '<center>{{Attention cela supprimera le contenu de votre carte SD}}</center>'
   bootbox.dialog({
     title: dialog_title,
     message: dialog_message,
