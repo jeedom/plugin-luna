@@ -84,7 +84,7 @@ class luna extends eqLogic {
     if (luna::downloadImage()) {
       sleep(3);
       config::save('migrationText', 'dd');
-      config::save('migrationTextfine', __('Image validé avec succes', __FILE__));
+      config::save('migrationTextfine', __('Image validée avec succes', __FILE__));
       sleep(3);
       return true;
     } else {
@@ -159,7 +159,7 @@ class luna extends eqLogic {
     if ($find == false) {
       config::save('migrationText', 'upload');
       log::add(__CLASS__, 'debug', 'find a False');
-      config::save('migrationTextfine', __('Téléchargement de l\'image sur nos serveurs en cours.', __FILE__));
+      config::save('migrationTextfine', __('Téléchargement de l image depuis nos serveurs en cours...', __FILE__));
       log::add(__CLASS__, 'debug', 'URL > ' . $url);
       log::add(__CLASS__, 'debug', 'shell > sudo wget --progress=dot --dot=mega ' . $url . ' -a ' . log::getPathToLog('downloadImage') . ' -O ' . $path_imgOs . '/update.img >> ' . log::getPathToLog('downloadImage') . ' 2&>1');
       shell_exec('sudo wget --progress=dot --dot=mega ' . $url . ' -a ' . log::getPathToLog('downloadImage') . ' -O ' . $path_imgOs . '/update.img >> ' . log::getPathToLog('downloadImage'));
