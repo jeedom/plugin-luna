@@ -237,7 +237,7 @@ class luna extends eqLogic {
     if ($_eqlogic_id !== null) {
       $eqLogics = array(eqLogic::byId($_eqlogic_id));
     } else {
-      $eqLogics = eqLogic::byType('wifip');
+      $eqLogics = eqLogic::byType('luna');
     }
     foreach ($eqLogics as $luna) {
       log::add(__CLASS__, 'debug', 'Pull Cron luna');
