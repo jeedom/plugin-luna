@@ -484,18 +484,10 @@ class luna extends eqLogic {
      /* ----- SD ----- */
   
      public function partitionSD (){
-      $sdSector = "/dev/mmcblk2";
-      $montage = "/media/";
-      $partition = "primary";
-      $systemType = "ext3";
-      $sectorStart = "0%";
-      $sectorEnd = "-1s";
-      $mklabel = "msdos";
-
       exec('sudo unmount '.$sdSector);
       message::add('luna', __('Patitionnage en cours', __FILE__));
-      exec('parted -a optimal -s '.$sdSector.' mklabel '.$mklabel);
-      exec('sudo parted '.$sdSector.' mkpart '.$partition.' ['.$systemType.'] '.$sectorStart.' '.$sectorEnd);
+      exec('sudo chmod +x ../../data/patchs/partitionSD.sh');
+      exect('sudo ../../data/patchs/partitionSD.sh');
       message::add('luna', __('Carte SD bien partitionnée', __FILE__));
     }
 
