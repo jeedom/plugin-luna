@@ -1,0 +1,11 @@
+[Unit]
+Description=LORA
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/bin/lora
+ExecStart=./lora_pkt_fwd
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

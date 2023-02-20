@@ -36,6 +36,7 @@ function luna_install() {
 		$luna->save();
 	}
 	luna::batterySwitchMaj();
+	luna::installLora();
 }
 
 function luna_update() {
@@ -55,4 +56,5 @@ function luna_update() {
 		$luna->save();
 	}
 	luna::batterySwitchMaj();
+	luna::installLora();
 }

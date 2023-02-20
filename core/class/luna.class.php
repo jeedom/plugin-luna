@@ -545,6 +545,62 @@ class luna extends eqLogic {
   
     /* ----- FIN SD ----- */
 
+      /* ------ DEBUT LORA ----- */
+  
+  public function formatUid($UID){
+    $UID = substr($UID, -16);
+    $UID = str_replace('x','',$UID);
+     return $UID;
+  }
+  
+  public function detectedLora (){
+    $UID = exec('/usr/bin/lora/chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
+    if($UID != ""){
+      config::save('gatewayUID', formatUid($UID));
+		  return true;
+    }else{
+      config::save('gatewayUID', false);
+		  return false;
+    }
+  }
+  
+  public function loraSwitchMaj($actived = true){
+    if($actived == true){
+      message::add('luna', __('Activation Lora', __FILE__));
+      exec('sudo cp '. __DIR__ . '/../../data/patchs/lora/lora.service /etc/systemd/system/');
+      exec('sudo chmod 755 /etc/systemd/system/lora.service');
+      exec('sudo systemctl enable --now lora.service');
+    }else{
+      message::add('luna', __('Désactivation Lora', __FILE__));
+      exec('sudo systemctl desable --now lora.service');
+    }
+  }
+  
+  public function configurationLora(){
+   	$uid = config::byKey('gatewayUID', false);
+    if($uid){
+    	$json = file_get_contents(__DIR__ . "/../../data/patchs/lora/global_conf.json");
+      $parseJson = json_decode($json);
+      $parseJson['gateway_conf']['gateway_ID'] = $uid;
+      file_put_contents('/usr/bin/lora/global_conf.json', json_encode($parseJson));
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  public function installLora(){
+    if(luna::detectedLora()){
+      message::add('luna', __('Installation de la partie Lora, car puce Lora detecté', __FILE__));
+      if(luna::configurationLora()){
+        sleep(3);
+        luna::loraSwitchMaj();
+      }
+    }
+  }
+  
+  /* ----- FIN LORA ------ */
+
 
   public function postSave() {
     $connect = $this->getCmd(null, 'connect');
