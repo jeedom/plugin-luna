@@ -554,7 +554,7 @@ class luna extends eqLogic {
   }
   
   public function detectedLora (){
-    $UID = exec('/usr/bin/lora/chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
+    $UID = exec('sudo /usr/bin/lora/chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
     if($UID != ""){
       config::save('gatewayUID', formatUid($UID));
 		  return true;
