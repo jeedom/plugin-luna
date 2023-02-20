@@ -2,13 +2,10 @@
 Description=LORA
 
 [Service]
-WorkingDirectory=/etc/bin/lora/
-ExecStart=/etc/bin/lora/lora_pkt_fwd
+WorkingDirectory=/usr/bin/lora/
+ExecStart=/usr/bin/lora/lora_pkt_fwd
 Restart=on-failure
 RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
-
-
-
