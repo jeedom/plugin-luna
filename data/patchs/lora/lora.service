@@ -2,10 +2,13 @@
 Description=LORA
 
 [Service]
-Type=oneshot
-EnvironmentFile=-/etc/bin/lora
-ExecStart=./lora_pkt_fwd
-RemainAfterExit=yes
+WorkingDirectory=/etc/bin/lora/
+ExecStart=/etc/bin/lora/lora_pkt_fwd
+Restart=on-failure
+RestartSec=5
 
 [Install]
 WantedBy=multi-user.target
+
+
+

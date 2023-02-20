@@ -548,19 +548,26 @@ class luna extends eqLogic {
       /* ------ DEBUT LORA ----- */
   
   public function formatUid($UID){
-    $UID = substr($UID, -16);
+    $UID = substr($UID, -18);
+    log::add(__CLASS__, 'debug', 'UID -18 > ' . $UID);
     $UID = str_replace('x','',$UID);
+    log::add(__CLASS__, 'debug', 'UID replace > ' . $UID);
      return $UID;
   }
   
   public function detectedLora (){
-    $UID = exec('sudo /usr/bin/lora/chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
-    if($UID != ""){
-      config::save('gatewayUID', formatUid($UID));
-		  return true;
+    if(config::byKey('gatewayUID','luna', null) != null){
+      return true;
     }else{
-      config::save('gatewayUID', false);
-		  return false;
+      $UID = exec('cd /usr/bin/lora && sudo ./chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
+      if($UID != ""){
+        config::save('gatewayUID', luna::formatUid($UID), 'luna');
+        log::add(__CLASS__, 'debug', 'UID > ' . $UID);
+        return true;
+      }else{
+        config::save('gatewayUID', false, 'luna');
+        return false;
+      }
     }
   }
   
@@ -577,12 +584,15 @@ class luna extends eqLogic {
   }
   
   public function configurationLora(){
-   	$uid = config::byKey('gatewayUID', false);
+   	$uid = config::byKey('gatewayUID','luna');
+     log::add(__CLASS__, 'debug', 'UID config > ' . $uid);
     if($uid){
     	$json = file_get_contents(__DIR__ . "/../../data/patchs/lora/global_conf.json");
-      $parseJson = json_decode($json);
+      $parseJson = json_decode($json, true);
       $parseJson['gateway_conf']['gateway_ID'] = $uid;
-      file_put_contents('/usr/bin/lora/global_conf.json', json_encode($parseJson));
+      log::add(__CLASS__, 'debug', 'json globalConfig > ' . json_encode($parseJson));
+      file_put_contents(__DIR__ . "/../../data/patchs/lora/global_conf.json", json_encode($parseJson));
+      exec("sudo cp " .__DIR__ . "/../../data/patchs/lora/global_conf.json /usr/bin/lora/global_conf.json");
       return true;
     }else{
       return false;

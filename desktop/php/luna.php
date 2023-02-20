@@ -75,6 +75,15 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					</div>
 				<?php
 			}
+			if(luna::detectedLora()){
+				?>
+				<div class="cursor logoSecondary success">
+					<i class="fas fa-sd-card"></i>
+					<br>
+					<span>{{Lora Detecté}}</span>
+				</div>
+			<?php
+			}
 			?>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes Modules luna}}</legend>
