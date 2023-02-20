@@ -613,6 +613,7 @@ class luna extends eqLogic {
 
   public function switchHost($activated = true){
       if($activated === true){
+        message::add('luna', __('Patch du localhost', __FILE__));
         exec("sudo chattr -i /etc/hosts");
         exec("sudo cp " .__DIR__ . "/../../data/patchs/hosts /etc/hosts");
         $hostname = trim(file_get_contents('/etc/hostname'));
