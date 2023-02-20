@@ -611,6 +611,20 @@ class luna extends eqLogic {
   
   /* ----- FIN LORA ------ */
 
+  public function switchHost($activated = true){
+      if($activated === true){
+        exec("sudo chattr -i /etc/hosts");
+        exec("sudo cp " .__DIR__ . "/../../data/patchs/hosts /etc/hosts");
+        $hostname = trim(file_get_contents('/etc/hostname'));
+        if($hostname !== 'JeedomLuna'){
+        exec('sudo sed -i "s|JeedomLuna|'.$hostname.'" /etc/hosts');
+        }
+        exec("sudo chattr +i /etc/hosts");
+      }else{
+        exec("sudo chattr -i /etc/hosts");
+      }
+  }
+
 
   public function postSave() {
     $connect = $this->getCmd(null, 'connect');
