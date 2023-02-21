@@ -128,6 +128,7 @@
         "Activation Lora": "Lora activation",
         "Désactivation Lora": "Lora deactivation",
         "Installation de la partie Lora, car puce Lora detecté": "Installation of the Lora part, because Lora chip detected",
+        "Patch du localhost": "Localhost patch",
         "Connecter Wifi": "Connect Wi-Fi",
         "Déconnecter Wifi": "Disconnect Wi-Fi",
         "Etat Wifi": "Wi-Fi Status",
