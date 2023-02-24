@@ -548,7 +548,7 @@ class luna extends eqLogic {
       /* ------ DEBUT LORA ----- */
   
   public function formatUid($UID){
-    $UID = substr($UID, -18);
+    $UID = substr($UID, -16);
     log::add(__CLASS__, 'debug', 'UID -18 > ' . $UID);
     $UID = str_replace('x','',$UID);
     log::add(__CLASS__, 'debug', 'UID replace > ' . $UID);
