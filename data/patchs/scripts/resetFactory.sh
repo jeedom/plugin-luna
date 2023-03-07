@@ -1,3 +1,2 @@
-sudo touch /factoryreset
-sudo sync
+sudo fsreset
 sudo reboot

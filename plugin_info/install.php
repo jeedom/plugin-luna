@@ -35,7 +35,7 @@ function luna_install() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
-	luna::batterySwitchMaj();
+	luna::patchLuna();
 	luna::switchHost();
 	luna::installLora();
 }
@@ -56,7 +56,7 @@ function luna_update() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
-	luna::batterySwitchMaj();
+	luna::patchLuna();
 	luna::switchHost();
 	luna::installLora();
 }

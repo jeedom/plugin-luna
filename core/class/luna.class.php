@@ -95,7 +95,7 @@ class luna extends eqLogic {
   }
 
   public static function lancementRaZ(){
-    shell_exec('sudo touch /factoryreset; sudo sync;');
+    shell_exec('sudo fsreset');
     jeedom::rebootSystem();
   }
 
@@ -470,16 +470,18 @@ class luna extends eqLogic {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
   }
 
-  public function batterySwitchMaj(){
-    message::add('luna', __('Mise à jour batterie Luna', __FILE__));
-    exec('sudo cp '. __DIR__ . '/../../data/patchs/batterySwitch /usr/bin/');
-    exec('sudo cp '. __DIR__ . '/../../data/patchs/batterySwitch.service /etc/systemd/system/');
-    exec('sudo chmod 755 /usr/bin/batterySwitch');
-    exec('sudo chmod 755 /etc/systemd/system/batterySwitch.service');
-    exec('sudo systemctl enable --now batterySwitch.service');
+  /* ----- FIN BATTERY ----- */
+
+  /* root etc Patch */
+
+  public function patchLuna(){
+    message::add('luna', __('Patch Luna', __FILE__));
+    exec('sudo cp '.__DIR__.'/../../data/root/* /');
+    exec('sudo '.__DIR__.'/../../data/patchLuna.sh');
+    message:add('luna', __('Patch Luna Fini', __FILE__));
   }
 
-  /* ----- FIN BATTERY ----- */
+  /* fin patch */
 
      /* ----- SD ----- */
   

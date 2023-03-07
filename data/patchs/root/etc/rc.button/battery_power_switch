@@ -1,0 +1,138 @@
+#!/bin/sh
+
+led_off() {
+  echo none > /sys/class/leds/$1/trigger
+  echo 0,0,0 > /sys/class/leds/$1/brightness
+}
+
+led_blink() {
+  echo timer > /sys/class/leds/$1/trigger
+  echo 100 > /sys/class/leds/$1/delay_off
+  echo 100 > /sys/class/leds/$1/delay_on
+  echo $2,$3,$4 > /sys/class/leds/$1/rgb_value
+}
+
+led_jeedom() {
+  led_off_all
+  echo 0,1,0 > /sys/class/leds/led0/rgb_value
+  echo 0,1,0 > /sys/class/leds/led1/rgb_value
+  echo 0,1,0 > /sys/class/leds/led2/rgb_value
+  echo 0,1,0 > /sys/class/leds/led3/rgb_value
+  echo 0,1,0 > /sys/class/leds/led4/rgb_value
+  echo 0,1,0 > /sys/class/leds/led5/rgb_value
+}
+
+led_orange() {
+  echo 100,30,0 > /sys/class/leds/led0/rgb_value
+  echo 100,30,0 > /sys/class/leds/led1/rgb_value
+  echo 100,30,0 > /sys/class/leds/led2/rgb_value
+  echo 100,30,0 > /sys/class/leds/led3/rgb_value
+  echo 100,30,0 > /sys/class/leds/led4/rgb_value
+  echo 100,30,0 > /sys/class/leds/led5/rgb_value
+}
+
+led_blue() {
+  echo 0,0,100 > /sys/class/leds/led0/rgb_value
+  echo 0,0,100 > /sys/class/leds/led1/rgb_value
+  echo 0,0,100 > /sys/class/leds/led2/rgb_value
+  echo 0,0,100 > /sys/class/leds/led3/rgb_value
+  echo 0,0,100 > /sys/class/leds/led4/rgb_value
+  echo 0,0,100 > /sys/class/leds/led5/rgb_value
+}
+
+led_green() {
+  echo 0,100,0 > /sys/class/leds/led0/rgb_value
+  echo 0,100,0 > /sys/class/leds/led1/rgb_value
+  echo 0,100,0 > /sys/class/leds/led2/rgb_value
+  echo 0,100,0 > /sys/class/leds/led3/rgb_value
+  echo 0,100,0 > /sys/class/leds/led4/rgb_value
+  echo 0,100,0 > /sys/class/leds/led5/rgb_value
+}
+
+led_blink_orange() {
+  led_blink led0 100 30 0
+  led_blink led1 100 30 0
+  led_blink led2 100 30 0
+  led_blink led3 100 30 0
+  led_blink led4 100 30 0
+  led_blink led5 100 30 0
+}
+
+led_blink_blue() {
+  led_blink led0 0 0 100
+  led_blink led1 0 0 100
+  led_blink led2 0 0 100
+  led_blink led3 0 0 100
+  led_blink led4 0 0 100
+  led_blink led5 0 0 100
+}
+
+led_blink_red(){
+  led_blink led0 10 0 0
+	led_blink led1 10 0 0
+	led_blink led2 10 0 0
+	led_blink led3 10 0 0
+	led_blink led4 10 0 0
+	led_blink led5 10 0 0
+}
+
+led_off_all(){
+  led_off led0
+	led_off led1
+	led_off led2
+	led_off led3
+	led_off led4
+	led_off led5
+}
+
+[ $ACTION = "pressed" ] && {
+	logger "battery_power_switch pressed, SEEN:$SEEN"
+  led_green
+	exit 0
+}
+
+[ $SEEN -gt 20 ] && {
+	logger "reset factory!!!!"
+	led_blink_red
+	sleep 2
+	led_off_all
+	fsreset
+	reboot
+	exit 0
+}
+
+[ $SEEN -gt 10 ] && {
+	logger "demande halt"
+	led_blink_orange
+	sleep 2
+  led_off_all
+	halt
+	exit 0
+}
+
+[ $SEEN -gt 5 ] && {
+	logger "demande reboot"
+  led_blink_blue
+  sleep 2
+  led_off_all
+	reboot
+	exit 0
+}
+
+[ $SEEN -gt 1 ] && {
+	logger "battery switch ing"
+	val=`i2cget -f -y 0 0x6a 0x09`
+	ret=$?
+	[ "$ret" = "0" ] && {
+		if [ "$val" = "0x20" ]; then #
+			logger "open battery !!"
+			i2cset -f -y 0 0x6a 0x09 0x44
+			led_jeedom
+		else
+			logger "close battery !!"
+			i2cset -f -y 0 0x6a 0x09 0x20
+			led_orange
+		fi
+	}
+	exit 0
+}
