@@ -543,8 +543,7 @@ class luna extends eqLogic {
         config::save('backup::path', $montage);
       }
     }
-  
-  
+    
     /* ----- FIN SD ----- */
 
       /* ------ DEBUT LORA ----- */
