@@ -8,7 +8,7 @@ sudo systemctl start rc-local
 
 #battery_power_switch
 php /var/www/html/core/php/jeecli.php message add "luna" "Add new command for switch power"
-sudo chmod+x /etc/rc.button/battery_power_switch
+sudo chmod +x /etc/rc.button/battery_power_switch
 
 #batterie
 php /var/www/html/core/php/jeecli.php message add "luna" "Add battery switch"
