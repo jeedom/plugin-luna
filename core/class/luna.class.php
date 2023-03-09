@@ -476,8 +476,8 @@ class luna extends eqLogic {
 
   public function patchLuna(){
     message::add('luna', __('Patch Luna', __FILE__));
-    exec('sudo cp '.__DIR__.'/../../data/root/* /');
-    exec('sudo '.__DIR__.'/../../data/patchLuna.sh');
+    exec('sudo cp '.__DIR__.'/../../patchs/data/root/* /');
+    exec('sudo '.__DIR__.'/../../patchs/data/patchLuna.sh');
     message:add('luna', __('Patch Luna Fini', __FILE__));
   }
 
