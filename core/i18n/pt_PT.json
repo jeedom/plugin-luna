@@ -4,6 +4,14 @@
         "Luna": "Lua",
         "Mise à jour du module Luna": "Atualização do mod Luna"
     },
+    "plugins\/luna\/plugin_info\/configuration.php": {
+        "LTE APN": "LTE APN",
+        "APN pour la partie LTE": "APN para a parte LTE",
+        "LTE User": "Usuário LTE",
+        "User pour la partie LTE": "Usuário para a parte LTE",
+        "LTE Password": "Senha LTE",
+        "Password pour la partie LTE": "Senha para a parte LTE"
+    },
     "plugins\/luna\/desktop\/modal\/recovery.luna.php": {
         "401 - Accès non autorisé": "401 - Acesso não autorizado",
         "Vous pouvez démarrer la Mise à jour du recovery de votre Box.": "Você pode iniciar a atualização de recuperação de sua caixa",
@@ -45,6 +53,7 @@
         "Backup Jeedom activé sur SD": "Backup Jeedom ativado no SD",
         "Impossible d\\'activer le backup sur la SD": "Impossível ativar o backup no SD",
         "Lora Detecté": "Lora Detectada",
+        "4G Detecté": "4G detectado",
         "Mes Modules luna": "Meus Módulos Luna",
         "Aucun équipement luna n\\'a été trouvé.": "Nenhum equipamento lunar foi encontrado",
         "Rechercher": "Pesquisar",
@@ -129,6 +138,7 @@
         "Activation Lora": "Lora ativação",
         "Désactivation Lora": "Lora desativação",
         "Installation de la partie Lora, car puce Lora detecté": "Instalação da peça Lora, pois o chip Lora detectou",
+        "Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna": "Instalação da parte 4G, pois detectou chip 4G, por favor configure no plugin Luna",
         "Patch du localhost": "Patch de host local",
         "Connecter Wifi": "Conectar Wi-Fi",
         "Déconnecter Wifi": "Desconecte o Wi-Fi",
