@@ -643,7 +643,7 @@ class luna extends eqLogic {
     $apn = config::byKey('lteApn','luna', null);
     $user = config::byKey('lteUser','luna', null);
     $password = config::byKey('ltePassword','luna', null);
-    $jsonFile = __DIR__ . "/../../data/lte.json"
+    $jsonFile = __DIR__ . "/../../data/lte.json";
     $table = [];
     $table["lte"] = [];
     $table["lte"]["apn"] = $apn;
