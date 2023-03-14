@@ -94,7 +94,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<?php
 			}
 			?>
-			?>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes Modules luna}}</legend>
 		<?php
