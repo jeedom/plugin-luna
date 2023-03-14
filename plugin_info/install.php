@@ -38,6 +38,7 @@ function luna_install() {
 	luna::patchLuna();
 	luna::switchHost();
 	luna::installLora();
+	luna::install4g();
 }
 
 function luna_update() {
@@ -59,4 +60,5 @@ function luna_update() {
 	luna::patchLuna();
 	luna::switchHost();
 	luna::installLora();
+	luna::install4g();
 }

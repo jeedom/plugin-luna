@@ -84,6 +84,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				</div>
 			<?php
 			}
+			if(luna::detected4g()){
+				?>
+				<div class="cursor logoSecondary success">
+					<i class="fas fa-signal"></i>
+					<br>
+					<span>{{4G Detecté}}</span>
+				</div>
+			<?php
+			}
+			?>
 			?>
 		</div>
 		<legend><i class="fas fa-table"></i> {{Mes Modules luna}}</legend>

@@ -612,6 +612,50 @@ class luna extends eqLogic {
   
   /* ----- FIN LORA ------ */
 
+  /* ----- DEBUT 4G ----- */
+
+  public function detected4g (){
+    if(config::byKey('4G','luna', null) != null){
+      return true;
+    }else{
+      $TTY4G = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+      if($TTY4G != ""){
+        config::save('4G', $TTY4G, 'luna');
+        log::add(__CLASS__, 'debug', 'TTY4G > ' . $TTY4G);
+        return true;
+      }else{
+        config::save('4G', false, 'luna');
+        return false;
+      }
+    }
+  }
+
+  public function install4g(){
+    if(luna::detected4g()){
+      message::add('luna', __('Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna', __FILE__));
+    }
+  }
+
+  public function configjsonlte(){
+    if(config::byKey('4G','luna') != false){
+      return false;
+    }
+    $apn = config::byKey('lteApn','luna', null);
+    $user = config::byKey('lteUser','luna', null);
+    $password = config::byKey('ltePassword','luna', null);
+    $jsonFile = __DIR__ . "/../../data/lte.json"
+    $table = [];
+    $table["lte"] = [];
+    $table["lte"]["apn"] = $apn;
+    $table["lte"]["user"] = $user;
+    $table["lte"]["password"] = $password;
+    $jsonTable = json_encode($table);
+    file_put_contents($jsonFile, $jsonTable);
+  }
+
+
+  /* ------ FIN 4G ----- */
+
   public function switchHost($activated = true){
       if($activated === true){
         message::add('luna', __('Patch du localhost', __FILE__));
