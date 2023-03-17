@@ -663,7 +663,7 @@ class luna extends eqLogic {
         exec("sudo cp " .__DIR__ . "/../../data/patchs/hosts /etc/hosts");
         $hostname = trim(file_get_contents('/etc/hostname'));
         if($hostname !== 'JeedomLuna'){
-        exec('sudo sed -i "s|JeedomLuna|'.$hostname.'" /etc/hosts');
+        exec('sudo sed -i "s|JeedomLuna|'.$hostname.'|g" /etc/hosts');
         }
         exec("sudo chattr +i /etc/hosts");
       }else{
