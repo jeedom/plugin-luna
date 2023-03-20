@@ -1,0 +1,25 @@
+#!/bin/bash
+
+finddevZigbee() {
+	cfgpath=`find /sys/devices/platform/ff5c0000.usb/usb2/2-1/2-1.3 -name "ttyUSB*" | grep -v "tty\/"`
+	dev="$(basename $cfgpath 2>/dev/null)"
+	echo $dev
+}
+finddevBle(){
+	cfgpath=`find /sys/devices/platform/ff5c0000.usb/usb2/2-1/2-1.2 -name "ttyUSB*" | grep -v "tty\/"`
+	dev="$(basename $cfgpath 2>/dev/null)"
+	echo $dev
+}
+
+run() {
+	while [ 1 ]; do
+		local devzigbee=$(finddevZigbee)
+		local devble=$(finddevBle)
+		echo "get zigbee at device: /dev/$devzigbee"
+		echo "get ble at device: /dev/$devble"
+
+		sleep 30
+	done
+}
+
+run

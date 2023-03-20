@@ -5,6 +5,8 @@ php /var/www/html/core/php/jeecli.php message add "luna" "correction dmesg"
 sudo chmod +x /etc/rc.local
 sudo systemctl daemon-reload
 sudo systemctl start rc-local
+sudo udevadm control --reload-rules
+sudo udevadm trigger
 
 #battery_power_switch
 php /var/www/html/core/php/jeecli.php message add "luna" "Add new command for switch power"
