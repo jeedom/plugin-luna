@@ -20,13 +20,7 @@ Si elle ne clignote pas :
  - Veuillez contacter Domadoo via le lien suivant; l'équipe Domadoo vous fournira une étiquette de retour et vous réexpédiera une Luna correctement flashée :
 https://www.domadoo.fr/rma
 
-# Bientôt Disponible : Hotspot
-
-> Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe).
-
-Pour ce faire, aller dans le plugin luna, puis sélectionner l’équipement Luna. A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2.4Ghz et 5Ghz), puis taper le mot de passe et sauvegarder.
-
-Pour le moment, le plugin prend en compte uniquement les accès avec DHCP.
+# Les fonctionnalités du plugin Luna :
 
 > Mise à jour du module de Recovery
 
@@ -64,6 +58,23 @@ Permet la gestion (formatage) de la carte micro-SD que vous pouvez ajouter à la
 - Alimentation : plus de 40 secondes Arret de la box. (clignotement Orange au relacher)
 - Alimentation : plus de 60 secondes reset factory de la box. (clignotement Rouge au relacher)
 
+> Lora (uniquement pour les luna vendu avec me lodule lora de Jeedom)
+
+- detection automatique du module et lancement du packet forwarder, sur le localhost de la jeedom. utiliser le plugin LNS pour installation de l'applicatif. (rien est a faire depuis le plugin Luna tout est automatique)
+
+# Bientôt Disponible : Hotspot, 4G (pour les Luna 4G), LORA (pour les Luna Lora)
+
 > Hotspot (ALPHA)
 
 Dans la partie Wifi du plugin vous pouvez cocher la case Hotspot ce qui vous permettra de créer un point d'accès wifi sur votre Box luna. (DNS et forwarding IP (pont entre ethernet et wifi) fonctionnel dessus).
+
+> Le plugin luna vous permet de vous connecter depuis votre luna à un réseau Wifi (avec ou sans mot de passe).
+
+Pour ce faire, aller dans le plugin luna, puis sélectionner l’équipement Luna. A cet endroit vous pouvez activer puis sélectionner le wifi que vous souhaitez (2.4Ghz et 5Ghz), puis taper le mot de passe et sauvegarder.
+
+Pour le moment, le plugin prend en compte uniquement les accès avec DHCP.
+
+> 4G (uniquement compatible avec les Luna 4G)
+
+Detection automatique de la 4G interne a la box, demande code pin et APN dans la configuration du plugin Luna.
+si 4G detecter lancement d'un module de connexion en arriere plan qui passe automatiquement de l'ethernet a la 4G si besoin (ping vers 8.8.8.8), le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G.
