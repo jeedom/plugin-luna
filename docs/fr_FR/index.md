@@ -1,5 +1,8 @@
 # Plugin luna
 
+# depuis le 27/03/2023 nouvelle image Jeedom Luna
+Vous pouvez faire une maj sans perte de backup etc en cliquant sur "Mise à jour du module de Recovery". cela redemarera votre jeedom Luna mais vous ne perdrai pas vos configuration. cela fera des changement dans le module de recovery et de boot de la box ce qui permettra une meilleur stabilité de celle-ci.
+
 # Attention souci de Flashage des Luna
 
 Nous avons eu un retour sur une erreur de flashage de certaines Lunas. (uniquement celles expediées avant 2023)
@@ -47,11 +50,19 @@ Vous pouvez,via deux retours d’informations, avoir le pourcentage de batterie 
 
 Permet la gestion (formatage) de la carte micro-SD que vous pouvez ajouter à la box, ainsi que le transfert vers cette carte SD des backups Jeedom.
 
-> Les boutons Alimentation et Reset
+> Les boutons Alimentation et Reset (v1)
 
 - Reset : moins de 1 secondes reboot forcer de la box.
 - Reset : plus de 10 secondes Reset Factory de la box.
 - Alimentation : plus de 10 secondes arret de la fox forcer avec arret de la batterie (il faut avoir enlever l'alimentation electrique pour le faire)
+
+> Les boutons Alimentation et Reset (v2 nouvelle image)
+
+- Reset : redemarrage materiel de la Luna
+- Alimentation : plus de 5 secondes arret ou allumage de la batterie (Orange > eteind, Vert Allumé)
+- Alimentation : plus de 15 secondes redemmarage de la box. (cligontement bleu au relacher)
+- Alimentation : plus de 40 secondes Arret de la box. (clignotement Orange au relacher)
+- Alimentation : plus de 60 secondes reset factory de la box. (clignotement Rouge au relacher)
 
 > Hotspot (ALPHA)
 
