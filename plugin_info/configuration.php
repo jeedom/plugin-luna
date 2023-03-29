@@ -21,7 +21,7 @@ if (!isConnect()) {
   include_file('desktop', '404', 'php');
   die();
 }
-if(luna::detected4g()){
+if(config::byKey('4G','luna', false) == true){
     ?>
 <form class="form-horizontal">
   <fieldset>

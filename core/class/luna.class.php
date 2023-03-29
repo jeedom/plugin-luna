@@ -616,7 +616,7 @@ class luna extends eqLogic {
 
   public function detected4g (){
     if(config::byKey('4G','luna', null) != null){
-      return true;
+      return config::byKey('4G','luna', null);
     }else{
       $TTY4G = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTY4G != ""){
@@ -670,7 +670,6 @@ class luna extends eqLogic {
         exec("sudo chattr -i /etc/hosts");
       }
   }
-
 
   public function postSave() {
     $connect = $this->getCmd(null, 'connect');
