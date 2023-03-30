@@ -139,6 +139,8 @@
         "Désactivation Lora": "Lora deactivation",
         "Installation de la partie Lora, car puce Lora detecté": "Installation of the Lora part, because Lora chip detected",
         "Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna": "Installation of the 4G part, because 4G chip detected, please configure in the Luna plugin",
+        "Activation LTE": "Enable LTE",
+        "Désactivation LTE": "Disabling LTE",
         "Patch du localhost": "Localhost patch",
         "Connecter Wifi": "Connect Wi-Fi",
         "Déconnecter Wifi": "Disconnect Wi-Fi",
