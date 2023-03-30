@@ -651,6 +651,19 @@ class luna extends eqLogic {
     $table["lte"]["password"] = $password;
     $jsonTable = json_encode($table);
     file_put_contents($jsonFile, $jsonTable);
+    luna::lteSwitchMaj();
+  }
+
+  public function lteSwitchMaj($actived = true){
+    if($actived == true){
+      message::add('luna', __('Activation LTE', __FILE__));
+      exec('sudo cp '. __DIR__ . '/../../data/patchs/lte/lte.service /etc/systemd/system/');
+      exec('sudo chmod 755 /etc/systemd/system/lte.service');
+      exec('sudo systemctl enable --now lte.service');
+    }else{
+      message::add('luna', __('Désactivation LTE', __FILE__));
+      exec('sudo systemctl desable --now lte.service');
+    }
   }
 
 

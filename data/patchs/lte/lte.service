@@ -1,0 +1,11 @@
+[Unit]
+Description=LTE
+
+[Service]
+ExecStart=/usr/bin/bg96 start
+ExecStop=/usr/bin/bg96 stop
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
