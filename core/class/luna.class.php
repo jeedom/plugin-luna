@@ -22,12 +22,6 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 class luna extends eqLogic {
   /*     * *************************Attributs****************************** */
 
-  /*
-   * Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
-   * Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
-	public static $_widgetPossibility = array();
-   */
-
   public static function dependancy_info() {
     $return = array();
     $return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependance';
@@ -233,12 +227,8 @@ class luna extends eqLogic {
   /* ------ FIN RECOVERY et MIGRATION ------ */
 
 
-  public static function cron5($_eqlogic_id = null) {
-    if ($_eqlogic_id !== null) {
-      $eqLogics = array(eqLogic::byId($_eqlogic_id));
-    } else {
-      $eqLogics = eqLogic::byType('luna');
-    }
+  public static function cron5() {
+    $eqLogics = eqLogic::byType('luna');
     foreach ($eqLogics as $luna) {
       log::add(__CLASS__, 'debug', 'Pull Cron luna');
       $luna->wifiConnect();
@@ -306,6 +296,18 @@ class luna extends eqLogic {
     } else if ($countProfile == 1) {
       return true;
     } else {
+      return false;
+    }
+  }
+
+  public static function deleteProfile($ssid){
+    $result = shell_exec("nmcli --fields NAME con show");
+    $countProfile = substr_count($result, $ssid);
+    if ($countProfile > 0) {
+      log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
+      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep wifi | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
+      return true;
+    }else{
       return false;
     }
   }
@@ -580,7 +582,7 @@ class luna extends eqLogic {
       exec('sudo systemctl enable --now lora.service');
     }else{
       message::add('luna', __('Désactivation Lora', __FILE__));
-      exec('sudo systemctl desable --now lora.service');
+      exec('sudo systemctl disable --now lora.service');
     }
   }
   
@@ -637,12 +639,18 @@ class luna extends eqLogic {
   }
 
   public function configjsonlte(){
-    if(config::byKey('4G','luna') != false){
+
+    log::add(__CLASS__, 'debug', 'CONFIG JSON LTE');
+
+    if(config::byKey('4G','luna', false) == false){
       return false;
     }
     $apn = config::byKey('lteApn','luna', null);
     $user = config::byKey('lteUser','luna', null);
     $password = config::byKey('ltePassword','luna', null);
+    log::add(__CLASS__, 'debug', 'APN > ' . $apn);
+    log::add(__CLASS__, 'debug', 'USER > ' . $user);
+    log::add(__CLASS__, 'debug', 'PASSWORD > ' . $password);
     $jsonFile = __DIR__ . "/../../data/lte.json";
     $table = [];
     $table["lte"] = [];
@@ -657,15 +665,15 @@ class luna extends eqLogic {
   public function lteSwitchMaj($actived = true){
     if($actived == true){
       message::add('luna', __('Activation LTE', __FILE__));
+      exec('sudo systemctl disable --now lte.service');
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lte/lte.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lte.service');
       exec('sudo systemctl enable --now lte.service');
     }else{
       message::add('luna', __('Désactivation LTE', __FILE__));
-      exec('sudo systemctl desable --now lte.service');
+      exec('sudo systemctl disable --now lte.service');
     }
   }
-
 
   /* ------ FIN 4G ----- */
 
@@ -843,24 +851,11 @@ class lunaCmd extends cmd {
         $eqLogic->setConfiguration('wifiEnabled', false);
         $eqLogic->save();
         break;
-      case 'repair':
-        $ssidConf = $eqLogic->getConfiguration('wifiSsid');
-        if ($ssidConf == "") {
-          $eqLogic->setConfiguration('wifiSsid', shell_exec('iwgetid -r'));
-          $eqLogic->save();
-          message::add('wifip', __('Sauvegarde du SSID', __FILE__));
-        }
-        $connFile = shell_exec('nmcli --fields TYPE,FILENAME con show --active | grep -i wifi | cut -c46-600');
-        message::add('luna', __('Suppression des profils pour', __FILE__) . ' ' . $connFile);
-        shell_exec('sudo find /etc/NetworkManager/system-connections -type f ! -name "' . $connFile . '" -delete');
-        message::add('luna', __('Suppression effectuée, veuillez redémarrer.', __FILE__));
-        break;
       case 'dsled':
         luna::dsLed( $_options['select']);
         break;
     }
     $eqLogic->cron5($eqLogic->getId());
   }
-
   /*     * **********************Getteur Setteur*************************** */
 }

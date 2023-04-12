@@ -368,9 +368,9 @@ run() {
 		fi
 
 		echo "get 4g at device: /dev/$dev"
-        apn=$(jq '.lte.apn' /www/html/plugins/luna/data/lte.json)
-        user=$(jq '.lte.user' /www/html/plugins/luna/data/lte.json)
-        password=$(jq '.lte.password' /www/html/plugins/luna/data/lte.json)
+        apn=$(jq '.lte.apn' /var/www/html/plugins/luna/data/lte.json)
+        user=$(jq '.lte.user' /var/www/html/plugins/luna/data/lte.json)
+        password=$(jq '.lte.password' /var/www/html/plugins/luna/data/lte.json)
 		_4g_pppd /dev/$dev $apn $user $password
 
 		echo "diconnect...."

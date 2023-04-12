@@ -299,6 +299,30 @@ $('#bt_changeBackupToSD').off('click').on('click', function() {
   })
 })
 
+$('#bt_resetSsid').off('click').on('click', function() {
+  var ssid = $('.eqLogicAttr[data-l1key=configuration][data-l2key=wifiSsid]').options[liste.selectedIndex].text
+  $.ajax({
+    type: "POST", 
+    url: "plugins/luna/core/ajax/luna.ajax.php", 
+    data: {
+      action: "resetSsid",
+      ssid: ssid
+    },
+    dataType: 'json',
+    async: true,
+    global: false,
+    error: function(request, status, error) {
+      handleAjaxError(request, status, error)
+    },
+    success: function(data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({ message: "suppression SSID : "+ssid, level: 'success' })
+        return
+      }
+    }
+  })
+})
+
 $('#bt_changeBackupToEmmc').off('click').on('click', function() {
   var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Activer backup sur la SD}}'
   var dialog_message = '<center>{{les backups seront maintenant archivés sur cette carte SD.}}</center>'

@@ -51,6 +51,27 @@ if(config::byKey('4G','luna', false) == true){
     </div>
   </fieldset>
 </form>
+<script>
+  $('#bt_savePluginConfig').off('click').on('click', function() {
+    $.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: "configjsonlte"
+      },
+      dataType: 'json',
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+      },
+      success: function() {
+          $('#div_alert').showAlert({
+            message: 'Mise à jour LTE',
+            level: 'success'
+          });
+      }
+    });
+  })
+</script>
 <?php
 }
 ?>

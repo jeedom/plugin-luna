@@ -50,8 +50,18 @@ try {
     ajax::success();
   }
 
+  if (init('action') == 'resetSsid') {
+    luna::resetSsid(init('ssid'));
+    ajax::success();
+  }
+
   if (init('action') == 'partitionSD') {
     luna::partitionSD();
+    ajax::success();
+  }
+
+  if (init('action') == 'configjsonlte') {
+    luna::configjsonlte();
     ajax::success();
   }
 

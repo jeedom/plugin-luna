@@ -222,6 +222,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<div class="col-lg-2">
 										<a class="btn btn-info" id="bt_refreshWifiList"><i class="fas fa-sync-alt"></i></a>
 									</div>
+									<div class="col-lg-2">
+										<a class="btn btn-info" id="bt_resetSsid"><i class="fas fa-bug-slash"></i></a>
+									</div>
 								</div>
 								<div class="form-group wifi" style="display:none">
 									<label class="col-lg-2 control-label">{{Clef}}</label>
