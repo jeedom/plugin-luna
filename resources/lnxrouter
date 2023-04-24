@@ -921,7 +921,7 @@ iptb()
     
     
     
-    [[ ! "$NETFILTER_XT_MATCH_COMMENT" == "0" ]] && TAIL="-m comment --comment lrt${$}${SUBNET_IFACE}"
+    #[[ ! "$NETFILTER_XT_MATCH_COMMENT" == "0" ]] && TAIL="-m comment --comment lrt${$}${SUBNET_IFACE}"
     
     if [[ "$ADD_TO_UNDO" -eq 1 ]]; then
         if [[ "$ACT" == "I" || "$ACT" == "A" ]]; then
@@ -1082,7 +1082,6 @@ backup_ipv6_bits() {
     cp  "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/disable_ipv6" \
         "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/accept_ra"     \
         "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/use_tempaddr"  \
-        "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/addr_gen_mode" \
             "$CONFDIR/sys_6_conf_iface/" || die "Failed backing up interface ipv6 bits"
             
     if [[ "$SHARE_METHOD" == 'redsocks' ]] ; then
@@ -1095,7 +1094,6 @@ set_ipv6_bits() {
         echo 0 > "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/disable_ipv6"
         echo 0 > "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/accept_ra"
         echo 0 > "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/use_tempaddr"
-        echo 0 > "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/addr_gen_mode"
     else
         echo 1 > "/proc/sys/net/ipv6/conf/$SUBNET_IFACE/disable_ipv6"
     fi

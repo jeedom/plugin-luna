@@ -272,6 +272,7 @@ class luna extends eqLogic {
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($luna)) {
       $luna->wifiConnect();
+      $luna->testHotspot();
     }
   }
 
@@ -351,8 +352,9 @@ class luna extends eqLogic {
 
   public function wifiConnect() {
     if ($this->getConfiguration('wifiEnabled') == true) {
-      luna::activeHotSpot();
+      shell_exec('sudo ifconfig wlan0 up');
       if ($this->getConfiguration('hotspotEnabled') == true) {
+        luna::activeHotSpot();
         return;
       } else {
         $ssid = $this->getConfiguration('wifiSsid', '');
@@ -376,6 +378,9 @@ class luna extends eqLogic {
     } else {
       log::add(__CLASS__, 'debug', 'Executing sudo nmcli dev disconnect wlan0');
       shell_exec('sudo nmcli dev disconnect wlan0');
+      shell_exec('sudo nmcli dev disconnect wlan1');
+      shell_exec('sudo ifconfig wlan0 down');
+      shell_exec('sudo ifconfig wlan1 down');
     }
   }
 
@@ -390,13 +395,17 @@ class luna extends eqLogic {
       if ($pid != "") {
         luna::activeHotSpot();
       }
+    }else{
+      shell_exec('sudo nmcli dev disconnect wlan1');
+      shell_exec('sudo ifconfig wlan1 down');
     }
   }
 
   public static function activeHotSpot() {
+    shell_exec('sudo ifconfig wlan1 up');
     log::add(__CLASS__, 'debug', __('Activation du Hotspot.', __FILE__));
     $linkForHotspot = __DIR__ . '/../../resources/lnxrouter';
-    $wlanLink = 'wlan0';
+    $wlanLink = 'wlan1';
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     $interfaceInfo = luna::getMac();
     $macAddress = $interfaceInfo[0];
@@ -432,8 +441,8 @@ class luna extends eqLogic {
       $luna->save();
 
       log::add(__CLASS__, 'debug', __('Mise en place du Profil Hotspot.', __FILE__));
-      log::add(__CLASS__, 'debug', 'sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
-      $log = shell_exec('sudo bash ' . $linkForHotspot . ' --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' --no-virt > /dev/null 2>&1');
+      log::add(__CLASS__, 'debug', 'sudo bash ' . $linkForHotspot . ' --no-virt --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
+      $log = shell_exec('sudo bash ' . $linkForHotspot . ' --no-virt --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' --no-virt > /dev/null 2>&1');
       log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
     } else {
       shell_exec('sudo systemctl daemon-reload');
@@ -442,8 +451,6 @@ class luna extends eqLogic {
       $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
     }
   }
-
-
 
   /* ----- FIN Hotspot ----- */
 
@@ -830,6 +837,7 @@ class luna extends eqLogic {
 
   public function postAjax() {
     $this->wifiConnect();
+    $this->testHotspot();
   }
 }
 
