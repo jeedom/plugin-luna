@@ -85,6 +85,7 @@
         "Adresse Ip ethernet": "Ethernet ip address",
         "Adresse MAC wifi": "Wi-Fi MAC address",
         "Adresse Ip wifi": "Wi-Fi IP address",
+        "Adresse Ip LTE": "LTE IP address",
         "Nom": "Last name",
         "Options": "Options",
         "Action": "Stock"
