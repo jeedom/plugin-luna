@@ -23,5 +23,6 @@ sudo chmod +x /usr/bin/bg96
 #done
 php /var/www/html/core/php/jeecli.php message add "luna" "correction Up Start Led"
 sudo chmod 755 /etc/init.d/done
+sudo systemctl restart done
 
 return 0
