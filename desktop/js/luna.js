@@ -19,6 +19,7 @@
 printWifiList()
 printMacLan()
 printMacWifi()
+printMacLte()
 function printWifiList($forced = false) {
   $.ajax({// fonction permettant de faire de l'ajax
     type: "POST", // methode de transmission des données au fichier php
@@ -94,6 +95,30 @@ function printMacWifi() {
       }
       $('.macWifi').empty().append(data.result[0])
       $('.ipWifi').empty().append(data.result[1])
+    }
+  })
+}
+
+function printMacLte() {
+  $.ajax({// fonction permettant de faire de l'ajax
+    type: "POST", // methode de transmission des données au fichier php
+    url: "plugins/luna/core/ajax/luna.ajax.php", // url du fichier php
+    data: {
+      action: "macfinder",
+      interfa: "ppp0",
+    },
+    dataType: 'json',
+    async: true,
+    global: false,
+    error: function(request, status, error) {
+      handleAjaxError(request, status, error)
+    },
+    success: function(data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({ message: data.result, level: 'danger' })
+        return
+      }
+      $('.ipLte').empty().append(data.result[1])
     }
   })
 }

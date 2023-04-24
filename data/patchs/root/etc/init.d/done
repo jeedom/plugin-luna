@@ -1,0 +1,65 @@
+#! /bin/bash
+
+### BEGIN INIT INFO
+# Provides:             done
+# Required-Start:       $remote_fs $syslog
+# Required-Stop:        $remote_fs $syslog
+# Default-Start:        2 3 4 5
+# Default-Stop:         
+# Short-Description:    done
+### END INIT INFO
+
+
+set -e
+
+NAME=done
+DESC="$NAME script"
+DAEMON_SBIN=/usr/bin/$NAME
+PIDFILE=/run/$NAME.pid
+DAEMON_OPTS=""
+
+
+test -x $DAEMON_SBIN || exit 0
+
+[ ! -e /tmp/sysinfo/model ] && {
+	mkdir -p /tmp/sysinfo
+	HN=`cat /etc/hostname`
+	echo $HN > /tmp/sysinfo/model
+}
+
+. /lib/lsb/init-functions
+
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting $DESC" "$NAME"
+	start-stop-daemon --start --oknodo --quiet --background --exec "$DAEMON_SBIN" --pidfile "$PIDFILE" -- $DAEMON_OPTS >/dev/null 
+	log_end_msg "$?"
+	;;
+  stop)
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --stop --name $NAME
+	log_end_msg "$?"
+	;;
+  reload)
+  	log_daemon_msg "Reloading $DESC" "$NAME"
+	start-stop-daemon --stop --signal HUP --exec "$DAEMON_SBIN" --pidfile "$PIDFILE"
+	log_end_msg "$?"
+	;;
+  restart|force-reload)
+  	$0 stop
+	sleep 1
+	$0 start
+	;;
+  status)
+	status_of_proc "$DAEMON_SBIN" "$NAME"
+	exit $?
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|force-reload|reload|status}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

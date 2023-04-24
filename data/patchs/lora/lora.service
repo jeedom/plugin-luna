@@ -2,6 +2,7 @@
 Description=LORA
 
 [Service]
+Type=oneshot
 WorkingDirectory=/usr/bin/lora/
 ExecStart=/usr/bin/lora/lora_pkt_fwd
 Restart=on-failure

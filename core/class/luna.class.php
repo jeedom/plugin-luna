@@ -686,7 +686,6 @@ class luna extends eqLogic {
         if($hostname !== 'JeedomLuna'){
         exec('sudo sed -i "s|JeedomLuna|'.$hostname.'|g" /etc/hosts');
         }
-        exec("sudo chattr +i /etc/hosts");
       }else{
         exec("sudo chattr -i /etc/hosts");
       }

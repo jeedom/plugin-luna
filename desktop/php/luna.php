@@ -263,6 +263,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<span class="label label-info ipWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 								</div>
+								<?php
+								if(luna::detected4g()){
+								?>
+									<div class="form-group">
+										<label class="col-lg-4 control-label">{{Adresse Ip LTE}}</label>
+										<div class="col-lg-4">
+											<span class="label label-info ipLte" style="font-size:1em;cursor:default;"></span>
+										</div>
+									</div>
+								<?php
+								}
+								?>
 							</fieldset>
 						</form>
 					</div>

@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides:          batterySwitch
-# Required-Start:
+# Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Should-Stop:       $remote_fs $syslog
 # Default-Start:     2 3 4 5

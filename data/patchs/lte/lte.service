@@ -2,6 +2,7 @@
 Description=LTE
 
 [Service]
+Type=oneshot
 ExecStart=/usr/bin/bg96 start
 ExecStop=/usr/bin/bg96 stop
 Restart=on-failure
