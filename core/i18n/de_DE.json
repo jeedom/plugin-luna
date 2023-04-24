@@ -153,9 +153,6 @@
         "Led": "Leuchtdioden",
         "Battery": "Batterie",
         "Status alimentation": "Stromstatus",
-        "Sauvegarde du SSID": "Sicherungs-SSID",
-        "Suppression des profils pour": "Löschen von Profilen für",
-        "Suppression effectuée, veuillez redémarrer.": "Gelöscht, bitte neu starten",
         "prelancement": "vor der Markteinführung"
     },
     "plugins\/luna\/core\/api\/luna.api.php": {
