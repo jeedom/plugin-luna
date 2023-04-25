@@ -10,7 +10,12 @@
         "LTE User": "LTE User",
         "User pour la partie LTE": "User pour la partie LTE",
         "LTE Password": "LTE Password",
-        "Password pour la partie LTE": "Password pour la partie LTE"
+        "Password pour la partie LTE": "Password pour la partie LTE",
+        "LTE PIN": "LTE PIN",
+        "ne rien mettre si pas de code pin": "ne rien mettre si pas de code pin",
+        "Gestion LTE": "Gestion LTE",
+        "Re-Lancer": "Re-Lancer",
+        "N'oubliez pas de sauvegarder avant": "N'oubliez pas de sauvegarder avant"
     },
     "plugins\/luna\/desktop\/modal\/recovery.luna.php": {
         "401 - Accès non autorisé": "401 - Accès non autorisé",
@@ -140,7 +145,10 @@
         "Désactivation Lora": "Désactivation Lora",
         "Installation de la partie Lora, car puce Lora detecté": "Installation de la partie Lora, car puce Lora detecté",
         "Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna": "Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna",
-        "Activation LTE": "Activation LTE",
+        "Activation PIN": "Activation PIN",
+        "Erreur PIN": "Erreur PIN",
+        "Désactivation PIN": "Désactivation PIN",
+        "Activation LTE, la premiere connexion peut prendre 10 minutes.": "Activation LTE, la premiere connexion peut prendre 10 minutes",
         "Désactivation LTE": "Désactivation LTE",
         "Patch du localhost": "Patch du localhost",
         "Connecter Wifi": "Connecter Wifi",
