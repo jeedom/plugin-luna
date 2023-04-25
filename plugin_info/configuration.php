@@ -49,10 +49,25 @@ if(config::byKey('4G','luna', false) == true){
         <input class="configKey form-control" data-l1key="ltePassword"/>
       </div>
     </div>
+    <div class="form-group">
+      <label class="col-md-4 control-label">{{LTE PIN}}
+        <sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
+      </label>
+      <div class="col-md-4">
+        <input class="configKey form-control" data-l1key="ltePin"/>
+      </div>
+    </div>
   </fieldset>
+  <div class="form-actions">
+    <label class="col-md-4 control-label">{{Gestion LTE}}</label>
+    <div class="col-md-4">
+      <a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i> {{Re-Lancer}}</a>
+      {{N'oubliez pas de sauvegarder avant}}
+    </div>
+  </div>
 </form>
 <script>
-  $('#bt_savePluginConfig').off('click').on('click', function() {
+  $('#bt_saveLTE').off('click').on('click', function() {
     $.ajax({
       type: "POST",
       url: "plugins/luna/core/ajax/luna.ajax.php",

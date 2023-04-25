@@ -666,12 +666,32 @@ class luna extends eqLogic {
     $table["lte"]["password"] = $password;
     $jsonTable = json_encode($table);
     file_put_contents($jsonFile, $jsonTable);
+    luna::ltePinSwitch();
     luna::lteSwitchMaj();
+  }
+
+  public function ltePinSwitch(){
+    $ltePin = __DIR__ . "/../../data/patchs/lte/PIN";
+    if(config::byKey('ltePin','luna', null) != null){
+      $pin = config::byKey('ltePin','luna', null);
+      message::add('luna', __('Activation PIN', __FILE__));
+      if(ctype_digit($pin) && strlen($pin) == 4){
+        file_put_contents($ltePin.'/pin.CODE', 'AT+CPIN='.config::byKey('ltePin','luna', null));
+        exec('sudo ln -s '.$ltePin.'/pin.CODE /etc/ppp/peers/pin');
+      }else{
+        message::add('luna', __('Erreur PIN', __FILE__));
+        message::add('luna', __('Désactivation PIN', __FILE__));
+        exec('sudo ln -s '.$ltePin.'/pin.NONE /etc/ppp/peers/pin');
+      }
+    }else{
+      message::add('luna', __('Désactivation PIN', __FILE__));
+      exec('sudo ln -s '.$ltePin.'/pin.NONE /etc/ppp/peers/pin');
+    }
   }
 
   public function lteSwitchMaj($actived = true){
     if($actived == true){
-      message::add('luna', __('Activation LTE', __FILE__));
+      message::add('luna', __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       exec('sudo systemctl disable --now lte.service');
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lte/lte.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lte.service');
