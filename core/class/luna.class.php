@@ -357,6 +357,7 @@ class luna extends eqLogic {
         luna::activeHotSpot();
         return;
       } else {
+        shell_exec('sudo ifconfig wlan1 down');
         $ssid = $this->getConfiguration('wifiSsid', '');
       }
       if (self::isWificonnected($ssid) === false) {

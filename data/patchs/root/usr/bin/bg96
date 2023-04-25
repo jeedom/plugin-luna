@@ -85,6 +85,7 @@ _4g_check_card() {
 
 		local insert=`pppcmd $dev 'AT+CPIN?' | grep 'READY' | wc -l`
 		[ "$insert" == "1" ] && {
+			echo "card detect ok"
 			logger card detect ok
 			return 0
 		}
@@ -152,7 +153,7 @@ _4g_check_register() {
 }
 
 _4g_check() {
-	echo $FUNCNAME
+	#echo $FUNCNAME
 
 	_4g_exsit=`ifconfig | grep ppp0 | wc -l`
 	if [ "${_4g_exsit}" == "0" ]; then
@@ -190,7 +191,7 @@ _4g_check() {
 }
 
 _4g_eth0_check() {
-	echo $FUNCNAME
+	#echo $FUNCNAME
 
 	cnt=1
 	while [ $cnt -gt 0 ]; do
@@ -249,7 +250,7 @@ _4g_switch_route() {
 }
 
 _4g_delete_route() {
-	echo $FUNCNAME
+	#echo $FUNCNAME
 
 	ret=$(route -n | awk -v iface=ppp0 '{ if ( $1 == "0.0.0.0" && $8 == iface) print 1}' | wc -l)
 	if [ "$ret" == "1" ]; then
@@ -304,10 +305,10 @@ _4g_pppd() {
 	QL_DEVNAME=$(basename $QL_DEVNAME)
 	sed -i "2s/^.*$/\/dev\/$QL_DEVNAME/" /etc/ppp/peers/dial
 
-  sed -i 's/^user.*$/user '$QL_USER'/g' /etc/ppp/peers/dial
-  sed -i 's/^password.*$/password '$QL_PASSWORD'/g' /etc/ppp/peers/dial
-  sed -i 's/at+cgdcont=1,"IP",".*"/at+cgdcont=1,"IP","'$QL_APN'"/g' /etc/ppp/peers/mo_3gmodule.dial
-  sed -i 's/OK at /OK @\/etc\/ppp\/peers\/pin/g' /etc/ppp/peers/mo_3gmodule.dial
+	sed -i 's/^user.*$/user '$QL_USER'/g' /etc/ppp/peers/dial
+	sed -i 's/^password.*$/password '$QL_PASSWORD'/g' /etc/ppp/peers/dial
+	sed -i 's/at+cgdcont=1,"IP",".*"/at+cgdcont=1,"IP","'$QL_APN'"/g' /etc/ppp/peers/mo_3gmodule.dial
+	sed -i 's/OK at /OK @\/etc\/ppp\/peers\/pin/g' /etc/ppp/peers/mo_3gmodule.dial
 
 	pppd call dial
 
