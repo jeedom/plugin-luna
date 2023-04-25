@@ -307,7 +307,7 @@ _4g_pppd() {
   sed -i 's/^user.*$/user '$QL_USER'/g' /etc/ppp/peers/dial
   sed -i 's/^password.*$/password '$QL_PASSWORD'/g' /etc/ppp/peers/dial
   sed -i 's/at+cgdcont=1,"IP",".*"/at+cgdcont=1,"IP","'$QL_APN'"/g' /etc/ppp/peers/mo_3gmodule.dial
-  sed -i 's/OK at/OK @\/etc\/ppp\/peers\/pin/g' /etc/ppp/peers/mo_3gmodule.dial
+  sed -i 's/OK at /OK @\/etc\/ppp\/peers\/pin/g' /etc/ppp/peers/mo_3gmodule.dial
 
 	pppd call dial
 
