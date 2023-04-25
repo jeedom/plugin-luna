@@ -10,7 +10,12 @@
         "LTE User": "Usuário LTE",
         "User pour la partie LTE": "Usuário para a parte LTE",
         "LTE Password": "Senha LTE",
-        "Password pour la partie LTE": "Senha para a parte LTE"
+        "Password pour la partie LTE": "Senha para a parte LTE",
+        "LTE PIN": "PIN LTE",
+        "ne rien mettre si pas de code pin": "não coloque nada se não houver código PIN",
+        "Gestion LTE": "Gestão LTE",
+        "Re-Lancer": "Reiniciar",
+        "N'oubliez pas de sauvegarder avant": "Não esqueça de salvar antes"
     },
     "plugins\/luna\/desktop\/modal\/recovery.luna.php": {
         "401 - Accès non autorisé": "401 - Acesso não autorizado",
@@ -140,7 +145,10 @@
         "Désactivation Lora": "Lora desativação",
         "Installation de la partie Lora, car puce Lora detecté": "Instalação da peça Lora, pois o chip Lora detectou",
         "Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna": "Instalação da parte 4G, pois detectou chip 4G, por favor configure no plugin Luna",
-        "Activation LTE": "Ativar LTE",
+        "Activation PIN": "Ativação do PIN",
+        "Erreur PIN": "Erro de PIN",
+        "Désactivation PIN": "Desativação do PIN",
+        "Activation LTE, la premiere connexion peut prendre 10 minutes.": "Ativação LTE, a primeira conexão pode demorar 10 minutos",
         "Désactivation LTE": "Desativando LTE",
         "Patch du localhost": "Patch de host local",
         "Connecter Wifi": "Conectar Wi-Fi",
