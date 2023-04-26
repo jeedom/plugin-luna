@@ -90,6 +90,13 @@ _4g_check_card() {
 			return 0
 		}
 
+		local insert=`pppcmd $dev 'AT+CPIN?' | grep 'SIM PIN' | wc -l`
+		[ "$insert" == "1" ] && {
+			echo "card detect ok avec code PIN"
+			logger card detect ok
+			return 0
+		}
+
 		sleep 3
 		yyy=$((yyy-1))
 	done
