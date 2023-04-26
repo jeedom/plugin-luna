@@ -18,7 +18,9 @@ sudo chmod 755 /usr/bin/batterySwitch
 sudo chmod 644 /etc/systemd/system/batterySwitch.service
 sudo systemctl enable --now batterySwitch.service
 
+#LTE
 sudo chmod +x /usr/bin/bg96
+sudo rm /etc/init.d/bg96
 
 #done
 php /var/www/html/core/php/jeecli.php message add "luna" "correction Up Start Led"

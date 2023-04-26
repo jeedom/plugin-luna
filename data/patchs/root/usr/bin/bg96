@@ -161,7 +161,6 @@ _4g_check() {
 		return 1
 	fi
 
-
 	_4g_cnt=$(route -n | awk -v iface="ppp0" '{ if ($8 == iface) print 1}' | wc -l)
 	[ "$_4g_cnt" == "0" ] && {
 		echo 'no route'
