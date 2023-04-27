@@ -672,21 +672,21 @@ class luna extends eqLogic {
   }
 
   public function ltePinSwitch(){
-    $ltePin = __DIR__ . "/../../data/patchs/lte/PIN";
-    if(config::byKey('ltePin','luna', null) != null){
-      $pin = config::byKey('ltePin','luna', null);
-      message::add('luna', __('Activation PIN', __FILE__));
-      if(ctype_digit($pin) && strlen($pin) == 4){
-        file_put_contents($ltePin.'/pin.CODE', 'AT+CPIN='.config::byKey('ltePin','luna', null));
-        exec('sudo ln -s '.$ltePin.'/pin.CODE /etc/ppp/peers/pin');
+    $lteUrl = __DIR__ . "/../../data/patchs/lte/PIN";
+    $ltePin = config::byKey('ltePin','luna', null);
+    if($ltePin != null){
+      message::add('luna', __('Activation PIN '.$ltePin, __FILE__));
+      if(ctype_digit($ltePin) && strlen($ltePin) == 4){
+        file_put_contents($lteUrl.'/pin.CODE', 'AT+CPIN='.$ltePin);
+        exec('sudo ln -s '.$lteUrl.'/pin.CODE /etc/ppp/peers/pin');
       }else{
         message::add('luna', __('Erreur PIN', __FILE__));
         message::add('luna', __('Désactivation PIN', __FILE__));
-        exec('sudo ln -s '.$ltePin.'/pin.NONE /etc/ppp/peers/pin');
+        exec('sudo ln -s '.$lteUrl.'/pin.NONE /etc/ppp/peers/pin');
       }
     }else{
       message::add('luna', __('Désactivation PIN', __FILE__));
-      exec('sudo ln -s '.$ltePin.'/pin.NONE /etc/ppp/peers/pin');
+      exec('sudo ln -s '.$lteUrl.'/pin.NONE /etc/ppp/peers/pin');
     }
   }
 

@@ -94,7 +94,7 @@ _4g_check_card() {
 		[ "$insert" == "1" ] && {
 			echo "card detect ok avec code PIN"
 			logger card detect ok
-			return 0
+			return 1
 		}
 
 		sleep 3
@@ -109,8 +109,12 @@ _4g_check_register() {
 
 	local dev=$1
 	local yyy=20
+	local pin=$2
+
+	echo "check register PIN > " $2
 
 	while [ $yyy -gt 0 ]; do
+		pppcmd $dev $pin
 		pppcmd $dev 'AT+COPS?'
 		pppcmd $dev 'AT+CEREG?'
 		pppcmd $dev 'AT+CGREG?'
@@ -326,7 +330,7 @@ _4g_pppd() {
 			yyy=$((yyy-1))
 			continue
 		}
-
+		echo 'OK pppd'
 		break;
 	done
 
@@ -363,14 +367,23 @@ run() {
 			continue
 		fi
 		local dev=$(finddev)
+
+		pincmd=""
 		
 		_4g_check_card /dev/$dev
 		ret=$?
-		if [ ! "$ret" == "0" ]; then
+		if [ $ret -eq 0 ] || [ $ret -eq 1 ]
+		then
+			if [ "$ret" == "1" ]; then
+				pincmd=$(cat /etc/ppp/peers/pin)
+			fi
+		else
 			continue
 		fi
 
-		_4g_check_register /dev/$dev
+		echo $pincmd
+
+		_4g_check_register /dev/$dev $pincmd
 		ret=$?
 		if [ ! "$ret" == "0" ]; then
 			continue
