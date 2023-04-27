@@ -145,7 +145,7 @@
         "Désactivation Lora": "Lora desativação",
         "Installation de la partie Lora, car puce Lora detecté": "Instalação da peça Lora, pois o chip Lora detectou",
         "Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna": "Instalação da parte 4G, pois detectou chip 4G, por favor configure no plugin Luna",
-        "Activation PIN": "Ativação do PIN",
+        "Activation PIN '.$ltePin": "PIN de ativação '.$ltePin",
         "Erreur PIN": "Erro de PIN",
         "Désactivation PIN": "Desativação do PIN",
         "Activation LTE, la premiere connexion peut prendre 10 minutes.": "Ativação LTE, a primeira conexão pode demorar 10 minutos",
