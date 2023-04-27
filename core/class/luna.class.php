@@ -693,6 +693,7 @@ class luna extends eqLogic {
   public function lteSwitchMaj($actived = true){
     if($actived == true){
       message::add('luna', __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
+      exec('sudo touch /var/log/bg96.log');
       exec('sudo systemctl disable --now lte.service');
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lte/lte.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lte.service');
