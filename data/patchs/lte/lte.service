@@ -3,8 +3,7 @@ Description=LTE
 
 [Service]
 Type=oneshot
-ExecStartPre=echo > /var/log/bg96.log
-ExecStart=/usr/bin/bg96 >> /var/log/bg96.log
+ExecStart=/usr/bin/bg96
 ExecStop=
 Restart=on-failure
 RestartSec=5
