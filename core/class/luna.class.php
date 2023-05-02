@@ -626,12 +626,11 @@ class luna extends eqLogic {
 
   public function detected4g (){
     if(config::byKey('4G','luna', null) != null){
-      return config::byKey('4G','luna', null);
+      return true;
     }else{
       $TTY4G = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTY4G != ""){
-        config::save('4G', $TTY4G, 'luna');
-        log::add(__CLASS__, 'debug', 'TTY4G > ' . $TTY4G);
+        config::save('4G', true, 'luna');
         return true;
       }else{
         config::save('4G', false, 'luna');
