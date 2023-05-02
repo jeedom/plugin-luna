@@ -624,23 +624,28 @@ class luna extends eqLogic {
 
   /* ----- DEBUT 4G ----- */
 
-  public function detected4g (){
+  public function detectedLte (){
+    message::add('luna', __('Test du module LTE', __FILE__));
     if(config::byKey('4G','luna', null) != null){
-      return true;
+      message::add('luna', __('4G déjà configuré > '.config::byKey('4G','luna', null), __FILE__));
+      return config::byKey('4G','luna', null);
     }else{
-      $TTY4G = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+      message::add('luna', __('Test du module LTE', __FILE__));
+      $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTY4G != ""){
+        message::add('luna', __('Module LTE présent > '.$TTYLTE, __FILE__));
         config::save('4G', true, 'luna');
         return true;
       }else{
+        message::add('luna', __('Module LTE Absent ', __FILE__));
         config::save('4G', false, 'luna');
         return false;
       }
     }
   }
 
-  public function install4g(){
-    if(luna::detected4g()){
+  public function installLte(){
+    if(luna::detectedLte()){
       message::add('luna', __('Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna', __FILE__));
     }
   }
