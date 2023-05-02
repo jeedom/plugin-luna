@@ -84,7 +84,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				</div>
 			<?php
 			}
-			if(luna::detected4g()){
+			if(luna::detectedLte()){
 				?>
 				<div class="cursor logoSecondary success">
 					<i class="fas fa-signal"></i>
@@ -256,6 +256,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<div class="col-lg-4">
 										<span class="label label-info macWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
+								
 								</div>
 								<div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse Ip wifi}}</label>
@@ -264,7 +265,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								<?php
-								if(luna::detected4g()){
+								if(luna::detectedLte()){
 								?>
 									<div class="form-group">
 										<label class="col-lg-4 control-label">{{Adresse Ip LTE}}</label>

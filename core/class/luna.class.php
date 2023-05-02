@@ -567,9 +567,7 @@ class luna extends eqLogic {
   }
   
   public function detectedLora (){
-    if(config::byKey('gatewayUID','luna', null) != null){
-      return true;
-    }else{
+    if(config::byKey('gatewayUID','luna', null) == null){
       $UID = exec('cd /usr/bin/lora && sudo ./chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
       if($UID != ""){
         config::save('gatewayUID', luna::formatUid($UID), 'luna');
@@ -579,6 +577,10 @@ class luna extends eqLogic {
         config::save('gatewayUID', false, 'luna');
         return false;
       }
+    }elseif(config::byKey('gatewayUID','luna', null) == false){
+      return false;
+    }else{
+      return true;
     }
   }
   
@@ -625,23 +627,20 @@ class luna extends eqLogic {
   /* ----- DEBUT 4G ----- */
 
   public function detectedLte (){
-    message::add('luna', __('Test du module LTE', __FILE__));
-    if(config::byKey('4G','luna', null) != null){
-      message::add('luna', __('4G déjà configuré > '.config::byKey('4G','luna', null), __FILE__));
-      return config::byKey('4G','luna', null);
-    }else{
-      message::add('luna', __('Test du module LTE', __FILE__));
-      $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
-      if($TTY4G != ""){
-        message::add('luna', __('Module LTE présent > '.$TTYLTE, __FILE__));
-        config::save('4G', true, 'luna');
-        return true;
-      }else{
-        message::add('luna', __('Module LTE Absent ', __FILE__));
-        config::save('4G', false, 'luna');
+      if(config::byKey('4G','luna', null) == null){
+        $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+        if($TTYLTE != ""){
+          config::save('4G', true, 'luna');
+          return true;
+        }else{
+          config::save('4G', false, 'luna');
+          return false;
+        }
+      }elseif(config::byKey('4G','luna', null) == false){
         return false;
+      }else{
+        return true;
       }
-    }
   }
 
   public function installLte(){
