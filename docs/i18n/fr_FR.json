@@ -4,6 +4,12 @@
         "Changelog plugin luna": "Changelog plugin luna",
         "IMPORTANT": "IMPORTANT",
         "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte",
+        "02\/05\/2023": "02\/05\/2023",
+        "Patch LocalHost (changement des droits": "Patch LocalHost (changement des droits",
+        "Patch done fonction (clignotement de la led verte de la box résolu": "Patch done fonction (clignotement de la led verte de la box résolu",
+        "Ajout de la fonction LTE pour les boxs avec option LTE": "Ajout de la fonction LTE pour les boxs avec option LTE",
+        "Ajout de la fonction LORA pour les box avec option LORA": "Ajout de la fonction LORA pour les box avec option LORA",
+        "Ajout des usb Fixe (ttyUSBLUNA-Zigbee a utiliser dnas le plugin Zigbee pour ne plus avoir de souci d'usb qui change": "Ajout des usb Fixe (ttyUSBLUNA-Zigbee a utiliser dnas le plugin Zigbee pour ne plus avoir de souci d'usb qui change",
         "27\/03\/2023": "27\/03\/2023",
         "Nouvelle image Luna": "Nouvelle image Luna",
         "Patch Localhost": "Patch Localhost",
@@ -46,6 +52,9 @@
         "Si elle ne clignote pas": "Si elle ne clignote pas",
         "Veuillez contacter Domadoo via le lien suivant; l'équipe Domadoo vous fournira une étiquette de retour et vous réexpédiera une Luna correctement flashée": "Veuillez contacter Domadoo via le lien suivant; l'équipe Domadoo vous fournira une étiquette de retour et vous réexpédiera une Luna correctement flashée",
         "Les fonctionnalités du plugin Luna": "Les fonctionnalités du plugin Luna",
+        "USB Fixe": "USB Fixe",
+        "Dans le plugin Luna du 02\/05\/2023, le zigbee a été fixé, vous devez utiliser le port ttyUSBLUNA-Zigbee": "Dans le plugin Luna du 02\/05\/2023, le zigbee a été fixé, vous devez utiliser le port ttyUSBLUNA-Zigbee",
+        "pour les usb externe cela ce fixe aussi automatiquement avec le nom et ou numero de série": "pour les usb externe cela ce fixe aussi automatiquement avec le nom et ou numero de série",
         "La mise à jour permet de mettre la dernière image en place sur la Luna; celle-ci utilisera cette image lors d'un recovery (bouton reset de la box ou bouton recovery sur le plugin": "La mise à jour permet de mettre la dernière image en place sur la Luna; celle-ci utilisera cette image lors d'un recovery (bouton reset de la box ou bouton recovery sur le plugin",
         "Cliquer sur le bouton recovery; la Luna téléchargera la dernière version de son image et redémarrera, les leds vertes sur le boitier de la Luna vont clignoter": "Cliquer sur le bouton recovery; la Luna téléchargera la dernière version de son image et redémarrera, les leds vertes sur le boitier de la Luna vont clignoter",
         "local; le logiciel de recovery sera à jour": "local; le logiciel de recovery sera à jour",
@@ -91,6 +100,7 @@
         "4G (uniquement compatible avec les Luna 4G": "4G (uniquement compatible avec les Luna 4G",
         "Detection automatique de la 4G interne a la box, demande code pin et APN dans la configuration du plugin Luna": "Detection automatique de la 4G interne a la box, demande code pin et APN dans la configuration du plugin Luna",
         "si 4G detecter lancement d'un module de connexion en arriere plan qui passe automatiquement de l'ethernet a la 4G si besoin (ping vers 8.8.8": "si 4G detecter lancement d'un module de connexion en arriere plan qui passe automatiquement de l'ethernet a la 4G si besoin (ping vers 8.8.8",
-        "8), le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G": "8), le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G"
+        "8), le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G": "8), le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G",
+        "Les parametrages ce font dans la configuration du plugin": "Les parametrages ce font dans la configuration du plugin"
     }
 }
