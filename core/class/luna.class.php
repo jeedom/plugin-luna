@@ -645,11 +645,11 @@ class luna extends eqLogic {
         sleep(30);
         $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
         if($TTYLTE != ""){
-          message:add('luna', __('Puce LTE détecté.', __FILE__));
+          message::add('luna', __('Puce LTE détecté.', __FILE__));
           config::save('4G', true, 'luna');
           return true;
         }else{
-          message:add('luna', __('Puce LTE non-détecté.', __FILE__));
+          message::add('luna', __('Puce LTE non-détecté.', __FILE__));
           config::save('4G', false, 'luna');
           return false;
         }
