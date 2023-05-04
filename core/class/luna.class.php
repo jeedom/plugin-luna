@@ -589,7 +589,13 @@ class luna extends eqLogic {
       message::add('luna', __('Activation Lora', __FILE__));
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lora/lora.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lora.service');
-      exec('sudo systemctl enable --now lora.service');
+      exec('sudo systemctl daemon-reload');
+      exec('sudo systemctl enable lora.service');
+      if(fork() == 0){
+        exec('sudo systemctl start lora.service > /dev/null 2>/dev/null &');
+        log::add(__CLASS__, 'debug', 'start lora.service');
+        exit(0);
+      }
     }else{
       message::add('luna', __('Désactivation Lora', __FILE__));
       exec('sudo systemctl disable --now lora.service');
@@ -628,11 +634,22 @@ class luna extends eqLogic {
 
   public function detectedLte (){
       if(config::byKey('4G','luna', null) == null){
+        message:add('luna', __('Detection de la puce LTE en cours cela peux prendre 30 secondes', __FILE__));
+        exec('sudo echo 0 > /sys/class/leds/ltepwr/brightness');
+        exec('sudo echo 0 > /sys/class/leds/lteldo/brightness');
+        exec('sudo echo 0 > /sys/class/leds/lterst/brightness');
+        sleep(1);
+        exec('sudo echo 1 > /sys/class/leds/ltepwr/brightness');
+        exec('sudo echo 1 > /sys/class/leds/lteldo/brightness');
+        exec('sudo echo 1 > /sys/class/leds/lterst/brightness');
+        sleep(30);
         $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
         if($TTYLTE != ""){
+          message:add('luna', __('Puce LTE détecté.', __FILE__));
           config::save('4G', true, 'luna');
           return true;
         }else{
+          message:add('luna', __('Puce LTE non-détecté.', __FILE__));
           config::save('4G', false, 'luna');
           return false;
         }
@@ -696,13 +713,25 @@ class luna extends eqLogic {
   public function lteSwitchMaj($actived = true){
     if($actived == true){
       message::add('luna', __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
-      exec('sudo systemctl disable --now lte.service');
+      log::add(__CLASS__, 'debug', 'Activation LTE');
+      exec('sudo systemctl stop lte.service');
+      exec('sudo systemctl disable lte.service');
+      log::add(__CLASS__, 'debug', 'desactivation du systemctl avant activation LTE');
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lte/lte.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lte.service');
-      exec('sudo systemctl enable --now lte.service');
+      log::add(__CLASS__, 'debug', 'copie du fichier lte.service');
+      exec('sudo systemctl daemon-reload');
+      exec('sudo systemctl enable lte.service');
+      log::add(__CLASS__, 'debug', 'enable lte.service');
+      if(fork() == 0){
+        exec('sudo systemctl start lte.service > /dev/null 2>/dev/null &');
+        log::add(__CLASS__, 'debug', 'start lte.service');
+        exit(0);
+      }
     }else{
       message::add('luna', __('Désactivation LTE', __FILE__));
-      exec('sudo systemctl disable --now lte.service');
+      exec('sudo systemctl stop lte.service');
+      exec('sudo systemctl disable lte.service');
     }
   }
 
