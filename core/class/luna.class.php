@@ -591,11 +591,6 @@ class luna extends eqLogic {
       exec('sudo chmod 755 /etc/systemd/system/lora.service');
       exec('sudo systemctl daemon-reload');
       exec('sudo systemctl enable lora.service');
-      if(fork() == 0){
-        exec('sudo systemctl start lora.service > /dev/null 2>/dev/null &');
-        log::add(__CLASS__, 'debug', 'start lora.service');
-        exit(0);
-      }
     }else{
       message::add('luna', __('Désactivation Lora', __FILE__));
       exec('sudo systemctl disable --now lora.service');
@@ -734,11 +729,8 @@ class luna extends eqLogic {
       exec('sudo systemctl daemon-reload');
       exec('sudo systemctl enable lte.service');
       log::add(__CLASS__, 'debug', 'enable lte.service');
-      if(fork() == 0){
-        exec('sudo systemctl start lte.service > /dev/null 2>/dev/null &');
-        log::add(__CLASS__, 'debug', 'start lte.service');
-        exit(0);
-      }
+      exec('sudo systemctl start lte.service > /dev/null 2>/dev/null &');
+      log::add(__CLASS__, 'debug', 'start lte.service');
     }else{
       message::add('luna', __('Désactivation LTE', __FILE__));
       exec('sudo systemctl stop lte.service');

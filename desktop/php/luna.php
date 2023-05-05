@@ -85,7 +85,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<?php
 			}
 			$detectLTE = luna::detectedLte();
-			if($detectLTE == true){
+			if($detectLTE === true){
 				?>
 				<div class="cursor logoSecondary success eqLogicAction" data-action="gotoPluginConf">
 					<i class="fas fa-signal"></i>
