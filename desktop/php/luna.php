@@ -84,12 +84,31 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				</div>
 			<?php
 			}
-			if(luna::detectedLte()){
+			$detectLTE = luna::detectedLte();
+			if($detectLTE == true){
 				?>
-				<div class="cursor logoSecondary success">
+				<div class="cursor logoSecondary success eqLogicAction" data-action="gotoPluginConf">
 					<i class="fas fa-signal"></i>
 					<br>
 					<span>{{4G Detecté}}</span>
+				</div>
+			<?php
+			}
+			if($detectLTE === 'scan'){
+				?>
+				<div class="cursor logoSecondary warning" id="bt_scanLTE">
+					<i class="fas fa-signal"></i>
+					<br>
+					<span>{{Détection du module LTE}}</span>
+				</div>
+			<?php
+			}
+			if(!$detectLTE){
+				?>
+				<div class="cursor logoSecondary danger" id="bt_scanLTE">
+					<i class="fas fa-signal"></i>
+					<br>
+					<span>{{Box non compatible LTE}}</span>
 				</div>
 			<?php
 			}

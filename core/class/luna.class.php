@@ -632,27 +632,38 @@ class luna extends eqLogic {
 
   /* ----- DEBUT 4G ----- */
 
+  public function scanLTEModule() {
+    $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+    if($TTYLTE != ""){
+      message::add('luna', __('Puce LTE détecté.', __FILE__));
+      config::save('4G', true, 'luna');
+      return true;
+    }else{
+      message::add('luna', __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
+      exec('sudo echo 0 > /sys/class/leds/ltepwr/brightness');
+      exec('sudo echo 0 > /sys/class/leds/lteldo/brightness');
+      exec('sudo echo 0 > /sys/class/leds/lterst/brightness');
+      sleep(1);
+      exec('sudo echo 1 > /sys/class/leds/ltepwr/brightness');
+      exec('sudo echo 1 > /sys/class/leds/lteldo/brightness');
+      exec('sudo echo 1 > /sys/class/leds/lterst/brightness');
+      sleep(100);
+      $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+      if($TTYLTE != ""){
+        message::add('luna', __('Puce LTE détecté.', __FILE__));
+        config::save('4G', true, 'luna');
+        return true;
+      }else{
+        message::add('luna', __('Puce LTE non-détecté.', __FILE__));
+        config::save('4G', false, 'luna');
+        return false;
+      }
+    }
+  }
+
   public function detectedLte (){
       if(config::byKey('4G','luna', null) == null){
-        message::add('luna', __('Detection de la puce LTE en cours cela peux prendre 30 secondes', __FILE__));
-        exec('sudo echo 0 > /sys/class/leds/ltepwr/brightness');
-        exec('sudo echo 0 > /sys/class/leds/lteldo/brightness');
-        exec('sudo echo 0 > /sys/class/leds/lterst/brightness');
-        sleep(1);
-        exec('sudo echo 1 > /sys/class/leds/ltepwr/brightness');
-        exec('sudo echo 1 > /sys/class/leds/lteldo/brightness');
-        exec('sudo echo 1 > /sys/class/leds/lterst/brightness');
-        sleep(30);
-        $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
-        if($TTYLTE != ""){
-          message::add('luna', __('Puce LTE détecté.', __FILE__));
-          config::save('4G', true, 'luna');
-          return true;
-        }else{
-          message::add('luna', __('Puce LTE non-détecté.', __FILE__));
-          config::save('4G', false, 'luna');
-          return false;
-        }
+        return 'scan';
       }elseif(config::byKey('4G','luna', null) == false){
         return false;
       }else{

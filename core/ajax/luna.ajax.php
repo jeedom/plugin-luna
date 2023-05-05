@@ -65,6 +65,11 @@ try {
     ajax::success();
   }
 
+  if(init('action') == 'scanLTE'){
+    luna::scanLTEModule();
+    ajax::success();
+  }
+
   if (init('action') == 'changeBackupToSD') {
     luna::changeBackupToSD();
     ajax::success();

@@ -200,6 +200,7 @@ function ajax_start_percentage() {
 }
 
 
+
 $('#bt_recovery').off('click').on('click', function() {
   $('#md_modal').dialog({ title: "{{Démarrage de la restauration}}" }).load('index.php?v=d&plugin=luna&modal=recovery.luna&typeDemande=recovery').dialog('open')
 })
@@ -386,5 +387,28 @@ $('#bt_changeBackupToEmmc').off('click').on('click', function() {
     }
   })
 })
+
+$('#bt_scanLTE').off('click').on('click', function() {
+  console.log('scanLTE');
+  $.ajax({
+    type: "POST", 
+    url: "plugins/luna/core/ajax/luna.ajax.php", 
+    data: {
+      action: "scanLTE"
+    },
+    dataType: 'json',
+    async: true,
+    global: false,
+    error: function(request, status, error) {
+      handleAjaxError(request, status, error)
+    },
+    success: function(data) {
+      if (data.state != 'ok') {
+        return
+      }
+    }
+  })
+})
+
 
 
