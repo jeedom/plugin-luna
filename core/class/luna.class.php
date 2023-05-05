@@ -634,7 +634,7 @@ class luna extends eqLogic {
 
   public function detectedLte (){
       if(config::byKey('4G','luna', null) == null){
-        message:add('luna', __('Detection de la puce LTE en cours cela peux prendre 30 secondes', __FILE__));
+        message::add('luna', __('Detection de la puce LTE en cours cela peux prendre 30 secondes', __FILE__));
         exec('sudo echo 0 > /sys/class/leds/ltepwr/brightness');
         exec('sudo echo 0 > /sys/class/leds/lteldo/brightness');
         exec('sudo echo 0 > /sys/class/leds/lterst/brightness');
