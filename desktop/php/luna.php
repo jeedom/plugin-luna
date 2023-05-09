@@ -97,7 +97,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			if($detectLTE === 'scan'){
 				?>
 				<div class="cursor logoSecondary warning" id="bt_scanLTE">
-					<i class="fas fa-signal"></i>
+					<i class="fas fa-search"></i>
 					<br>
 					<span>{{Détection du module LTE}}</span>
 				</div>

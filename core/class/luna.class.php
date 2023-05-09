@@ -645,7 +645,7 @@ class luna extends eqLogic {
       sleep(100);
       $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE != ""){
-        message::add('luna', __('Puce LTE détecté.', __FILE__));
+        message::add('luna', __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));
         config::save('4G', true, 'luna');
         return true;
       }else{
@@ -667,9 +667,7 @@ class luna extends eqLogic {
   }
 
   public function installLte(){
-    if(luna::detectedLte()){
-      message::add('luna', __('Installation de la partie 4G, car puce 4G detecté merci de faire la configuration dans le plugin Luna', __FILE__));
-    }
+    message::add('luna', __('LTE > Merci de lancer la détection depuis le plugin Luna', __FILE__));
   }
 
   public function configjsonlte(){
