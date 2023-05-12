@@ -98,7 +98,7 @@
         "4Ghz et 5Ghz), puis taper le mot de passe et sauvegarder": "4Ghz e 5Ghz), digite a senha e salve",
         "Pour le moment, le plugin prend en compte uniquement les accès avec DHCP": "Por enquanto, o plugin só leva em conta o acesso com DHCP",
         "4G (uniquement compatible avec les Luna 4G": "4G (compatível apenas com Luna 4G",
-        "Detection automatique de la 4G interne a la box, demande code pin et APN dans la configuration du plugin Luna": "Detecção automática de 4G interno à caixa, solicitar código pin e APN na configuração do plugin Luna",
+        "Detection automatique de la 4G interne a la box merci de bien vouloir passer par le plugin pour cliquer sur detecter le module LTE si vous ne voyer pas les parametres dans la partie configuration, demande code pin et APN dans la configuration du plugin Luna": "Detecção automática de 4G interno à caixa, por favor, vá até o plug-in para clicar em detectar o módulo LTE, caso não veja os parâmetros na parte de configuração, solicite código pin e APN na configuração do plug-in Luna",
         "si 4G detecter lancement d'un module de connexion en arriere plan qui passe automatiquement de l'ethernet a la 4G si besoin (ping vers 8.8.8": "se o 4G detectar o lançamento de um módulo de conexão em segundo plano que muda automaticamente de ethernet para 4G, se necessário (ping para 8.8.8",
         "8), le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G": "8), o plugin SMS funciona ao mesmo tempo que o 4G no Luna 4G",
         "Les parametrages ce font dans la configuration du plugin": "As configurações são feitas na configuração do plugin",
