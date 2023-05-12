@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LOGFILE=/var/log/lte.log
+
 finddev() {
 	cfgpath=`find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"`
 	dev="$(basename $cfgpath 2>/dev/null)"
@@ -8,7 +10,7 @@ finddev() {
 
 
 _4g_on() {
-	echo $FUNCNAME
+	echo $FUNCNAME >> $LOGFILE
 
 	dev=$(finddev)
 	local yyy=`echo $dev | grep ttyUSB | wc -l`
@@ -36,7 +38,7 @@ _4g_on() {
 }
 
 _4g_off() {
-	echo $FUNCNAME
+	echo $FUNCNAME >> $LOGFILE
 
 	dev=$(finddev)
 	local yyy=`echo $dev | grep ttyUSB | wc -l`
@@ -59,7 +61,7 @@ _4g_off() {
 }
 
 _4g_off_on() {
-	echo $FUNCNAME
+	echo $FUNCNAME >> $LOGFILE
 
 	_4g_off
 	local ret=$?
@@ -75,7 +77,7 @@ _4g_off_on() {
 }
 
 _4g_check_card() {
-	echo $FUNCNAME
+	echo $FUNCNAME >> $LOGFILE
 
 	local dev=$1
 	local yyy=20
@@ -105,7 +107,7 @@ _4g_check_card() {
 }
 
 _4g_check_register() {
-	echo $FUNCNAME
+	echo $FUNCNAME >> $LOGFILE
 
 	local dev=$1
 	local yyy=20
@@ -168,13 +170,13 @@ _4g_check() {
 
 	_4g_exsit=`ifconfig | grep ppp0 | wc -l`
 	if [ "${_4g_exsit}" == "0" ]; then
-		echo 'no ppp0'
+		echo 'no ppp0' >> $LOGFILE
 		return 1
 	fi
 
 	_4g_cnt=$(route -n | awk -v iface="ppp0" '{ if ($8 == iface) print 1}' | wc -l)
 	[ "$_4g_cnt" == "0" ] && {
-		echo 'no route'
+		echo 'no route' >> $LOGFILE
 		return 1
 	}
 
@@ -224,7 +226,7 @@ _4g_eth0_check() {
 }
 
 _4g_kill() {
-	echo $FUNCNAME
+	echo $FUNCNAME >> $LOGFILE
 
 	timeout=5
 
@@ -247,13 +249,13 @@ _4g_kill() {
 }
 
 _4g_switch_route() {
-	echo $FUNCNAME
+	echo $FUNCNAME >> $LOGFILE
 
 	gw=$(route -n  | awk '{ if ($8 == "ppp0" && $1 != "0.0.0.0") print $1}')
 
 	ret=$(route -n | awk -v iface=ppp0 '{ if ( $1 == "0.0.0.0" && $8 == iface) print 1}' | wc -l)
 	if [ "$ret" == "0" ]; then
-		echo route add default gw $gw dev ppp0 metric 
+		echo route add default gw $gw dev ppp0 metric >> $LOGFILE
 		route add default gw $gw dev ppp0 metric 1
 	fi
 	cp /etc/ppp/resolv.conf /etc/resolv.conf
@@ -264,15 +266,15 @@ _4g_delete_route() {
 
 	ret=$(route -n | awk -v iface=ppp0 '{ if ( $1 == "0.0.0.0" && $8 == iface) print 1}' | wc -l)
 	if [ "$ret" == "1" ]; then
-		echo $FUNCNAME
-		echo route del default gw $gw dev $1 
+		echo $FUNCNAME >> $LOGFILE
+		echo route del default gw $gw dev $1 >> $LOGFILE
 		route del default dev ppp0
 	fi
 }
 
 _4g_pppd() {
-	echo $FUNCNAME
-	echo "quectel-pppd options in effect:"
+	echo $FUNCNAME >> $LOGFILE
+	echo "quectel-pppd options in effect:" >> $LOGFILE
 
 	QL_DEVNAME=$1
 	QL_APN=$2
@@ -282,27 +284,27 @@ _4g_pppd() {
 
 	if [ $# -ge 1 ]; then
 		QL_DEVNAME=$1	
-		echo "devname   $QL_DEVNAME    # (from command line)"
+		echo "devname   $QL_DEVNAME    # (from command line)" >> $LOGFILE
 	else
-		echo "devname   $QL_DEVNAME    # (default)"
+		echo "devname   $QL_DEVNAME    # (default)" >> $LOGFILE
 	fi
 	if [ $# -ge 2 ]; then
 		QL_APN=$2	
-		echo "apn       $QL_APN    # (from command line)"
+		echo "apn       $QL_APN    # (from command line)" >> $LOGFILE
 	else
-		echo "apn       $QL_APN    # (default)"
+		echo "apn       $QL_APN    # (default)" >> $LOGFILE
 	fi
 	if [ $# -ge 3 ]; then
 		QL_USER=$3	
-		echo "user      $QL_USER   # (from command line)"
+		echo "user      $QL_USER   # (from command line)" >> $LOGFILE
 	else
-		echo "user      $QL_USER   # (default)"
+		echo "user      $QL_USER   # (default)" >> $LOGFILE
 	fi
 	if [ $# -ge 4 ]; then
 		QL_PASSWORD=$4	
-		echo "password  $QL_PASSWORD   # (from command line)"
+		echo "password  $QL_PASSWORD   # (from command line)" >> $LOGFILE
 	else
-		echo "password  $QL_PASSWORD   # (default)"
+		echo "password  $QL_PASSWORD   # (default)" >> $LOGFILE
 	fi
 
 	CONNECT="'chat -s -v ABORT BUSY ABORT \"NO CARRIER\" ABORT \"NO DIALTONE\" ABORT ERROR ABORT \"NO ANSWER\" TIMEOUT 30 \
@@ -324,13 +326,13 @@ _4g_pppd() {
 
 	local yyy=20
 	while [ $yyy -gt 0 ]; do
-		echo 'wait pppd ...'
+		echo 'wait pppd ...' >> $LOGFILE
 		[ ! -e /etc/ppp/resolv.conf ] && {
 			sleep 3
 			yyy=$((yyy-1))
 			continue
 		}
-		echo 'OK pppd'
+		echo 'OK pppd' >> $LOGFILE
 		break;
 	done
 
@@ -360,6 +362,7 @@ _4g_pppd() {
 }
 
 run() {
+	echo '' > $LOGFILE
 	while [ 1 ]; do
 		_4g_off_on
 		local ret=$?
@@ -381,7 +384,7 @@ run() {
 			continue
 		fi
 
-		echo $pincmd
+		echo $pincmd >> $LOGFILE
 
 		_4g_check_register /dev/$dev $pincmd
 		ret=$?
@@ -389,13 +392,13 @@ run() {
 			continue
 		fi
 
-		echo "get 4g at device: /dev/$dev"
+		echo "get 4g at device: /dev/$dev" >> $LOGFILE
         apn=$(jq '.lte.apn' /var/www/html/plugins/luna/data/lte.json)
         user=$(jq '.lte.user' /var/www/html/plugins/luna/data/lte.json)
         password=$(jq '.lte.password' /var/www/html/plugins/luna/data/lte.json)
 		_4g_pppd /dev/$dev $apn $user $password
 
-		echo "diconnect...."
+		echo "diconnect...." >> $LOGFILE
 		sleep 1
 	done
 }

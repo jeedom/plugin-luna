@@ -257,6 +257,7 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('wifiip', $wifiIp);
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatus());
+      $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
       if ($luna->getConfiguration('wifiEnabled', 0) == 1) {
         $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifiSsid', ''));
       } else {
@@ -478,6 +479,12 @@ class luna extends eqLogic {
 
   public function batteryStatus (){
     return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
+  }
+
+  public function batteryTemp (){
+    $temp = exec('sudo cat /sys/class/power_supply/bq27546-0/temp');
+    $temp = $temp / 10;
+    return $temp;
   }
 
   /* ----- FIN BATTERY ----- */
@@ -887,6 +894,20 @@ class luna extends eqLogic {
     $status->setType('info');
     $status->setSubType('string');
     $status->save();
+
+    $tempBattery = $this->getCmd(null, 'tempBattery');
+    if (!is_object($tempBattery)) {
+      $tempBattery = new lunaCmd();
+      $tempBattery->setName(__('Température Batterie', __FILE__));
+      $tempBattery->setOrder(1);
+      $tempBattery->setUnite('°C');
+    }
+    $tempBattery->setEqLogic_id($this->getId());
+    $tempBattery->setLogicalId('tempBattery');
+    $tempBattery->setType('info');
+    $tempBattery->setSubType('string');
+    $tempBattery->save();
+    
   }
 
   public function postAjax() {
