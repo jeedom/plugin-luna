@@ -168,6 +168,7 @@
         "Led": "LED",
         "Battery": "Batería",
         "Status alimentation": "Estado de energía",
+        "Température Batterie": "Temperatura de la batería",
         "prelancement": "pre lanzamiento"
     },
     "plugins\/luna\/core\/api\/luna.api.php": {

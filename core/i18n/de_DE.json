@@ -168,6 +168,7 @@
         "Led": "Leuchtdioden",
         "Battery": "Batterie",
         "Status alimentation": "Stromstatus",
+        "Température Batterie": "Batterietemperatur",
         "prelancement": "vor der Markteinführung"
     },
     "plugins\/luna\/core\/api\/luna.api.php": {
