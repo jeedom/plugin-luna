@@ -721,7 +721,8 @@ class luna extends eqLogic {
     }
   }
 
-  public function lteSwitchMaj($actived = true){
+  public function lteSwitchMaj(){
+    $actived = config::byKey('modeModem','luna', true);
     if($actived == true){
       message::add('luna', __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');
