@@ -13,6 +13,8 @@
         "Password pour la partie LTE": "Contraseña para la parte LTE",
         "LTE PIN": "PIN LTE",
         "ne rien mettre si pas de code pin": "no pongas nada si no hay pin code",
+        "Activation Data": "Activación de datos",
+        "Prise en charge de la data via la connexion LTE, pour les sim avec data": "Soporte de datos vía conexión LTE, para sims con datos",
         "Gestion LTE": "Gestión LTE",
         "Re-Lancer": "Para reiniciar",
         "N'oubliez pas de sauvegarder avant": "No olvides guardar antes"
