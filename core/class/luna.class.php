@@ -642,14 +642,8 @@ class luna extends eqLogic {
       return true;
     }else{
       message::add('luna', __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
-      exec('sudo echo 0 > /sys/class/leds/ltepwr/brightness');
-      exec('sudo echo 0 > /sys/class/leds/lteldo/brightness');
-      exec('sudo echo 0 > /sys/class/leds/lterst/brightness');
-      sleep(1);
-      exec('sudo echo 1 > /sys/class/leds/ltepwr/brightness');
-      exec('sudo echo 1 > /sys/class/leds/lteldo/brightness');
-      exec('sudo echo 1 > /sys/class/leds/lterst/brightness');
-      sleep(100);
+      exec('sudo chmod +x ../../data/patchs/lte/lteSearch.sh');
+      exec('sudo ../../data/patchs/lte/lteSearch.sh');
       $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE != ""){
         message::add('luna', __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));
@@ -722,7 +716,8 @@ class luna extends eqLogic {
   }
 
   public function lteSwitchMaj(){
-    $actived = config::byKey('modeModem','luna', true);
+    $actived = config::getId('lteActivation', 'luna', false);
+
     if($actived == true){
       message::add('luna', __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');

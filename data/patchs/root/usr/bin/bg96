@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOGFILE=/var/log/lte.log
+LOGFILE=/var/www/html/log/lte
 
 finddev() {
 	cfgpath=`find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"`

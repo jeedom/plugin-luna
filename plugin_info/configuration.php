@@ -57,6 +57,14 @@ if(config::byKey('4G','luna', false) == true){
         <input class="configKey form-control" data-l1key="ltePin"/>
       </div>
     </div>
+    <div class="form-group">
+      <label class="col-md-4 control-label">{{Activation Data}}
+        <sup><i class="fas fa-question-circle tooltips" title="{{Prise en charge de la data via la connexion LTE, pour les sim avec data}}"></i></sup>
+      </label>
+      <div class="col-md-4">
+        <input type="checkbox" class="configKey form-control" data-l1key="lteActivation"/>
+      </div>
+    </div>
   </fieldset>
   <div class="form-actions">
     <label class="col-md-4 control-label">{{Gestion LTE}}</label>
