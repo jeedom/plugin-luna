@@ -17,7 +17,8 @@
         "Prise en charge de la data via la connexion LTE, pour les sim avec data": "Soporte de datos vía conexión LTE, para sims con datos",
         "Gestion LTE": "Gestión LTE",
         "Re-Lancer": "Para reiniciar",
-        "N'oubliez pas de sauvegarder avant": "No olvides guardar antes"
+        "N'oubliez pas de sauvegarder avant": "No olvides guardar antes",
+        "Port a utiliser pour le plugin SMS :": "Puerto a usar para el complemento de SMS:"
     },
     "plugins\/luna\/desktop\/modal\/recovery.luna.php": {
         "401 - Accès non autorisé": "401 - Acceso no autorizado",
