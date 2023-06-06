@@ -657,7 +657,6 @@ class luna extends eqLogic {
       return true;
     }else{
       message::add('luna', __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
-      exec('sudo chmod +x /usr/bin/lteSearch');
       $ltetrouver = exec('sudo lteSearch');
       if($ltetrouver == 1){
         message::add('luna', __('Detection de la puce LTE fini > puce trouvé', __FILE__));

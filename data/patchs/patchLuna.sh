@@ -20,6 +20,7 @@ sudo systemctl enable --now batterySwitch.service
 
 #LTE
 sudo chmod +x /usr/bin/bg96
+sudo chmod +x /usr/bin/lteSearch
 sudo rm /etc/init.d/bg96
 
 #done
