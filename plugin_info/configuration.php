@@ -65,18 +65,19 @@ if(config::byKey('4G','luna', false) == true){
         <input type="checkbox" class="configKey form-control" data-l1key="lteActivation"/>
       </div>
     </div>
+    <div class="form-group">
+      <label class="col-md-4 control-label">{{Port a utiliser pour le plugin SMS :}}</label>
+      <div class="col-md-4">
+        <?php echo exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"'); ?>
+      </div>
+    </div>
+    
   </fieldset>
   <div class="form-actions">
     <label class="col-md-4 control-label">{{Gestion LTE}}</label>
     <div class="col-md-4">
       <a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i> {{Re-Lancer}}</a>
       {{N'oubliez pas de sauvegarder avant}}
-    </div>
-  </div>
-  <div class="form-actions">
-    <label class="col-md-4 control-label">{{Port a utiliser pour le plugin SMS :}}</label>
-    <div class="col-md-4">
-      <?php echo exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"'); ?>
     </div>
   </div>
 </form>

@@ -264,6 +264,14 @@ class luna extends eqLogic {
         $luna->checkAndUpdateCmd('ssid', 'Aucun');
       }
     }
+
+    $ltetrouver = config::byKey('4G', 'luna', false);
+    if(ltetrouver){
+      $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+      if($TTYLTE == ""){
+        luna::scanLTEModule();
+      }
+    }
   }
 
   /* ----- START ----- */
@@ -274,6 +282,13 @@ class luna extends eqLogic {
     if (is_object($luna)) {
       $luna->wifiConnect();
       $luna->testHotspot();
+      $ltetrouver = config::byKey('4G', 'luna', false);
+      if(ltetrouver){
+        $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+        if($TTYLTE == ""){
+          luna::scanLTEModule();
+        }
+      }
     }
   }
 
@@ -642,8 +657,15 @@ class luna extends eqLogic {
       return true;
     }else{
       message::add('luna', __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
-      exec('sudo chmod +x ../../data/patchs/lte/lteSearch.sh');
-      exec('sudo ../../data/patchs/lte/lteSearch.sh');
+      exec('sudo chmod +x /usr/bin/lteSearch');
+      $ltetrouver = exec('sudo lteSearch');
+      if($ltetrouver == 1){
+        message::add('luna', __('Detection de la puce LTE fini > puce trouvé', __FILE__));
+      }elseif($ltetrouver == 2){
+        message::add('luna', __('Detection de la puce LTE fini > puce non presente', __FILE__));
+      }else{
+        message::add('luna', __('Erreur lors de la detection de la puce LTE', __FILE__));
+      }
       $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE != ""){
         message::add('luna', __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));

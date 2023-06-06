@@ -13,12 +13,15 @@ _4g_on() {
 	echo $FUNCNAME >> $LOGFILE
 
 	dev=$(finddev)
+    jjj=0 
 	local yyy=`echo $dev | grep ttyUSB | wc -l`
 	if [ "$yyy" = "1" ]; then
-		return 0
+        echo "$dev" >> $LOGFILE
+        echo 1
+		return 1
 	fi
 
-	while [ ! "$yyy" == "1" ]; do
+	while [ ! "$jjj" == "5" ]; do
 		echo 0 > /sys/class/leds/ltepwr/brightness
 		echo 0 > /sys/class/leds/lteldo/brightness
 		echo 0 > /sys/class/leds/lterst/brightness
@@ -26,15 +29,21 @@ _4g_on() {
 		echo 1 > /sys/class/leds/ltepwr/brightness
 		echo 1 > /sys/class/leds/lteldo/brightness
 		echo 1 > /sys/class/leds/lterst/brightness
-
-
 		sleep 15
 
 		dev=$(finddev)
 		yyy=`echo $dev | grep ttyUSB | wc -l`
+        if [ "$yyy" = "1" ]; then
+            echo "$dev" >> $LOGFILE
+            echo 1
+            return 1
+        fi
+        jjj=$((jjj+1))
 	done
 
+    echo 2
 	return 0
 }
+
 
 _4g_on
