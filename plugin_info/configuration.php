@@ -73,6 +73,12 @@ if(config::byKey('4G','luna', false) == true){
       {{N'oubliez pas de sauvegarder avant}}
     </div>
   </div>
+  <div class="form-actions">
+    <label class="col-md-4 control-label">{{Port a utiliser pour le plugin SMS :}}</label>
+    <div class="col-md-4">
+      <?php echo exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"'); ?>
+    </div>
+  </div>
 </form>
 <script>
   $('#bt_saveLTE').off('click').on('click', function() {
