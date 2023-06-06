@@ -15,10 +15,10 @@
         "ne rien mettre si pas de code pin": "não coloque nada se não houver código PIN",
         "Activation Data": "Ativação de dados",
         "Prise en charge de la data via la connexion LTE, pour les sim avec data": "Suporte de dados via conexão LTE, para sims com dados",
+        "Port a utiliser pour le plugin SMS :": "Porta a ser usada para o plug-in SMS:",
         "Gestion LTE": "Gestão LTE",
         "Re-Lancer": "Reiniciar",
-        "N'oubliez pas de sauvegarder avant": "Não esqueça de salvar antes",
-        "Port a utiliser pour le plugin SMS :": "Porta a ser usada para o plug-in SMS:"
+        "N'oubliez pas de sauvegarder avant": "Não esqueça de salvar antes"
     },
     "plugins\/luna\/desktop\/modal\/recovery.luna.php": {
         "401 - Accès non autorisé": "401 - Acesso não autorizado",
@@ -151,6 +151,9 @@
         "Installation de la partie Lora, car puce Lora detecté": "Instalação da peça Lora, pois o chip Lora detectou",
         "Puce LTE détecté.": "Chip LTE detectado",
         "Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini": "Detecção do chip LTE em andamento isso pode levar 2 minutos uma mensagem irá notificá-lo assim que a verificação for concluída",
+        "Detection de la puce LTE fini > puce trouvé": "Detecção de chip LTE concluída > chip encontrado",
+        "Detection de la puce LTE fini > puce non presente": "Detecção do chip LTE acabado > chip não presente",
+        "Erreur lors de la detection de la puce LTE": "Erro ao detectar chip LTE",
         "Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.": "Chip LTE detectado. Você pode configurar seu operador a partir da configuração do plug-in",
         "Puce LTE non-détecté.": "Chip LTE não detectado",
         "LTE > Merci de lancer la détection depuis le plugin Luna": "LTE > Por favor, inicie a detecção do plugin Luna",
