@@ -20,5 +20,4 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="1cf1", ATTRS{idProduct}=="0030",SYMLINK+="tt
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0a12", ATTRS{idProduct}=="0001",SYMLINK+="ttyUSB-SENA"
 
 #LTE
-SUBSYSTEM=="tty",ENV{ID_PATH}=="platform-ff5c0000.usb-usb-0:1.1:1.2-port0",SYMLINK+="ttyLuna-Lte-0"
-SUBSYSTEM=="tty",ENV{ID_PATH}=="platform-ff5c0000.usb-usb-0:1.1:1.2-port1",SYMLINK+="ttyLuna-Lte-1"
+SUBSYSTEM=="tty",ENV{ID_PATH}=="platform-ff5c0000.usb-usb-0:1.1:1.2",SYMLINK+="ttyLuna-Lte"
