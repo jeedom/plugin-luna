@@ -612,7 +612,7 @@ class luna extends eqLogic {
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lora/lora.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lora.service');
       exec('sudo systemctl daemon-reload');
-      exec('sudo systemctl enable lora.service');
+      exec('sudo systemctl enable --now lora.service');
     }else{
       message::add('luna', __('Désactivation Lora', __FILE__));
       exec('sudo systemctl disable --now lora.service');
