@@ -19,9 +19,12 @@ sudo chmod 644 /etc/systemd/system/batterySwitch.service
 sudo systemctl enable --now batterySwitch.service
 
 #LTE
-sudo chmod +x /usr/bin/bg96
-sudo chmod +x /usr/bin/lteSearch
+php /var/www/html/core/php/jeecli.php message add "luna" "correction lte"
+sudo rm /usr/bin/bg96
 sudo rm /etc/init.d/bg96
+sudo systemctl stop lte.service
+sudo rm /etc/systemd/system/lte.service
+sudo chmod +x /usr/bin/lteSearch
 
 #done
 php /var/www/html/core/php/jeecli.php message add "luna" "correction Up Start Led"

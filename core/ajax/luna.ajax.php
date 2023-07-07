@@ -82,7 +82,23 @@ try {
 
   if (init('action') == 'listWifi') {
 		$forced = init('mode');
-		ajax::success(luna::listWifi($forced));
+		ajax::success(luna::listWifi($forced, init('interface')));
+	}
+
+  if (init('action') == 'saveWifi') {
+		ajax::success(luna::saveWifi(init('interface'), init('data')));
+	}
+
+  if (init('action') == 'saveEthernet') {
+		ajax::success(luna::saveEthernet(init('data')));
+	}
+
+  if (init('action') == 'listConnections') {
+		ajax::success(luna::listConnections(init('interface')));
+	}
+
+  if (init('action') == 'removeConnection') {
+		ajax::success(luna::RemoveConnection(init('UUID')));
 	}
 
 	if (init('action') == 'macfinder') {
@@ -100,6 +116,10 @@ try {
 	if (init('action') == 'wifiDisConnect') {
 		ajax::success(luna::wifiDisConnect());
 	}
+
+  if (init('action') == 'configurationPortSms') {
+    ajax::success(luna::configurationPortSms());
+  }
 
 
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));

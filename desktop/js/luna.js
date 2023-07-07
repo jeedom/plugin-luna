@@ -15,38 +15,16 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-printWifiList()
 printMacLan()
 printMacWifi()
 printMacLte()
-function printWifiList($forced = false) {
-  $.ajax({// fonction permettant de faire de l'ajax
-    type: "POST", // methode de transmission des données au fichier php
-    url: "plugins/luna/core/ajax/luna.ajax.php", // url du fichier php
-    data: {
-      action: "listWifi",
-      mode: $forced,
-    },
-    dataType: 'json',
-    async: true,
-    error: function(request, status, error) {
-      handleAjaxError(request, status, error)
-    },
-    success: function(data) {
-      if (data.state != 'ok') {
-        $('#div_alert').showAlert({ message: data.result, level: 'danger' })
-        return
-      }
-      var options = ''
-      for (i in data.result) {
-        options += '<option value="' + i + '">'
-        options += data.result[i]['ssid'] + ' - Signal : ' + data.result[i]['signal'] + ' Canal : ' + data.result[i]['channel'] + ' Sécurité - ' + data.result[i]['security']
-        options += '</option>'
-      }
-      $('.eqLogicAttr[data-l1key=configuration][data-l2key=wifiSsid]').empty().html(options)
-    }
-  })
+printMacWifi2()
+
+function changeInformation(key, info = "") {
+  if(info == ''){
+    var info = "X"
+  }
+  $(key).empty().append(info)
 }
 
 function printMacLan() {
@@ -68,8 +46,8 @@ function printMacLan() {
         $('#div_alert').showAlert({ message: data.result, level: 'danger' })
         return
       }
-      $('.macLan').empty().append(data.result[0])
-      $('.ipLan').empty().append(data.result[1])
+      changeInformation('.macLan', data.result[0])
+      changeInformation('.ipLan', data.result[1])
     }
   })
 }
@@ -93,8 +71,33 @@ function printMacWifi() {
         $('#div_alert').showAlert({ message: data.result, level: 'danger' })
         return
       }
-      $('.macWifi').empty().append(data.result[0])
-      $('.ipWifi').empty().append(data.result[1])
+      changeInformation('.macWifi', data.result[0])
+      changeInformation('.ipWifi', data.result[1])
+    }
+  })
+}
+
+function printMacWifi2() {
+  $.ajax({// fonction permettant de faire de l'ajax
+    type: "POST", // methode de transmission des données au fichier php
+    url: "plugins/luna/core/ajax/luna.ajax.php", // url du fichier php
+    data: {
+      action: "macfinder",
+      interfa: "wlan1",
+    },
+    dataType: 'json',
+    async: true,
+    global: false,
+    error: function(request, status, error) {
+      handleAjaxError(request, status, error)
+    },
+    success: function(data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({ message: data.result, level: 'danger' })
+        return
+      }
+      changeInformation('.macWifi2', data.result[0])
+      changeInformation('.ipWifi2', data.result[1])
     }
   })
 }
@@ -118,44 +121,86 @@ function printMacLte() {
         $('#div_alert').showAlert({ message: data.result, level: 'danger' })
         return
       }
-      $('.ipLte').empty().append(data.result[1])
+      if(data.result[1] == null){
+        $('.macLteCoche').empty().append('<i class="icon_red fas fa-times"></i>')
+      }else{
+        $('.macLteCoche').empty().append('<i class="icon_green fas fa-check"></i>')
+      }
+      changeInformation('.ipLte', data.result[1])
+      
     }
   })
 }
 
-$('#bt_refreshWifiList').on('click', function() {
-  printWifiList(true)
-})
-
 window.setInterval(function() {
   printMacLan()
   printMacWifi()
+  printMacLte()
+  printMacWifi2()
 }, 5000)
 
 $("#table_cmd").sortable({ axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
+
+/* Fonction permettant l'affichage des commandes dans l'équipement */
 function addCmdToTable(_cmd) {
   if (!isset(_cmd)) {
-    var _cmd = { configuration: {} }
+    var _cmd = {configuration: {}}
+  }
+  if (!isset(_cmd.configuration)) {
+    _cmd.configuration = {}
   }
   var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">'
-  tr += '<td>'
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="id" style="display : none;">'
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="name"></td>'
-  tr += '<td>'
-  tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></span> '
+  tr += '<td class="hidden-xs">'
+  tr += '<span class="cmdAttr" data-l1key="id"></span>'
   tr += '</td>'
   tr += '<td>'
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="type" style="display : none;">'
-  tr += '<input class="cmdAttr form-control input-sm" data-l1key="subType" style="display : none;">'
+  tr += '<div class="input-group">'
+  tr += '<input class="cmdAttr form-control input-sm roundedLeft" data-l1key="name" placeholder="{{Nom de la commande}}">'
+  tr += '<span class="input-group-btn"><a class="cmdAction btn btn-sm btn-default" data-l1key="chooseIcon" title="{{Choisir une icône}}"><i class="fas fa-icons"></i></a></span>'
+  tr += '<span class="cmdAttr input-group-addon roundedRight" data-l1key="display" data-l2key="icon" style="font-size:19px;padding:0 5px 0 0!important;"></span>'
+  tr += '</div>'
+  tr += '<select class="cmdAttr form-control input-sm" data-l1key="value" style="display:none;margin-top:5px;" title="{{Commande info liée}}">'
+  tr += '<option value="">{{Aucune}}</option>'
+  tr += '</select>'
+  tr += '</td>'
+  tr += '<td>'
+  tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>'
+  tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>'
+  tr += '</td>'
+  tr += '<td>'
+  tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="isVisible" checked/>{{Afficher}}</label> '
+  tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="isHistorized" checked/>{{Historiser}}</label> '
+  tr += '<label class="checkbox-inline"><input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="invertBinary"/>{{Inverser}}</label> '
+  tr += '<div style="margin-top:7px;">'
+  tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="minValue" placeholder="{{Min}}" title="{{Min}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'
+  tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="maxValue" placeholder="{{Max}}" title="{{Max}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'
+  tr += '<input class="tooltips cmdAttr form-control input-sm" data-l1key="unite" placeholder="Unité" title="{{Unité}}" style="width:30%;max-width:80px;display:inline-block;margin-right:2px;">'
+  tr += '</div>'
+  tr += '</td>'
+  tr += '<td>';
+  tr += '<span class="cmdAttr" data-l1key="htmlstate"></span>'; 
+  tr += '</td>';
+  tr += '<td>'
   if (is_numeric(_cmd.id)) {
-    tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> '
-    tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>'
+    tr += '<a class="btn btn-default btn-xs cmdAction" data-action="configure"><i class="fas fa-cogs"></i></a> '
+    tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fas fa-rss"></i> Tester</a>'
   }
-  tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i></td>'
+  tr += '<i class="fas fa-minus-circle pull-right cmdAction cursor" data-action="remove" title="{{Supprimer la commande}}"></i></td>'
   tr += '</tr>'
   $('#table_cmd tbody').append(tr)
-  $('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr')
-  jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType))
+  var tr = $('#table_cmd tbody tr').last()
+  jeedom.eqLogic.buildSelectCmd({
+    id:  $('.eqLogicAttr[data-l1key=id]').value(),
+    filter: {type: 'info'},
+    error: function (error) {
+      $('#div_alert').showAlert({message: error.message, level: 'danger'})
+    },
+    success: function (result) {
+      tr.find('.cmdAttr[data-l1key=value]').append(result)
+      tr.setValues(_cmd, '.cmdAttr')
+      jeedom.cmd.changeType(tr, init(_cmd.subType))
+    }
+  })
 }
 
 function ajax_loop_percentage() {
@@ -198,217 +243,6 @@ function ajax_start_percentage() {
     }
   })
 }
-
-
-
-$('#bt_recovery').off('click').on('click', function() {
-  $('#md_modal').dialog({ title: "{{Démarrage de la restauration}}" }).load('index.php?v=d&plugin=luna&modal=recovery.luna&typeDemande=recovery').dialog('open')
-})
-
-$('#bt_recoveryUpdate').off('click').on('click', function() {
-  $('#md_modal').dialog({ title: "{{Mise à jour de l'image de recovery}}" }).load('index.php?v=d&plugin=luna&modal=recovery.luna&typeDemande=maj').dialog('open')
-})
-
-$('#wifiEnabledCheck').change(function() {
-  if (this.checked == true) {
-    $('.wifi').css('display', 'block')
-    //$('.wifihot').css('display', 'block')
-  } else {
-    $('.wifi').css('display', 'none')
-    //$('.wifihot').css('display', 'none')
-    $('#hotspotEnabledCheck').prop('checked', false)
-    $('.wifihotspot').css('display', 'none')
-    $('.nohotspot').prop('disabled', false)
-    $('#dnsDesactivated').prop('selected', true)
-  }
-})
-
-$('#hotspotEnabledCheck').change(function() {
-  if (this.checked == true) {
-    $('.wifihotspot').css('display', 'block')
-    $('.nohotspot').prop('disabled', true)
-    $('#dnsWlan0').prop('disabled', false)
-    $('#dnsEth0').prop('disabled', true)
-    $("#dnsSelect option:selected").each(function() {
-      if ($(this).val() == 'eth0' || $(this).val() == 'desactivated') {
-        $('#dnsWlan0').prop('selected', true)
-      }
-    })
-  } else {
-    $('.wifihotspot').css('display', 'none')
-    $('.nohotspot').prop('disabled', false)
-    $('#dnsWlan0').prop('disabled', true)
-    $('#dnsEth0').prop('disabled', false)
-    $("#dnsSelect option:selected").each(function() {
-      if ($(this).val() == 'wlan0') {
-        $('#dnsDesactivated').prop('selected', true)
-      }
-    })
-  }
-})
-
-$('#bt_partitionSD').off('click').on('click', function() {
-  var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Partition de la carte SD}}'
-  var dialog_message = '<center>{{Attention cela supprimera le contenu de votre carte SD}}</center>'
-  bootbox.dialog({
-    title: dialog_title,
-    message: dialog_message,
-    buttons: {
-      "{{Annuler}}": {
-        className: "btn-danger",
-        callback: function() {
-        }
-      },
-      success: {
-        label: "{{Démarrer}}",
-        className: "btn-success",
-        callback: function() {
-          $.ajax({
-            type: "POST",
-            url: "plugins/luna/core/ajax/luna.ajax.php",
-            data: {
-              action: "partitionSD"
-            },
-            dataType: 'json',
-            error: function(request, status, error) {
-              handleAjaxError(request, status, error)
-            },
-            success: function(data) {
-              if (data.state != 'ok') {
-                $('#div_alert').showAlert({ message: data.result, level: 'danger' })
-                return
-              }
-            }
-          })
-        }
-      },
-    }
-  })
-})
-
-$('#bt_changeBackupToSD').off('click').on('click', function() {
-  var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Activer backup sur la SD}}'
-  var dialog_message = '<center>{{les backups seront maintenant archivés sur cette carte SD.}}</center>'
-  bootbox.dialog({
-    title: dialog_title,
-    message: dialog_message,
-    buttons: {
-      "{{Annuler}}": {
-        className: "btn-danger",
-        callback: function() {
-        }
-      },
-      success: {
-        label: "{{Démarrer}}",
-        className: "btn-success",
-        callback: function() {
-          $.ajax({
-            type: "POST",
-            url: "plugins/luna/core/ajax/luna.ajax.php",
-            data: {
-              action: "changeBackupToSD"
-            },
-            dataType: 'json',
-            error: function(request, status, error) {
-              handleAjaxError(request, status, error)
-            },
-            success: function(data) {
-              if (data.state != 'ok') {
-                $('#div_alert').showAlert({ message: data.result, level: 'danger' })
-                return
-              }
-            }
-          })
-        }
-      },
-    }
-  })
-})
-
-$('#bt_resetSsid').off('click').on('click', function() {
-  var ssid = $('.eqLogicAttr[data-l1key=configuration][data-l2key=wifiSsid]').options[liste.selectedIndex].text
-  $.ajax({
-    type: "POST", 
-    url: "plugins/luna/core/ajax/luna.ajax.php", 
-    data: {
-      action: "resetSsid",
-      ssid: ssid
-    },
-    dataType: 'json',
-    async: true,
-    global: false,
-    error: function(request, status, error) {
-      handleAjaxError(request, status, error)
-    },
-    success: function(data) {
-      if (data.state != 'ok') {
-        $('#div_alert').showAlert({ message: "suppression SSID : "+ssid, level: 'success' })
-        return
-      }
-    }
-  })
-})
-
-$('#bt_changeBackupToEmmc').off('click').on('click', function() {
-  var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Activer backup sur la SD}}'
-  var dialog_message = '<center>{{les backups seront maintenant archivés sur cette carte SD.}}</center>'
-  bootbox.dialog({
-    title: dialog_title,
-    message: dialog_message,
-    buttons: {
-      "{{Annuler}}": {
-        className: "btn-danger",
-        callback: function() {
-        }
-      },
-      success: {
-        label: "{{Démarrer}}",
-        className: "btn-success",
-        callback: function() {
-          $.ajax({
-            type: "POST",
-            url: "plugins/luna/core/ajax/luna.ajax.php",
-            data: {
-              action: "changeBackupToEmmc"
-            },
-            dataType: 'json',
-            error: function(request, status, error) {
-              handleAjaxError(request, status, error)
-            },
-            success: function(data) {
-              if (data.state != 'ok') {
-                $('#div_alert').showAlert({ message: data.result, level: 'danger' })
-                return
-              }
-            }
-          })
-        }
-      },
-    }
-  })
-})
-
-$('#bt_scanLTE').off('click').on('click', function() {
-  console.log('scanLTE');
-  $.ajax({
-    type: "POST", 
-    url: "plugins/luna/core/ajax/luna.ajax.php", 
-    data: {
-      action: "scanLTE"
-    },
-    dataType: 'json',
-    async: true,
-    global: false,
-    error: function(request, status, error) {
-      handleAjaxError(request, status, error)
-    },
-    success: function(data) {
-      if (data.state != 'ok') {
-        return
-      }
-    }
-  })
-})
 
 
 

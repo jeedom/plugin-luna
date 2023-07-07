@@ -6,160 +6,62 @@ if (!isConnect('admin')) {
 $plugin = plugin::byId('luna');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
+$eqLogic = luna::byLogicalId('wifi', 'luna');
 ?>
 
 <div class="row row-overflow">
 	<!-- Page d'accueil du plugin -->
 	<div class="col-xs-12 eqLogicThumbnailDisplay">
-		<legend><i class="fas fa-cog"></i> {{Gestion}}</legend>
-		<!-- Boutons de gestion du plugin -->
-		<div class="eqLogicThumbnailContainer">
-			<div class="cursor eqLogicAction logoSecondary" data-action="gotoPluginConf">
-				<i class="fas fa-wrench"></i>
-				<br>
-				<span>{{Configuration}}</span>
-			</div>
-						<?php
-			$hostname = trim(shell_exec('cat /etc/hostname'));
-			
-			if($hostname == 'JeedomLuna' || $hostname == 'jeedomluna'){ ?>
-				<div class="cursor logoSecondary danger" id="bt_recovery">
-					<i class="fas fa-clone"></i>
-					<br>
-					<span>{{Lancement Recovery}}</span>
-				</div>
-				<div class="cursor logoSecondary warning" id="bt_recoveryUpdate">
-					<i class="fas fa-highlighter"></i>
-					<br>
-					<span>{{Mettre à jour le Recovery}}</span>
-				</div>
-			<?php }
-			
-			if(luna::presentSD()){
-				if(luna::checkPartitionSD()){
-					?>
-					<div class="cursor logoSecondary warning" id="bt_partitionSD">
-						<i class="fas fa-sd-card"></i>
-						<br>
-						<span>{{Effacer carte SD}}</span>
-					</div>
-				<?php
-				}else{
-					?>
-					<div class="cursor logoSecondary danger" id="bt_partitionSD">
-						<i class="fas fa-sd-card"></i>
-						<br>
-						<span>{{Partition carte SD}}</span>
-					</div>
-				<?php
-				}
-				if(luna::checkPartitionSD() && !luna::BackupOkInSd()){
-					echo '<div class="cursor logoSecondary warning" id="bt_changeBackupToSD">';
-				}elseif(luna::BackupOkInSd() && luna::checkPartitionSD()){
-					echo '<div class="cursor logoSecondary success" id="bt_changeBackupToEmmc">';
-				}else{
-					echo '<div class="cursor logoSecondary danger">';
-				}
-				?>
-						<i class="fas fa-download"></i>
-						<br>
-						<?php
-						if(luna::checkPartitionSD() && !luna::BackupOkInSd()){
-							echo '<span>{{Activer backup sur la SD}}</span>';
-						}elseif(luna::BackupOkInSd() && luna::checkPartitionSD()){
-							echo '<span>{{Backup Jeedom activé sur SD}}</span>';
-						}else{
-							echo '<span>{{Impossible d\'activer le backup sur la SD}}</span>';
-						}
-						?>
-					</div>
-				<?php
-			}
-			if(luna::detectedLora()){
-				?>
-				<div class="cursor logoSecondary success">
-					<i class="fas fa-satellite-dish"></i>
-					<br>
-					<span>{{Lora Detecté}}</span>
-				</div>
-			<?php
-			}
-			$detectLTE = luna::detectedLte();
-			if($detectLTE === true){
-				?>
-				<div class="cursor logoSecondary success eqLogicAction" data-action="gotoPluginConf">
-					<i class="fas fa-signal"></i>
-					<br>
-					<span>{{4G Detecté}}</span>
-				</div>
-			<?php
-			}
-			if($detectLTE === 'scan'){
-				?>
-				<div class="cursor logoSecondary warning" id="bt_scanLTE">
-					<i class="fas fa-search"></i>
-					<br>
-					<span>{{Détection du module LTE}}</span>
-				</div>
-			<?php
-			}
-			if(!$detectLTE){
-				?>
-				<div class="cursor logoSecondary danger" id="bt_scanLTE">
-					<i class="fas fa-signal"></i>
-					<br>
-					<span>{{Box non compatible LTE}}</span>
-				</div>
-			<?php
-			}
-			?>
-		</div>
-		<legend><i class="fas fa-table"></i> {{Mes Modules luna}}</legend>
 		<?php
 		if (count($eqLogics) == 0) {
-			echo '<br/><div class="text-center" style="font-size:1.2em;font-weight:bold;">{{Aucun équipement luna n\'a été trouvé.}}</div>';
-		} else {
-			// Champ de recherche
-			echo '<div class="input-group" style="margin:5px;">';
-			echo '<input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>';
-			echo '<div class="input-group-btn">';
-			echo '<a id="bt_resetSearch" class="btn" style="width:30px"><i class="fas fa-times"></i></a>';
-			echo '<a class="btn roundedRight hidden" id="bt_pluginDisplayAsTable" data-coreSupport="1" data-state="0"><i class="fas fa-grip-lines"></i></a>';
-			echo '</div>';
-			echo '</div>';
+			if (!is_object($eqLogic)) {
+				message::add('luna', __('Installation du module Luna', __FILE__));
+				$eqLogic = new luna();
+				$eqLogic->setLogicalId('wifi');
+				$eqLogic->setCategory('multimedia', 1);
+				$eqLogic->setName(__('Luna', __FILE__));
+				$eqLogic->setEqType_name('luna');
+				$eqLogic->setIsVisible(1);
+				$eqLogic->setIsEnable(1);
+				$eqLogic->save();
+			}
+		}
+		?>
+		<script>$('.eqLogicDisplayCard[data-eqLogic_id=<?php echo $eqLogic->getId() ?>"]').click()</script>
+		<?php
 			// Liste des équipements du plugin
-			echo '<div class="eqLogicThumbnailContainer">';
-			foreach ($eqLogics as $eqLogic) {
-				$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
-				echo '<div class="eqLogicDisplayCard cursor ' . $opacity . '" data-eqLogic_id="' . $eqLogic->getId() . '">';
+			echo '<div class="eqLogicThumbnailContainer" style="display:none;">';
+				echo '<div class="eqLogicDisplayCard cursor" style="display:none;" data-eqLogic_id="' . $eqLogic->getId() . '">';
 				echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
 				echo '<br>';
 				echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
 				echo '</div>';
-			}
 			echo '</div>';
-		}
+
 		?>
 	</div> <!-- /.eqLogicThumbnailDisplay -->
 
 	<!-- Page de présentation de l'équipement -->
-	<div class="col-xs-12 eqLogic" style="display: none;">
+	<div class="col-xs-12 eqLogic" style="display:none;">
 		<!-- barre de gestion de l'équipement -->
 		<div class="input-group pull-right" style="display:inline-flex;">
 			<span class="input-group-btn">
 				<!-- Les balises <a></a> sont volontairement fermées à la ligne suivante pour éviter les espaces entre les boutons. Ne pas modifier -->
 				<a class="btn btn-sm btn-default eqLogicAction roundedLeft" data-action="configure"><i class="fas fa-cogs"></i><span class="hidden-xs"> {{Configuration avancée}}</span>
-				</a><a class="btn btn-sm btn-default eqLogicAction" data-action="copy"><i class="fas fa-copy"></i><span class="hidden-xs"> {{Dupliquer}}</span>
-				</a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}
-				</a><a class="btn btn-sm btn-danger eqLogicAction roundedRight" data-action="remove"><i class="fas fa-minus-circle"></i> {{Supprimer}}
-				</a>
+				</a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}</a>
 			</span>
 		</div>
 		<!-- Onglets -->
 		<ul class="nav nav-tabs" role="tablist">
-			<li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
-			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i> {{Equipement}}</a></li>
+			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i> {{Général}}</a></li>
 			<li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i> {{Commandes}}</a></li>
+			<li role="presentation"><a href="#wifitab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-wifi"></i> {{WIFI}}</a></li>
+			<li role="presentation"><a href="#ethernettab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-network-wired"></i> {{Ethernet}}</a></li>
+			<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal"></i> {{LTE}}</a></li>
+			<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> {{Lora}}</a></li>
+			<li role="presentation"><a href="#batterytab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-battery-full"></i> {{Batterie}}</a></li>
+			<li role="presentation"><a href="#sdtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-sd-card"></i> {{Carte SD}}</a></li>
+			<li role="presentation"><a href="#restoretab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-clone"></i> {{Restore}}</a></li>
 		</ul>
 		<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
 			<div role="tabpanel" class="tab-pane active" id="eqlogictab"><br />
@@ -167,7 +69,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					<div class="col-sm-7">
 						<form class="form-horizontal">
 							<fieldset>
-								<legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{Général}}<i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i></legend>
+								<legend>{{Général}}<i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i></legend>
 								<div class="form-group">
 									<label class="col-lg-3 control-label">{{Nom de l'équipement}}</label>
 									<div class="col-lg-4">
@@ -196,61 +98,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked />{{Visible}}</label>
 									</div>
 								</div>
-								<legend><i class="fa fa-wifi"></i> {{Wifi}}</legend>
-								<div class="form-group">
-									<div class="col-lg-2">
-									</div>
-									<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr ipfixwifienabled" data-l1key="configuration" data-l2key="wifiEnabled" id="wifiEnabledCheck" unchecked />{{Activer le wifi}}</label>
-								</div>
-								<br />
-								<div class="col-lg-2">
-								</div>
-								<div class="form-group wifihot" style="display:none">
-									<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr ipfixwifienabled" data-l1key="configuration" data-l2key="hotspotEnabled" id="hotspotEnabledCheck" unchecked />{{Activer le hotspot}}</label>
-								</div>
-								<div class="form-group wifihotspot" style="display:none">
-									<br />
-									<label class="col-lg-2 control-label">{{Ssid du hotspot}}</label>
-									<div class="col-lg-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ssidHotspot" />
-									</div>
-								</div>
-								<div class="form-group wifihotspot" style="display:none">
-									<label class="col-lg-2 control-label">{{Clef du hotspot}}</label>
-									<div class="col-lg-5">
-										<input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="mdpHotspot" />
-									</div>
-								</div>
-								<div class="form-group" style="display:none">
-									<br />
-									<label class="col-lg-2 control-label">{{DHCP Hotspot}} :</label>
-									<div class="col-lg-5">
-										<select class="eqLogicAttr form-control" id='dnsSelect' data-l1key="configuration" data-l2key="dns">
-											<option id="dnsDesactivated" value="desactivated">{{Désactivé}}</option>
-											<option id="dnsWlan0" value="wlan0">{{Wifi Hotspot}}</option>
-											<option id="dnsEth0" value="eth0">{{Ethernet Hotspot}}</option>
-										</select>
-									</div>
-								</div>
-								<div class="form-group wifi" style="display:none">
-									<br />
-									<label class="col-lg-2 control-label">{{Réseau wifi}}</label>
-									<div class="col-lg-8">
-										<select class="eqLogicAttr form-control nohotspot" data-l1key="configuration" data-l2key="wifiSsid"></select>
-									</div>
-									<div class="col-lg-2">
-										<a class="btn btn-info" id="bt_refreshWifiList"><i class="fas fa-sync-alt"></i></a>
-									</div>
-									<div class="col-lg-2">
-										<a class="btn btn-info" id="bt_resetSsid"><i class="fas fa-bug-slash"></i></a>
-									</div>
-								</div>
-								<div class="form-group wifi" style="display:none">
-									<label class="col-lg-2 control-label">{{Clef}}</label>
-									<div class="col-lg-8">
-										<input type="password" class="eqLogicAttr form-control nohotspot" data-l1key="configuration" data-l2key="wifiPassword" />
-									</div>
-								</div>
 							</fieldset>
 						</form>
 					</div>
@@ -271,20 +118,33 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-lg-4 control-label">{{Adresse MAC wifi}}</label>
+									<label class="col-lg-4 control-label">{{Adresse MAC wifi 1}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info macWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 								
 								</div>
 								<div class="form-group">
-									<label class="col-lg-4 control-label">{{Adresse Ip wifi}}</label>
+									<label class="col-lg-4 control-label">{{Adresse Ip wifi 1}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info ipWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 								</div>
+								<div class="form-group">
+									<label class="col-lg-4 control-label">{{Adresse MAC wifi 2}}</label>
+									<div class="col-lg-4">
+										<span class="label label-info macWifi2" style="font-size:1em;cursor:default;"></span>
+									</div>
+								
+								</div>
+								<div class="form-group">
+									<label class="col-lg-4 control-label">{{Adresse Ip wifi 2}}</label>
+									<div class="col-lg-4">
+										<span class="label label-info ipWifi2" style="font-size:1em;cursor:default;"></span>
+									</div>
+								</div>
 								<?php
-								if(luna::detectedLte()){
+								if(luna::detectedLte() == "true"){
 								?>
 									<div class="form-group">
 										<label class="col-lg-4 control-label">{{Adresse Ip LTE}}</label>
@@ -300,20 +160,37 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					</div>
 				</div>
 			</div>
+			
+			<?php
+				//include des Tabs
+				include_file('desktop', 'wifi', 'php', 'luna');
+				include_file('desktop', 'ethernet', 'php', 'luna');
+				include_file('desktop', 'lte', 'php', 'luna');
+				include_file('desktop', 'lora', 'php', 'luna');
+				include_file('desktop', 'battery', 'php', 'luna');
+				include_file('desktop', 'sd', 'php', 'luna');
+				include_file('desktop', 'restore', 'php', 'luna');
+			?>
+			
 			<div role="tabpanel" class="tab-pane" id="commandtab">
-				<table id="table_cmd" class="table table-bordered table-condensed">
-					<thead>
-						<tr>
-							<th>{{Nom}}</th>
-							<th>{{Options}}</th>
-							<th>{{Action}}</th>
-						</tr>
-					</thead>
-					<tbody>
-
-					</tbody>
-				</table>
-
+			<legend><i class="fa fa-list"></i> {{Commandes}}</legend>
+			
+				<div class="table-responsive">
+					<table id="table_cmd" class="table table-bordered table-condensed">
+						<thead>
+							<tr>
+								<th class="hidden-xs" style="min-width:50px;width:70px;">ID</th>
+								<th style="min-width:200px;width:350px;">{{Nom}}</th>
+								<th>{{Type}}</th>
+								<th style="min-width:260px;">{{Options}}</th>
+								<th>{{Etat}}</th>
+								<th style="min-width:80px;width:200px;">{{Actions}}</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

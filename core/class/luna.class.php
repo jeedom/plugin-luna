@@ -329,16 +329,17 @@ class luna extends eqLogic {
     }
   }
 
-  public static function listWifi($forced = false) {
+  public static function listWifi($forced = false, $interface = 1) {
     $eqLogic = eqLogic::byType(__CLASS__);
-    log::add(__CLASS__, 'debug', 'Wifi enabled : ' . $eqLogic[0]->getConfiguration('wifiEnabled'));
+    $interface = $interface - 1;
+    log::add(__CLASS__, 'debug', 'Wifi enabled : ' .'sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan'.$interface);
     $return = [];
-    if ($eqLogic[0]->getConfiguration('wifiEnabled') == true || $forced == true) {
-      $scanresult = shell_exec('sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list');
+   // if ($eqLogic[0]->getConfiguration('wifiEnabled') == true || $forced == true) {
+      $scanresult = shell_exec('sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan'.$interface);
       $results = explode("\n", $scanresult);
       $return = array();
       foreach ($results as $result) {
-        log::add(__CLASS__, 'debug', $result);
+        //log::add(__CLASS__, 'debug', $result);
         $result = str_replace('\:', '$%$%', $result);
         $wifiDetail = explode(':', $result);
         $chan = $wifiDetail[3];
@@ -349,15 +350,145 @@ class luna extends eqLogic {
         $signal =  $wifiDetail[1];
         $ssid = str_replace('$%$%', '\:', $wifiDetail[0]);
         if ($ssid != '') {
-          log::add(__CLASS__, 'debug', $ssid . ' with signal ' . $signal . ' and security ' . $security . ' on channel ' . $chan);
+         // log::add(__CLASS__, 'debug', $ssid . ' with signal ' . $signal . ' and security ' . $security . ' on channel ' . $chan);
           if (isset($return[$ssid]) && $return[$ssid]['signal'] > $signal) {
             continue;
           }
           $return[$ssid] = array('ssid' => $ssid, 'signal' => $signal, 'security' => $security, 'channel' => $chan);
         }
       }
+    //}
+    return $return;
+  }
+
+  public static function saveWifi($interface = 1, $data) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    $device = $interface - 1;
+    log::add(__CLASS__, 'debug', 'save wifi >>'.json_encode($data));
+    $return = [];
+    $stateWifi = $data[0]['configuration']['wifi'.$interface.'Enabled'];
+    $wifiMode = $data[0]['configuration']['wifi'.$interface.'Mode'];
+    $typeAdressage = $data[0]['configuration']['wifi'.$interface.'TypeAdressage'];
+    $wifiSsid = $data[0]['configuration']['wifi'.$interface.'Ssid'];
+    $wifiPassword = $data[0]['configuration']['wifi'.$interface.'Password'];
+    $wifiIp = $data[0]['configuration']['wifi'.$interface.'ip'];
+    $wifiMask = $data[0]['configuration']['wifi'.$interface.'mask'];
+    $wifiRouter = $data[0]['configuration']['wifi'.$interface.'router'];
+    $wifiDns = $data[0]['configuration']['wifi'.$interface.'dns'];
+    $wifiDnsOpt = $data[0]['configuration']['wifi'.$interface.'dnsOpt'];
+    $wifiHotspotName = $data[0]['configuration']['wifi'.$interface.'hotspotname'];
+    $wifiHotspotPwd = $data[0]['configuration']['wifi'.$interface.'hotspotpwd'];
+    //log::add(__CLASS__, 'debug', 'save wifi >>sudo nmcli dev wlan'.$device.' connect '.$wifiSsid.' password '.$wifiPassword.''. json_encode($data[0]['configuration']));
+    if($stateWifi == 0){
+      shell_exec('sudo nmcli dev disconnect wlan'.$device);
+      return;
+    }
+    if($wifiMode == "client"){
+      log::add(__CLASS__, 'debug', 'save wifi >>bbbb'.luna::convertIP($wifiIp, $wifiMask));
+      shell_exec('sudo nmcli dev wifi connect '.$wifiSsid.' password '.$wifiPassword);
+      shell_exec('sudo nmcli con down '.$wifiSsid);
+      shell_exec('sudo nmcli con modify '.$wifiSsid.'  ifname wlan'.$device);
+      if($typeAdressage == 'dhcp'){
+        shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.method auto');
+        if($wifiDnsOpt!=""){
+          shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.ignore-auto-dns yes');
+          shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.dns '.$wifiDnsOpt);
+        }else{
+          shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.ignore-auto-dns no');
+        }
+        shell_exec('sudo nmcli con up '.$wifiSsid);
+      }else{
+        shell_exec('sudo nmcli con modify '.$wifiSsid.'  ipv4.addresses '.luna::convertIP($wifiIp, $wifiMask).' ipv4.gateway '.$wifiRouter.' ipv4.dns '.$wifiDns.' ipv4.method manual');
+        shell_exec('sudo nmcli con modify '.$wifiSsid.'  ifname wlan'.$device);
+        shell_exec('sudo nmcli con up '.$wifiSsid);
+      }
+      sleep(5);
+    }else if($wifiMode == "hotspot"){
+      log::add(__CLASS__, 'debug', 'save wifi >>hotspot');
+      shell_exec('sudo nmcli con add type wifi ifname wlan'.$device.' con-name Hostspot-wlan'.$device.' autoconnect yes ssid '.$wifiHotspotName);
+      shell_exec('sudo nmcli con modify Hostspot-wlan'.$device.' 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared');
+      shell_exec('sudo nmcli con modify Hostspot-wlan'.$device.' wifi-sec.key-mgmt wpa-psk');
+      shell_exec('sudo nmcli con modify Hostspot-wlan'.$device.' wifi-sec.psk "'.$wifiHotspotPwd.'"');
+      shell_exec('sudo nmcli con up Hostspot-wlan'.$device);
+      
     }
     return $return;
+  }
+
+  public static function saveEthernet($data) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    log::add(__CLASS__, 'debug', 'save ethernet >>'.json_encode($data));
+    $return = [];
+    $typeAdressage = $data[0]['configuration']['ethernetTypeAdressage'];
+    $Ip = $data[0]['configuration']['ethernetip'];
+    $Mask = $data[0]['configuration']['ethernetmask'];
+    $Router = $data[0]['configuration']['ethernetrouter'];
+    $Dns = $data[0]['configuration']['ethernetdns'];
+    $DnsOpt = $data[0]['configuration']['ethernetdnsOpt'];
+    
+      log::add(__CLASS__, 'debug', 'save ethernet >>bbbb'.luna::convertIP($Ip, $Mask));
+      if($typeAdressage == 'dhcp'){
+        shell_exec('sudo nmcli con modify "Wired connection 1" ipv4.method auto');
+        shell_exec('sudo nmcli con up "Wired connection 1"');
+        if($DnsOpt!=""){
+          shell_exec('sudo nmcli con modify "Wired connection 1" ipv4.ignore-auto-dns yes');
+          shell_exec('sudo nmcli con modify "Wired connection 1" ipv4.dns '.$DnsOpt);
+        }else{
+          shell_exec('sudo nmcli con modify "Wired connection 1" ipv4.ignore-auto-dns no');
+        }
+      }else{
+        log::add(__CLASS__, 'debug', 'sudo nmcli con modify "Wired connection 1" ipv4.addresses '.luna::convertIP($Ip, $Mask).' ipv4.gateway '.$Router.' ipv4.dns '.$Dns.' ipv4.method manual');
+        shell_exec('sudo nmcli con modify "Wired connection 1" ipv4.addresses '.luna::convertIP($Ip, $Mask).' ipv4.gateway '.$Router.' ipv4.dns '.$Dns.' ipv4.method manual');
+        shell_exec('sudo nmcli con up "Wired connection 1"');
+      }
+
+
+    return $return;
+  }
+
+  public static function convertIP($ip,$mask){
+    return $ip."/".strlen(str_replace("0","",decbin(ip2long($mask))));
+  }
+
+  public static function listConnections($interface = 1) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    $interface = $interface - 1;
+    log::add(__CLASS__, 'debug', 'Wifi enabled : ' .'sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan'.$interface);
+    $return = [];
+      $scanresult = shell_exec('sudo nmcli -f UUID,NAME,TYPE,ACTIVE -t -m tabular con');
+      $results = explode("\n", $scanresult);
+      $return = array();
+      foreach ($results as $result) {
+        $result = str_replace('\:', '$%$%', $result);
+        $result = preg_replace("#(\r\n|\n\r|\n|\r)#","",$result);
+        $conDetail = explode(':', $result);
+        $conUUID = $conDetail[0];
+        $conName = $conDetail[1];
+        $conType = $conDetail[2];
+        $conActive = $conDetail[3];
+        $conDevice = $conDetail[4];
+        if ($conDevice == ""){
+          $conDevice = shell_exec('sudo nmcli -f connection.interface-name -t -m tabular con show '.$conUUID);
+          $conDevice = preg_replace("#(\r\n|\n\r|\n|\r)#","",$conDevice);
+        }
+        
+
+        $return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'active' => $conActive, 'device' => $conDevice);
+        log::add(__CLASS__, 'debug', json_encode($return)); 
+
+      }
+
+    return $return;
+  }
+
+  public static function removeConnection($UUID) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    $return = [];
+    shell_exec('sudo nmcli con down '.$UUID);
+    $scanresult = shell_exec('sudo nmcli con del '.$UUID);
+      
+
+    return True;
   }
 
   public static function getMac($_interface = 'eth0') {
@@ -366,40 +497,7 @@ class luna extends eqLogic {
     return [$interfaceMac, $interfaceIp];
   }
 
-  public function wifiConnect() {
-    if ($this->getConfiguration('wifiEnabled') == true) {
-      shell_exec('sudo ifconfig wlan0 up');
-      if ($this->getConfiguration('hotspotEnabled') == true) {
-        luna::activeHotSpot();
-        return;
-      } else {
-        shell_exec('sudo ifconfig wlan1 down');
-        $ssid = $this->getConfiguration('wifiSsid', '');
-      }
-      if (self::isWificonnected($ssid) === false) {
-        log::add(__CLASS__, 'debug', __('Non connecté à', __FILE__) . ' ' . $ssid . '. ' . __('Connexion en cours...', __FILE__));
-        shell_exec("sudo ip link set wlan0");
-        if (self::isWifiProfileexist($ssid) === true) {
-          $exec = "sudo nmcli con up '" . $ssid . "'";
-        } else {
-          $password = $this->getConfiguration('wifiPassword', '');
-          if ($password != '') {
-            $exec = "sudo nmcli dev wifi connect '" . $ssid . "' password '" . $password . "'";
-          } else {
-            $exec = "sudo nmcli dev wifi connect '" . $ssid . "'";
-          }
-        }
-        log::add(__CLASS__, 'debug', 'Executing ' . $exec);
-        shell_exec($exec);
-      }
-    } else {
-      log::add(__CLASS__, 'debug', 'Executing sudo nmcli dev disconnect wlan0');
-      shell_exec('sudo nmcli dev disconnect wlan0');
-      shell_exec('sudo nmcli dev disconnect wlan1');
-      shell_exec('sudo ifconfig wlan0 down');
-      shell_exec('sudo ifconfig wlan1 down');
-    }
-  }
+  
 
   /* ----- FIN WIFI ----- */
 
@@ -414,7 +512,7 @@ class luna extends eqLogic {
       }
     }else{
       shell_exec('sudo nmcli dev disconnect wlan1');
-      shell_exec('sudo ifconfig wlan1 down');
+      //shell_exec('sudo ifconfig wlan1 down');
     }
   }
 
@@ -502,15 +600,23 @@ class luna extends eqLogic {
     return $temp;
   }
 
+  public function batteryPowerAvg (){
+    return exec('sudo cat /sys/class/power_supply/bq27546-0/power_avg');
+  }
+
+  public function batteryPresent (){
+    return exec('sudo cat /sys/class/power_supply/bq27546-0/present');
+  }
+
   /* ----- FIN BATTERY ----- */
 
   /* root etc Patch */
 
   public function patchLuna(){
-    message::add('luna', __('Patch Luna', __FILE__));
+    message::add(__CLASS__, __('Patch Luna', __FILE__));
     exec('sudo cp -r '.__DIR__.'/../../data/patchs/root/* /');
     exec('sudo '.__DIR__.'/../../data/patchs/patchLuna.sh');
-    message::add('luna', __('Patch Luna Fini', __FILE__));
+    message::add(__CLASS__, __('Patch Luna Fini', __FILE__));
   }
 
   /* fin patch */
@@ -519,10 +625,10 @@ class luna extends eqLogic {
   
      public function partitionSD (){
       exec('sudo unmount '.$sdSector);
-      message::add('luna', __('Patitionnage en cours', __FILE__));
+      message::add(__CLASS__, __('Patitionnage en cours', __FILE__));
       exec('sudo chmod +x ../../data/patchs/partitionSD.sh');
-      exect('sudo ../../data/patchs/partitionSD.sh');
-      message::add('luna', __('Carte SD bien partitionnée', __FILE__));
+      exec('sudo ../../data/patchs/partitionSD.sh');
+      message::add(__CLASS__, __('Carte SD bien partitionnée', __FILE__));
     }
 
     public function checkPartitionSD () {
@@ -545,7 +651,6 @@ class luna extends eqLogic {
       if(file_exists($sdSector)){
         return true;
       }
-      luna::changeBackupToEmmc();
       return false;
     }
 
@@ -608,14 +713,14 @@ class luna extends eqLogic {
   
   public function loraSwitchMaj($actived = true){
     if($actived == true){
-      message::add('luna', __('Activation Lora', __FILE__));
+      message::add(__CLASS__, __('Activation Lora', __FILE__));
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lora/lora.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lora.service');
       exec('sudo systemctl daemon-reload');
       exec('sudo systemctl enable lora.service');
       exec('sudo systemctl start lora.service > /dev/null 2>/dev/null &');
     }else{
-      message::add('luna', __('Désactivation Lora', __FILE__));
+      message::add(__CLASS__, __('Désactivation Lora', __FILE__));
       exec('sudo systemctl disable --now lora.service');
     }
   }
@@ -638,7 +743,7 @@ class luna extends eqLogic {
 
   public function installLora(){
     if(luna::detectedLora()){
-      message::add('luna', __('Installation de la partie Lora, car puce Lora detecté', __FILE__));
+      message::add(__CLASS__, __('Installation de la partie Lora, car puce Lora detecté', __FILE__));
       if(luna::configurationLora()){
         sleep(3);
         luna::loraSwitchMaj();
@@ -653,26 +758,26 @@ class luna extends eqLogic {
   public function scanLTEModule() {
     $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
     if($TTYLTE != ""){
-      message::add('luna', __('Puce LTE détecté.', __FILE__));
+      message::add(__CLASS__, __('Puce LTE détecté.', __FILE__));
       config::save('4G', true, 'luna');
       return true;
     }else{
-      message::add('luna', __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
+      message::add(__CLASS__, __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
       $ltetrouver = exec('sudo lteSearch');
       if($ltetrouver == 1){
-        message::add('luna', __('Detection de la puce LTE fini > puce trouvé', __FILE__));
+        message::add(__CLASS__, __('Detection de la puce LTE fini > puce trouvé', __FILE__));
       }elseif($ltetrouver == 2){
-        message::add('luna', __('Detection de la puce LTE fini > puce non presente', __FILE__));
+        message::add(__CLASS__, __('Detection de la puce LTE fini > puce non presente', __FILE__));
       }else{
-        message::add('luna', __('Erreur lors de la detection de la puce LTE', __FILE__));
+        message::add(__CLASS__, __('Erreur lors de la detection de la puce LTE', __FILE__));
       }
       $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE != ""){
-        message::add('luna', __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));
+        message::add(__CLASS__, __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));
         config::save('4G', true, 'luna');
         return true;
       }else{
-        message::add('luna', __('Puce LTE non-détecté.', __FILE__));
+        message::add(__CLASS__, __('Puce LTE non-détecté.', __FILE__));
         config::save('4G', false, 'luna');
         return false;
       }
@@ -690,82 +795,122 @@ class luna extends eqLogic {
   }
 
   public function installLte(){
-    message::add('luna', __('LTE > Merci de lancer la détection depuis le plugin Luna', __FILE__));
+    message::add(__CLASS__, __('LTE > Merci de lancer la détection depuis le plugin Luna', __FILE__));
   }
 
   public function configjsonlte(){
-
     log::add(__CLASS__, 'debug', 'CONFIG JSON LTE');
-
     if(config::byKey('4G','luna', false) == false){
       return false;
     }
     $apn = config::byKey('lteApn','luna', null);
     $user = config::byKey('lteUser','luna', null);
     $password = config::byKey('ltePassword','luna', null);
+    $pin = config::byKey('ltePin','luna', null);
     log::add(__CLASS__, 'debug', 'APN > ' . $apn);
     log::add(__CLASS__, 'debug', 'USER > ' . $user);
     log::add(__CLASS__, 'debug', 'PASSWORD > ' . $password);
-    $jsonFile = __DIR__ . "/../../data/lte.json";
-    $table = [];
-    $table["lte"] = [];
-    $table["lte"]["apn"] = $apn;
-    $table["lte"]["user"] = $user;
-    $table["lte"]["password"] = $password;
-    $jsonTable = json_encode($table);
-    file_put_contents($jsonFile, $jsonTable);
-    luna::ltePinSwitch();
-    luna::lteSwitchMaj();
-  }
 
-  public function ltePinSwitch(){
-    $lteUrl = __DIR__ . "/../../data/patchs/lte/PIN";
-    $ltePin = config::byKey('ltePin','luna', null);
-    if($ltePin != null){
-      message::add('luna', __('Activation PIN '.$ltePin, __FILE__));
-      if(ctype_digit($ltePin) && strlen($ltePin) == 4){
-        file_put_contents($lteUrl.'/pin.CODE', 'AT+CPIN='.$ltePin);
-        exec('sudo ln -s '.$lteUrl.'/pin.CODE /etc/ppp/peers/pin');
-      }else{
-        message::add('luna', __('Erreur PIN', __FILE__));
-        message::add('luna', __('Désactivation PIN', __FILE__));
-        exec('sudo ln -s '.$lteUrl.'/pin.NONE /etc/ppp/peers/pin');
+    $exist = false;
+    $list = luna::listWifi();
+    foreach($list as $key => $value){
+      if($value['name'] == 'JeedomApn'){
+        $exist = true;
       }
-    }else{
-      message::add('luna', __('Désactivation PIN', __FILE__));
-      exec('sudo ln -s '.$lteUrl.'/pin.NONE /etc/ppp/peers/pin');
     }
+    if($exist === false){
+      exec("nmcli connection add type gsm ifname '*' con-name ‘JeedomLTE’ connection.autoconnect yes");
+    }
+    if($apn != null){
+      exec("nmcli connection modify JeedomLTE gsm.apn $apn");
+    }else{
+      exec("nmcli connection modify JeedomLTE gsm.apn ''");
+    }
+    if($user != null){
+      exec("nmcli connection modify JeedomLTE gsm.username $user");
+    }else{
+      exec("nmcli connection modify JeedomLTE gsm.username ''");
+    }
+    if($password != null){
+      exec("nmcli connection modify JeedomLTE gsm.password $password");
+    }else{
+      exec("nmcli connection modify JeedomLTE gsm.password ''");
+    }
+    if($pin != null){
+      exec("nmcli connection modify JeedomLTE gsm.pin $pin");
+    }else{
+      exec("nmcli connection modify JeedomLTE gsm.pin ''");
+    }
+
+    luna::lteSwitchMaj();
   }
 
   public function lteSwitchMaj(){
     $actived = config::byKey('lteActivation', 'luna', false);
 
     if($actived == true){
-      message::add('luna', __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
+      message::add(__CLASS__, __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');
-      exec('sudo systemctl stop lte.service');
-      exec('sudo systemctl disable lte.service');
-      log::add(__CLASS__, 'debug', 'desactivation du systemctl avant activation LTE');
-      exec('sudo cp '. __DIR__ . '/../../data/patchs/lte/lte.service /etc/systemd/system/');
-      exec('sudo chmod 755 /etc/systemd/system/lte.service');
-      log::add(__CLASS__, 'debug', 'copie du fichier lte.service');
-      exec('sudo systemctl daemon-reload');
-      exec('sudo systemctl enable lte.service');
-      log::add(__CLASS__, 'debug', 'enable lte.service');
-      exec('sudo systemctl start lte.service > /dev/null 2>/dev/null &');
-      log::add(__CLASS__, 'debug', 'start lte.service');
+      exec('nmcli connection modify JeedomLTE connection.autoconnect yes');
+      exec("nmcli connection up JeedomLTE");
     }else{
-      message::add('luna', __('Désactivation LTE', __FILE__));
-      exec('sudo systemctl stop lte.service');
-      exec('sudo systemctl disable lte.service');
+      message::add(__CLASS__, __('Désactivation LTE', __FILE__));
+      log::add(__CLASS__, 'debug', 'Désactivation LTE');
+      exec('nmcli connection modify JeedomLTE connection.autoconnect no');
+      exec("nmcli connection down JeedomLTE");
     }
+  }
+
+  public function configurationPortSms() {
+    $pluginSms = plugin::byId('sms');
+    if(is_object($pluginSms)){
+        config::save('port', '/dev/ttyLuna-Lte', 'sms');
+    }
+  }
+
+  public function recuperationConfigModem() {
+    $modemLte = exec('sudo mmcli --modem=0 -J');
+    if($modemLte == "error: couldn't find modem"){
+      log::add(__CLASS__, 'debug', 'Modem non trouvé');
+      return false;
+    }
+    $modem = json_decode($modemLte, true);
+    log::add(__CLASS__, 'debug', 'Modem > ' . $modemLte);
+
+    $imei = $modem['properties']['equipment-identifier'];
+    $iccid = $modem['properties']['sim']['iccid'];
+    $imsi = $modem['properties']['sim']['imsi'];
+    $operator = $modem['properties']['sim']['operator'];
+    $operatorName = $modem['properties']['sim']['operator-name'];
+    $signal = $modem['properties']['signal']['quality'];
+    $signalPercent = $modem['properties']['signal']['percent'];
+    $signalStrength = $modem['properties']['signal']['strength'];
+    $signalStrengthDbm = $modem['properties']['signal']['strength-dbm'];
+    $signalStrengthLevel = $modem['properties']['signal']['strength-level'];
+    $signalStrengthLevelDbm = $modem['properties']['signal']['strength-level-dbm'];
+    $state = $modem['properties']['state'];
+    $stateFailedReason = $modem['properties']['state-failed-reason'];
+
+    log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
+    log::add(__CLASS__, 'debug', 'ICCID > ' . $iccid);
+    log::add(__CLASS__, 'debug', 'IMSI > ' . $imsi);
+    log::add(__CLASS__, 'debug', 'OPERATOR > ' . $operator);
+    log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
+    log::add(__CLASS__, 'debug', 'SIGNAL > ' . $signal);
+    log::add(__CLASS__, 'debug', 'SIGNAL PERCENT > ' . $signalPercent);
+    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH > ' . $signalStrength);
+    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH DBM > ' . $signalStrengthDbm);
+    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH LEVEL > ' . $signalStrengthLevel);
+    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH LEVEL DBM > ' . $signalStrengthLevelDbm);
+    log::add(__CLASS__, 'debug', 'STATE > ' . $state);
+    log::add(__CLASS__, 'debug', 'STATE FAILED REASON > ' . $stateFailedReason);
   }
 
   /* ------ FIN 4G ----- */
 
   public function switchHost($activated = true){
       if($activated === true){
-        message::add('luna', __('Patch du localhost', __FILE__));
+        message::add(__CLASS__, __('Patch du localhost', __FILE__));
         exec("sudo chattr -i /etc/hosts");
         exec("sudo cp " .__DIR__ . "/../../data/patchs/hosts /etc/hosts");
         $hostname = trim(file_get_contents('/etc/hostname'));
@@ -929,8 +1074,8 @@ class luna extends eqLogic {
   }
 
   public function postAjax() {
-    $this->wifiConnect();
-    $this->testHotspot();
+    //$this->wifiConnect();
+    //$this->testHotspot();
   }
 }
 
