@@ -14,6 +14,7 @@ foreach ($plugins as $plugin) {
 $portSmsLuna = "/dev/ttyLuna-Lte";
 ?>
 <div role="tabpanel" class="tab-pane" id="LTEtab"><br />
+<form id="ltePanel" class="form-horizontal">
 	<fieldset>
 	  	<legend><i class="fa fa-signal"></i> {{LTE}}</legend>
 		<?php
@@ -63,13 +64,17 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 				<div class="alert alert-warning">
 					<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
 				</div>
-			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-lg-3">
+					</div>
+					<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
+				</div>
 				<div class="form-group">
 					<label class="col-lg-3 control-label">*{{APN}}
 						<sup><i class="fas fa-question-circle tooltips" title="{{APN pour la partie LTE}}"></i></sup>
 					</label>
 					<div class="col-lg-4">
-						<input class="configKey form-control" data-l1key="lteApn"/>
+						<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="lteApn" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -77,7 +82,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						<sup><i class="fas fa-question-circle tooltips" title="{{User pour la partie LTE}}"></i></sup>
 					</label>
 					<div class="col-lg-4">
-						<input class="configKey form-control" data-l1key="lteUser"/>
+						<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="lteUser" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -85,7 +90,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						<sup><i class="fas fa-question-circle tooltips" title="{{Password pour la partie LTE}}"></i></sup>
 					</label>
 					<div class="col-lg-4">
-						<input class="configKey form-control" data-l1key="ltePassword"/>
+						<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="ltePassword" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -93,7 +98,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
 					</label>
 					<div class="col-lg-2">
-						<input class="configKey form-control" type="number" data-l1key="ltePin"/>
+						<input class="eqLogicAttr form-control" type="number" data-l1key="configuration" data-l2key="ltePin" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -101,7 +106,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						<sup><i class="fas fa-question-circle tooltips" title="{{Prise en charge de la data via la connexion LTE, pour les sim avec data}}"></i></sup>
 					</label>
 					<div class="col-lg-4">
-						<input type="checkbox" class="configKey form-control" data-l1key="lteActivation" checked/>
+						<input type="checkbox" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="lteActivation" checked/>
 					</div>
 				</div>
 				<div class="form-group">
@@ -120,9 +125,49 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 				</div>
 				<br /><br /><br />
 				<i>*{{Seul l'apn est obligatoire}}</i>
-				<br />
-				<i>*{{N'oubliez pas de sauvegarder avant}}</i>
-			</div>
+				<br /><br /><br />
+			<?php 
+						$modem = luna::recuperationConfigModem(); 
+						?>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">{{IMEI}}
+								<sup><i class="fas fa-question-circle tooltips" title="{{IMEI de la Luna}}"></i></sup>
+							</label>
+							<div class="col-lg-4">
+								<input class="form-control" value="<?php echo $modem['imei']; ?>" disabled/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">{{Nom de l'opérateur}}
+							</label>
+							<div class="col-lg-4">
+								<input class="form-control" value="<?php echo $modem['operatorName']; ?>" disabled/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">{{Signal}}
+							</label>
+							<div class="col-lg-4">
+								<input class="form-control" value="<?php echo $modem['signalPercent']; ?>" disabled/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">{{Etat}}
+							</label>
+							<div class="col-lg-4">
+								<input class="form-control" value="<?php echo $modem['state']; ?>" disabled/>
+								<input class="form-control" value="<?php echo $modem['stateFailedReason']; ?>" disabled/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">{{Deblocage SIM}}
+							</label>
+							<div class="col-lg-4">
+								<input class="form-control" value="<?php echo $modem['unlockRequired']; ?>" disabled/>
+								<input class="form-control" value="<?php json_encode($modem['unlockRetries']); ?>" disabled/>
+							</div>
+						</div>
+					</div>
 			</form>
 		</div>
 		<?php
@@ -136,7 +181,8 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 			<?php
 		}
 		?>
-  	</fieldset> 			
+  	</fieldset> 	
+	</form>		
 </div>
 
 

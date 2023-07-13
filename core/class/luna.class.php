@@ -231,10 +231,11 @@ class luna extends eqLogic {
     $eqLogics = eqLogic::byType('luna');
     foreach ($eqLogics as $luna) {
       log::add(__CLASS__, 'debug', 'Pull Cron luna');
-      $luna->wifiConnect();
+
       if ($luna->getIsEnable() != 1) {
         continue;
       };
+      /*
       if (!file_exists("/sys/class/net/eth0/operstate")) {
         $ethup = 0;
       } else {
@@ -254,19 +255,18 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('isconnecteth', $ethup);
       $luna->checkAndUpdateCmd('signal', $wifisignal);
       $luna->checkAndUpdateCmd('lanip', $lanIp);
-      $luna->checkAndUpdateCmd('wifiip', $wifiIp);
+      $luna->checkAndUpdateCmd('wifiip', $wifiIp);*/
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
-      if ($luna->getConfiguration('wifiEnabled', 0) == 1) {
+      /*if ($luna->getConfiguration('wifiEnabled', 0) == 1) {
         $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifiSsid', ''));
       } else {
         $luna->checkAndUpdateCmd('ssid', 'Aucun');
-      }
+      }*/
     }
-
     $ltetrouver = config::byKey('4G', 'luna', false);
-    if(ltetrouver){
+    if($ltetrouver != false){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE == ""){
         luna::scanLTEModule();
@@ -280,10 +280,10 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', __('Jeedom est démarré, vérification des connexions.', __FILE__));
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($luna)) {
-      $luna->wifiConnect();
-      $luna->testHotspot();
+      //$luna->wifiConnect();
+      //$luna->testHotspot();
       $ltetrouver = config::byKey('4G', 'luna', false);
-      if(ltetrouver){
+      if($ltetrouver != false){
         $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
         if($TTYLTE == ""){
           luna::scanLTEModule();
@@ -635,11 +635,11 @@ class luna extends eqLogic {
       exec('sudo lsblk -f -J 2>&1', $jsonVolumes);
       $response = false;
       foreach($jsonVolumes as $volume){
-        log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . json_decode($volume, true));
-        log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . $volume);
+        //log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . json_decode($volume, true));
+        //log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . $volume);
         $valueVolume = json_decode($volume, true);
         if($valueVolume['name'] === 'mmcblk2' && $valueVolume['fstype'] === 'ext3'){
-          log::add(__CLASS__, 'debug', 'trouvé');
+          log::add(__CLASS__, 'debug', 'JSON VOLUME > trouvé');
           $response = true;
         }
       }
@@ -803,22 +803,22 @@ class luna extends eqLogic {
     if(config::byKey('4G','luna', false) == false){
       return false;
     }
-    $apn = config::byKey('lteApn','luna', null);
-    $user = config::byKey('lteUser','luna', null);
-    $password = config::byKey('ltePassword','luna', null);
-    $pin = config::byKey('ltePin','luna', null);
+    $luna = eqLogic::byLogicalId('wifi', __CLASS__);
+    if(!is_object($luna)){
+      return false;
+    }
+    $apn = $luna->getConfiguration('lteApn');
+    $user = $luna->getConfiguration('lteUser');
+    $password = $luna->getConfiguration('ltePassword');
+    $pin = $luna->getConfiguration('ltePin');
     log::add(__CLASS__, 'debug', 'APN > ' . $apn);
     log::add(__CLASS__, 'debug', 'USER > ' . $user);
     log::add(__CLASS__, 'debug', 'PASSWORD > ' . $password);
 
-    $exist = false;
-    $list = luna::listWifi();
-    foreach($list as $key => $value){
-      if($value['name'] == 'JeedomApn'){
-        $exist = true;
-      }
-    }
+    $exist = luna::isWifiProfileexist('‘JeedomLTE’');
+
     if($exist === false){
+      log::add(__CLASS__, 'debug', 'CREATION DU PROFIL JEEDOMLTE');
       exec("nmcli connection add type gsm ifname '*' con-name ‘JeedomLTE’ connection.autoconnect yes");
     }
     if($apn != null){
@@ -842,20 +842,24 @@ class luna extends eqLogic {
       exec("nmcli connection modify JeedomLTE gsm.pin ''");
     }
 
+    log::add(__CLASS__, 'debug', 'Fin de la configuration LTE > ' . exec("nmcli connection show JeedomLTE"));
+    luna::scanLTEModule();
     luna::lteSwitchMaj();
   }
 
   public function lteSwitchMaj(){
-    $actived = config::byKey('lteActivation', 'luna', false);
-
+    $luna = eqLogic::byLogicalId('wifi', __CLASS__);
+    if(is_object($luna)){
+      $actived = $luna->getConfiguration('lteActivation');
+    }
     if($actived == true){
       message::add(__CLASS__, __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');
       exec('nmcli connection modify JeedomLTE connection.autoconnect yes');
       exec("nmcli connection up JeedomLTE");
     }else{
-      message::add(__CLASS__, __('Désactivation LTE', __FILE__));
-      log::add(__CLASS__, 'debug', 'Désactivation LTE');
+      message::add(__CLASS__, __('Désactivation Data LTE', __FILE__));
+      log::add(__CLASS__, 'debug', 'Désactivation Data LTE');
       exec('nmcli connection modify JeedomLTE connection.autoconnect no');
       exec("nmcli connection down JeedomLTE");
     }
@@ -877,33 +881,33 @@ class luna extends eqLogic {
     $modem = json_decode($modemLte, true);
     log::add(__CLASS__, 'debug', 'Modem > ' . $modemLte);
 
-    $imei = $modem['properties']['equipment-identifier'];
-    $iccid = $modem['properties']['sim']['iccid'];
-    $imsi = $modem['properties']['sim']['imsi'];
-    $operator = $modem['properties']['sim']['operator'];
-    $operatorName = $modem['properties']['sim']['operator-name'];
-    $signal = $modem['properties']['signal']['quality'];
-    $signalPercent = $modem['properties']['signal']['percent'];
-    $signalStrength = $modem['properties']['signal']['strength'];
-    $signalStrengthDbm = $modem['properties']['signal']['strength-dbm'];
-    $signalStrengthLevel = $modem['properties']['signal']['strength-level'];
-    $signalStrengthLevelDbm = $modem['properties']['signal']['strength-level-dbm'];
-    $state = $modem['properties']['state'];
-    $stateFailedReason = $modem['properties']['state-failed-reason'];
+    $modem = $modem['modem'];
+
+    $imei = $modem['3gpp']['imei'];
+    $operatorName = $modem['3gpp']['operator-name'];
+    $signalPercent = $modem['generic']['signal-quality']['value'];
+    $state = $modem['generic']['state'];
+    $stateFailedReason = $modem['generic']['state-failed-reason'];
+    $unlockRequired = $modem['generic']['unlock-required'];
+    $unlockRetries = $modem['generic']['unlock-retries'];
 
     log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
-    log::add(__CLASS__, 'debug', 'ICCID > ' . $iccid);
-    log::add(__CLASS__, 'debug', 'IMSI > ' . $imsi);
-    log::add(__CLASS__, 'debug', 'OPERATOR > ' . $operator);
     log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
-    log::add(__CLASS__, 'debug', 'SIGNAL > ' . $signal);
     log::add(__CLASS__, 'debug', 'SIGNAL PERCENT > ' . $signalPercent);
-    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH > ' . $signalStrength);
-    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH DBM > ' . $signalStrengthDbm);
-    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH LEVEL > ' . $signalStrengthLevel);
-    log::add(__CLASS__, 'debug', 'SIGNAL STRENGTH LEVEL DBM > ' . $signalStrengthLevelDbm);
     log::add(__CLASS__, 'debug', 'STATE > ' . $state);
     log::add(__CLASS__, 'debug', 'STATE FAILED REASON > ' . $stateFailedReason);
+    log::add(__CLASS__, 'debug', 'UNLOCK REQUIRED > ' . $unlockRequired);
+    log::add(__CLASS__, 'debug', 'UNLOCK RETRIES > ' . $unlockRetries);
+
+    return [
+      'imei' => $imei,
+      'operatorName' => $operatorName,
+      'signalPercent' => $signalPercent,
+      'state' => $state,
+      'stateFailedReason' => $stateFailedReason,
+      'unlockRequired' => $unlockRequired,
+      'unlockRetries' => $unlockRetries
+    ];
   }
 
   /* ------ FIN 4G ----- */

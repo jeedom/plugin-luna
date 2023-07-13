@@ -117,6 +117,10 @@ try {
 		ajax::success(luna::wifiDisConnect());
 	}
 
+  if(init('action') == 'recuperationConfigModem'){
+    ajax::success(luna::recuperationConfigModem());
+  }
+
   if (init('action') == 'configurationPortSms') {
     ajax::success(luna::configurationPortSms());
   }

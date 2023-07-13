@@ -16,24 +16,33 @@
  */
 
 $('#bt_saveLTE').off('click').on('click', function() {
-    $.ajax({
-      type: "POST",
-      url: "plugins/luna/core/ajax/luna.ajax.php",
-      data: {
-        action: "configjsonlte"
-      },
-      dataType: 'json',
-      error: function(request, status, error) {
-        handleAjaxError(request, status, error);
-      },
-      success: function() {
-          $('#div_alert').showAlert({
-            message: 'Mise à jour LTE',
-            level: 'success'
-          });
-          location.reload();
-      }
-    });
+  jeedom.eqLogic.save({
+    type: 'luna',
+    eqLogics: $("#ltePanel").getValues('.eqLogicAttr'),
+    error: function(error) {
+      $('#div_alert').showAlert({message: error.message, level: 'danger'});
+    },
+    success: function() {
+      $.ajax({
+        type: "POST",
+        url: "plugins/luna/core/ajax/luna.ajax.php",
+        data: {
+          action: "configjsonlte"
+        },
+        dataType: 'json',
+        error: function(request, status, error) {
+          handleAjaxError(request, status, error);
+        },
+        success: function() {
+            $('#div_alert').showAlert({
+              message: 'Mise à jour LTE',
+              level: 'success'
+            });
+            location.reload();
+        }
+      });
+    }
+    })
   })
 
   $('#bt_changePortSms').off('click').on('click', function() {

@@ -27,6 +27,8 @@ function changeInformation(key, info = "") {
   $(key).empty().append(info)
 }
 
+$("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
+
 function printMacLan() {
   $.ajax({// fonction permettant de faire de l'ajax
     type: "POST", // methode de transmission des données au fichier php
@@ -245,4 +247,18 @@ function ajax_start_percentage() {
 }
 
 
+$('#saveLuna').off('click').on('click', function() {
+  console.log('saveLuna')
+  console.log($("#lunaPanel").getValues('.eqLogicAttr'))
+  jeedom.eqLogic.save({
+    type: 'luna',
+    eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
+    error: function(error) {
+      $('#div_alert').showAlert({message: error.message, level: 'danger'});
+    },
+    success: function() {
+     console.log('lunaPanelok',$("#lunaPanel").getValues('.eqLogicAttr'))
+    }
+  });
+});
 

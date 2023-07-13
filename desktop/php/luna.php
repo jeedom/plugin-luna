@@ -26,11 +26,8 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 				$eqLogic->save();
 			}
 		}
-		?>
-		<script>$('.eqLogicDisplayCard[data-eqLogic_id=<?php echo $eqLogic->getId() ?>"]').click()</script>
-		<?php
 			// Liste des équipements du plugin
-			echo '<div class="eqLogicThumbnailContainer" style="display:none;">';
+			echo '<div class="eqLogicThumbnailContainer" >';
 				echo '<div class="eqLogicDisplayCard cursor" style="display:none;" data-eqLogic_id="' . $eqLogic->getId() . '">';
 				echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
 				echo '<br>';
@@ -48,7 +45,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 			<span class="input-group-btn">
 				<!-- Les balises <a></a> sont volontairement fermées à la ligne suivante pour éviter les espaces entre les boutons. Ne pas modifier -->
 				<a class="btn btn-sm btn-default eqLogicAction roundedLeft" data-action="configure"><i class="fas fa-cogs"></i><span class="hidden-xs"> {{Configuration avancée}}</span>
-				</a><a class="btn btn-sm btn-success eqLogicAction" data-action="save"><i class="fas fa-check-circle"></i> {{Sauvegarder}}</a>
+				</a>
 			</span>
 		</div>
 		<!-- Onglets -->
@@ -67,7 +64,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 			<div role="tabpanel" class="tab-pane active" id="eqlogictab"><br />
 				<div class="row">
 					<div class="col-sm-7">
-						<form class="form-horizontal">
+						<form id="lunaPanel" class="form-horizontal">
 							<fieldset>
 								<legend>{{Général}}<i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i></legend>
 								<div class="form-group">
@@ -98,8 +95,47 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 										<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked />{{Visible}}</label>
 									</div>
 								</div>
+								<legend><i class='fa fa-cogs'></i>{{Priorité des connexions}}</legend>
+								<div class="table-responsive">
+									<table id="table_connexions" class="table table-bordered table-condensed">
+										<thead>
+											<tr>
+												<th style="min-width:50px;width:70px;"> {{Type}}</th>
+												<th style="min-width:120px;width:250px;">{{Nom}}</th>
+												<th style="width:130px;">{{Metric}}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php
+											 $scanresult = shell_exec('sudo nmcli -f UUID,NAME,TYPE,ACTIVE -t -m tabular con show --active');
+											 $results = explode("\n", $scanresult);
+											 $return = array();
+											 foreach ($results as $result) {
+											   	$result = str_replace('\:', '$%$%', $result);
+											   	$result = preg_replace("#(\r\n|\n\r|\n|\r)#","",$result);
+											   	$conDetail = explode(':', $result);
+											   	$conUUID = $conDetail[0];
+											   	$conName = $conDetail[1];
+											   	$conType = $conDetail[2];
+												$conMetric = shell_exec('sudo nmcli -f ipv4.route-metric -t -m tabular con show '.$conUUID);
+												$conMetric = preg_replace("#(\r\n|\n\r|\n|\r)#","",$conMetric);
+											   	$return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'metric' => $conMetric);
+											   	log::add(__CLASS__, 'debug', json_encode($return)); 
+									   
+											 }
+											 foreach($return as $conn){
+												if($conn['name'] != 'tun0' && $conn['name'] != ""){
+													echo '<tr class="conn" ><td>'.$conn['type'].'</td><td>'.$conn['name'].'</td><td>'.$conn['metric'].'</td></tr>';
+												}
+											 }
+											?>
+										</tbody>
+									</table>
+								</div>
 							</fieldset>
 						</form>
+						<div class="col-sm-4"></div>
+						<div class="col-sm-6" style="text-align: center;"><a class="btn btn-sm btn-success eqLogicAction" id="saveLuna"><i class="fas fa-check-circle"></i> {{Sauvegarder}}</a></div>
 					</div>
 					<div class="col-sm-5">
 						<form class="form-horizontal">
@@ -159,6 +195,18 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 						</form>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-sm-7">
+						<form class="form-horizontal">
+							<fieldset>
+								
+							</fieldset>
+						</form>
+					</div>
+					<div class="col-sm-5">
+						
+					</div>
+				</div>
 			</div>
 			
 			<?php
@@ -198,5 +246,11 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 
 <!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
 <?php include_file('desktop', 'luna', 'js', 'luna'); ?>
+<script>
+	setTimeout(() => {
+		document.querySelector('.eqLogicDisplayCard[data-eqlogic_id="<?php echo $eqLogic->getId() ?>"]')?.click()
+	}, 100);
+</script>
+
 <!-- Inclusion du fichier javascript du core - NE PAS MODIFIER NI SUPPRIMER -->
 <?php include_file('core', 'plugin.template', 'js'); ?>
