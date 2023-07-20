@@ -80,6 +80,10 @@ try {
     ajax::success();
   }
 
+  if (init('action') == 'savePriority') {
+		ajax::success(luna::savePriority(init('priority')));
+	}
+
   if (init('action') == 'listWifi') {
 		$forced = init('mode');
 		ajax::success(luna::listWifi($forced, init('interface')));

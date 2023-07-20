@@ -29,6 +29,7 @@ function changeInformation(key, info = "") {
 
 $("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
 
+
 function printMacLan() {
   $.ajax({// fonction permettant de faire de l'ajax
     type: "POST", // methode de transmission des données au fichier php
@@ -248,8 +249,28 @@ function ajax_start_percentage() {
 
 
 $('#saveLuna').off('click').on('click', function() {
-  console.log('saveLuna')
-  console.log($("#lunaPanel").getValues('.eqLogicAttr'))
+  $("#priority").val($("#table_connexions").sortable('toArray'));
+  $.ajax({
+    type: "POST",
+    url: "plugins/luna/core/ajax/luna.ajax.php",
+    data: {
+      action: "savePriority",
+      priority: $("#table_connexions").sortable('toArray')
+    },
+    dataType: 'json',
+    error: function(request, status, error) {
+      handleAjaxError(request, status, error)
+    },
+    success: function(data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({ message: data.result, level: 'danger' })
+        return
+      }else{
+        location.reload();
+      }
+
+    }
+  })
   jeedom.eqLogic.save({
     type: 'luna',
     eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
@@ -257,7 +278,7 @@ $('#saveLuna').off('click').on('click', function() {
       $('#div_alert').showAlert({message: error.message, level: 'danger'});
     },
     success: function() {
-     console.log('lunaPanelok',$("#lunaPanel").getValues('.eqLogicAttr'))
+
     }
   });
 });

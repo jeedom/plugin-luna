@@ -446,6 +446,22 @@ class luna extends eqLogic {
     return $return;
   }
 
+  public static function savePriority($priorities) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    log::add(__CLASS__, 'debug', 'save priority >>'.json_encode($priorities));
+    $prio = 1;
+    foreach($priorities as $priority){
+      shell_exec('sudo nmcli con modify '.$priority.' ipv4.route-metric '.($prio * 100));
+      shell_exec('sudo nmcli con up '.$priority);
+      $prio++;
+
+
+    }
+    //shell_exec('sudo systemctl restart NetworkManager');
+    //sleep(2);
+    //shell_exec('sudo nmcli con up "eth0"');
+  }
+
   public static function convertIP($ip,$mask){
     return $ip."/".strlen(str_replace("0","",decbin(ip2long($mask))));
   }
@@ -913,6 +929,10 @@ class luna extends eqLogic {
   /* ------ FIN 4G ----- */
 
   public function switchHost($activated = true){
+      exec("sudo apt remove -y dnsmasq");
+      exec("sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf");
+      exec("sed 's/^auto/#&/' -i /etc/network/interfaces");
+      exec("sed 's/^iface/#&/' -i /etc/network/interfaces");
       if($activated === true){
         message::add(__CLASS__, __('Patch du localhost', __FILE__));
         exec("sudo chattr -i /etc/hosts");

@@ -96,6 +96,8 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 									</div>
 								</div>
 								<legend><i class='fa fa-cogs'></i>{{Priorité des connexions}}</legend>
+								<input type="text" id="priority" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="priority" style="display : none;" />
+							
 								<div class="table-responsive">
 									<table id="table_connexions" class="table table-bordered table-condensed">
 										<thead>
@@ -123,9 +125,10 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 											   	log::add(__CLASS__, 'debug', json_encode($return)); 
 									   
 											 }
+											 usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
 											 foreach($return as $conn){
-												if($conn['name'] != 'tun0' && $conn['name'] != ""){
-													echo '<tr class="conn" ><td>'.$conn['type'].'</td><td>'.$conn['name'].'</td><td>'.$conn['metric'].'</td></tr>';
+												if($conn['name'] != 'tun0' && $conn['name'] != "" ){
+													echo '<tr class="conn" id="'.$conn['UUID'].'" ><td>'.$conn['type'].'</td><td>'.$conn['name'].'</td><td>'.$conn['metric'].'</td></tr>';
 												}
 											 }
 											?>
