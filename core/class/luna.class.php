@@ -930,9 +930,9 @@ class luna extends eqLogic {
 
   public function switchHost($activated = true){
       exec("sudo apt remove -y dnsmasq");
-      exec("sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf");
-      exec("sed 's/^auto/#&/' -i /etc/network/interfaces");
-      exec("sed 's/^iface/#&/' -i /etc/network/interfaces");
+      exec("sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf");
+      exec("sudo sed 's/^auto/#&/' -i /etc/network/interfaces");
+      exec("sudo sed 's/^iface/#&/' -i /etc/network/interfaces");
       if($activated === true){
         message::add(__CLASS__, __('Patch du localhost', __FILE__));
         exec("sudo chattr -i /etc/hosts");
