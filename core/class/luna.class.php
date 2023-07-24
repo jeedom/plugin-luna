@@ -831,11 +831,11 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', 'USER > ' . $user);
     log::add(__CLASS__, 'debug', 'PASSWORD > ' . $password);
 
-    $exist = luna::isWifiProfileexist('‘JeedomLTE’');
+    $exist = luna::isWifiProfileexist('JeedomLTE');
 
     if($exist === false){
       log::add(__CLASS__, 'debug', 'CREATION DU PROFIL JEEDOMLTE');
-      exec("nmcli connection add type gsm ifname '*' con-name ‘JeedomLTE’ connection.autoconnect yes");
+      exec("nmcli connection add type gsm ifname '*' con-name JeedomLTE connection.autoconnect yes");
     }
     if($apn != null){
       exec("nmcli connection modify JeedomLTE gsm.apn $apn");
