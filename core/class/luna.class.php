@@ -833,32 +833,33 @@ class luna extends eqLogic {
 
     $exist = luna::isWifiProfileexist('JeedomLTE');
 
-    if($exist === false){
+    if(1 === 1){
+    //if($exist === false){
       log::add(__CLASS__, 'debug', 'CREATION DU PROFIL JEEDOMLTE');
-      exec("nmcli connection add type gsm ifname '*' con-name JeedomLTE connection.autoconnect yes");
+      exec("sudo nmcli connection add type gsm ifname '*' con-name JeedomLTE connection.autoconnect yes");
     }
     if($apn != null){
-      exec("nmcli connection modify JeedomLTE gsm.apn $apn");
+      exec("sudo nmcli connection modify JeedomLTE gsm.apn $apn");
     }else{
-      exec("nmcli connection modify JeedomLTE gsm.apn ''");
+      exec("sudo nmcli connection modify JeedomLTE gsm.apn ''");
     }
     if($user != null){
-      exec("nmcli connection modify JeedomLTE gsm.username $user");
+      exec("sudo nmcli connection modify JeedomLTE gsm.username $user");
     }else{
-      exec("nmcli connection modify JeedomLTE gsm.username ''");
+      exec("sudo nmcli connection modify JeedomLTE gsm.username ''");
     }
     if($password != null){
-      exec("nmcli connection modify JeedomLTE gsm.password $password");
+      exec("sudo nmcli connection modify JeedomLTE gsm.password $password");
     }else{
-      exec("nmcli connection modify JeedomLTE gsm.password ''");
+      exec("sudo nmcli connection modify JeedomLTE gsm.password ''");
     }
     if($pin != null){
-      exec("nmcli connection modify JeedomLTE gsm.pin $pin");
+      exec("sudo nmcli connection modify JeedomLTE gsm.pin $pin");
     }else{
-      exec("nmcli connection modify JeedomLTE gsm.pin ''");
+      exec("sudo nmcli connection modify JeedomLTE gsm.pin ''");
     }
 
-    log::add(__CLASS__, 'debug', 'Fin de la configuration LTE > ' . exec("nmcli connection show JeedomLTE"));
+    log::add(__CLASS__, 'debug', 'Fin de la configuration LTE > ' . exec("sudo nmcli connection show JeedomLTE"));
     luna::scanLTEModule();
     luna::lteSwitchMaj();
   }
@@ -871,13 +872,13 @@ class luna extends eqLogic {
     if($actived == true){
       message::add(__CLASS__, __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');
-      exec('nmcli connection modify JeedomLTE connection.autoconnect yes');
-      exec("nmcli connection up JeedomLTE");
+      exec('sudo nmcli connection modify JeedomLTE connection.autoconnect yes');
+      exec("sudo nmcli connection up JeedomLTE");
     }else{
       message::add(__CLASS__, __('Désactivation Data LTE', __FILE__));
       log::add(__CLASS__, 'debug', 'Désactivation Data LTE');
-      exec('nmcli connection modify JeedomLTE connection.autoconnect no');
-      exec("nmcli connection down JeedomLTE");
+      exec('sudo nmcli connection modify JeedomLTE connection.autoconnect no');
+      exec("sudo nmcli connection down JeedomLTE");
     }
   }
 
