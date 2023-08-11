@@ -266,7 +266,7 @@ class luna extends eqLogic {
     }
 
     $ltetrouver = config::byKey('4G', 'luna', false);
-    if(ltetrouver){
+    if(ltetrouver !== false){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE == ""){
         luna::scanLTEModule();
