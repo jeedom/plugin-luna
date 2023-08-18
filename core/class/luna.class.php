@@ -266,7 +266,7 @@ class luna extends eqLogic {
     }
 
     $ltetrouver = config::byKey('4G', 'luna', false);
-    if(ltetrouver !== false){
+    if(ltetrouver != false){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE == ""){
         luna::scanLTEModule();
@@ -663,10 +663,13 @@ class luna extends eqLogic {
         message::add('luna', __('Detection de la puce LTE fini > puce trouvé', __FILE__));
       }elseif($ltetrouver == 2){
         message::add('luna', __('Detection de la puce LTE fini > puce non presente', __FILE__));
+        config::save('4G', false, 'luna');
+        return false;
       }else{
         message::add('luna', __('Erreur lors de la detection de la puce LTE', __FILE__));
       }
-      $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
+      
+      $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE != ""){
         message::add('luna', __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));
         config::save('4G', true, 'luna');
