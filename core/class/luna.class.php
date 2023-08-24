@@ -680,13 +680,13 @@ class luna extends eqLogic {
 
     public function mountSD (){
       $sdSector = "/dev/mmcblk2";
-      $montage = "/media/";
+      $montage = "/media";
       exec('sudo unmount '.$sdSector);
       exec('sudo mount '.$sdSector.' '.$montage);
     }
 
     public function changeBackupToSD (){
-      $montage = "/media/";
+      $montage = "/media";
       config::save('backup::path', $montage);
     }
 
