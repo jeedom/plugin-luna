@@ -671,7 +671,7 @@ class luna extends eqLogic {
     }
 
     public function BackupOkInSd(){
-      if(config::byKey('backup::path') == "/media/"){
+      if(config::byKey('backup::path') == "/media"){
         return true;
       }else{
         return false;
@@ -683,6 +683,7 @@ class luna extends eqLogic {
       $montage = "/media";
       exec('sudo unmount '.$sdSector);
       exec('sudo mount '.$sdSector.' '.$montage);
+      exec('sudo chmod 755 '.$montage)
     }
 
     public function changeBackupToSD (){
