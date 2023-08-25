@@ -683,7 +683,7 @@ class luna extends eqLogic {
       $montage = "/media";
       exec('sudo unmount '.$sdSector);
       exec('sudo mount '.$sdSector.' '.$montage);
-      exec('sudo chmod 755 '.$montage)
+      exec('sudo chmod 755 '.$montage);
     }
 
     public function changeBackupToSD (){
