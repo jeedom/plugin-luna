@@ -5,7 +5,7 @@
         "Mise à jour du module Luna": "Actualización del mod Luna"
     },
     "plugins\/luna\/plugin_info\/configuration.php": {
-        "LTE APN": "LTE APN",
+        "LTE APN": "APN LTE",
         "APN pour la partie LTE": "APN para la parte LTE",
         "LTE User": "Usuario LTE",
         "User pour la partie LTE": "Usuario para la parte LTE",
@@ -126,7 +126,7 @@
         "Fichier": "Expediente",
         "Test de l\\'image (vérification SHA).": "Prueba de imagen (verificación SHA)",
         "Taille": "Tamaño",
-        "SHA": "SHA",
+        "SHA": "Sha",
         "Image OK.": "Imagen bien",
         "Image NOK.": "Imagen NOK",
         "Téléchargement de l image depuis nos serveurs en cours...": "Descargando la imagen de nuestros servidores en proceso",
