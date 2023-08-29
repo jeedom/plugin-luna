@@ -21,3 +21,6 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="0a12", ATTRS{idProduct}=="0001",SYMLINK+="tt
 
 #LTE
 SUBSYSTEM=="tty",ENV{ID_PATH}=="platform-ff5c0000.usb-usb-0:1.1:1.2",SYMLINK+="ttyLuna-Lte"
+
+#LTEUSB
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2c7c", ATTRS{idProduct}=="0191", SYMLINK+="ttyUSB-LTE-Quectel"
