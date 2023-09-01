@@ -684,12 +684,14 @@ class luna extends eqLogic {
       exec('sudo unmount '.$sdSector);
       exec('sudo mount '.$sdSector.' '.$montage);
       exec('sudo chmod 775 '.$montage);
+      exec('sudo chown www-data:www-data -R '.$montage);
     }
 
     public function changeBackupToSD (){
       $montage = "/media";
       config::save('backup::path', $montage);
       exec('sudo chmod 775 '.$montage);
+      exec('sudo chown www-data:www-data -R '.$montage);
     }
 
     public function changeBackupToEmmc (){
