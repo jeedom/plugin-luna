@@ -56,8 +56,8 @@ $('#bt_changeBackupToSD').off('click').on('click', function() {
   })
   
   $('#bt_changeBackupToEmmc').off('click').on('click', function() {
-    var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Activer backup sur la SD}}'
-    var dialog_message = '<center>{{les backups seront maintenant archivés sur cette carte SD.}}</center>'
+    var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Activer backup sur la Box}}'
+    var dialog_message = '<center>{{les backups seront maintenant archivés sur la box.}}</center>'
     bootbox.dialog({
       title: dialog_title,
       message: dialog_message,
