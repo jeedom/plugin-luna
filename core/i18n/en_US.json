@@ -157,7 +157,7 @@
         "Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.": "LTE chip detected. You can configure your operator from the plugin configuration",
         "Puce LTE non-détecté.": "LTE chip not detected",
         "LTE > Merci de lancer la détection depuis le plugin Luna": "LTE > Please launch the detection from the Luna plugin",
-        "Activation PIN '.$ltePin": "Activation PIN '.$ltePin",
+        "Activation PIN '.$ltePin": "PIN Activation '.$ltePin",
         "Erreur PIN": "PIN error",
         "Désactivation PIN": "PIN deactivation",
         "Activation LTE, la premiere connexion peut prendre 10 minutes.": "LTE activation, the first connection may take 10 minutes",
