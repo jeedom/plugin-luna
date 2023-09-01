@@ -69,6 +69,11 @@ try {
     luna::scanLTEModule();
     ajax::success();
   }
+  
+  if(init('action') == 'loraSwitchMaj'){
+    luna::loraSwitchMaj(init('active'));
+    ajax::success();
+  }
 
   if (init('action') == 'changeBackupToSD') {
     luna::changeBackupToSD();

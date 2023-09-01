@@ -728,9 +728,19 @@ class luna extends eqLogic {
       return true;
     }
   }
+
+  public function loraServiceActif(){
+    $loraService = exec('sudo systemctl is-active lora.service');
   
-  public function loraSwitchMaj($actived = true){
-    if($actived == true){
+    if($loraService == "activating"){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  
+  public function loraSwitchMaj($actived = "active"){
+    if($actived == "active"){
       message::add(__CLASS__, __('Activation Lora', __FILE__));
       exec('sudo cp '. __DIR__ . '/../../data/patchs/lora/lora.service /etc/systemd/system/');
       exec('sudo chmod 755 /etc/systemd/system/lora.service');
@@ -739,7 +749,7 @@ class luna extends eqLogic {
       exec('sudo systemctl start lora.service > /dev/null 2>/dev/null &');
     }else{
       message::add(__CLASS__, __('Désactivation Lora', __FILE__));
-      exec('sudo systemctl disable --now lora.service');
+      exec('sudo systemctl disable --now lora.service > /dev/null 2>/dev/null &');
     }
   }
   
