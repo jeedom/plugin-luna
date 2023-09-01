@@ -3,20 +3,22 @@ if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
 
-if(luna::loraServiceActif() == false){
-	$loraAc = '
-	<i class="icon_red fas fa-times"></i>
-	<a class="btn" id="bt_start_lora">
-		<i class="fas fa-check"></i>
-		<span class="hidden-xs"> Activation</span>
-	</a>';
-}else{
-	$loraAc = '
-	<i class="icon_green fas fa-check"></i>
-	<a class="btn" id="bt_stop_lora">
-	<i class="fas fa-times"></i>
-	<span class="hidden-xs"> Désactivé</span>
-	</a>';
+if(luna::detectedLora()){
+	if(luna::loraServiceActif() == false){
+		$loraAc = '
+		<i class="icon_red fas fa-times"></i>
+		<a class="btn" id="bt_start_lora">
+			<i class="fas fa-check"></i>
+			<span class="hidden-xs"> Activation</span>
+		</a>';
+	}else{
+		$loraAc = '
+		<i class="icon_green fas fa-check"></i>
+		<a class="btn" id="bt_stop_lora">
+		<i class="fas fa-times"></i>
+		<span class="hidden-xs"> Désactivé</span>
+		</a>';
+	}
 }
 
 ?>
