@@ -22,6 +22,8 @@ sudo systemctl enable --now batterySwitch.service
 php /var/www/html/core/php/jeecli.php message add "luna" "correction lte"
 sudo systemctl stop lte.service
 sudo systemctl disable lte.service
+sudo systemctl stop bg96
+sudo systemctl disable bg96
 sudo rm /usr/bin/bg96
 sudo rm /etc/init.d/bg96
 sudo rm /etc/systemd/system/lte.service
