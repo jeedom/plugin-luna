@@ -49,6 +49,15 @@ led_green() {
   echo 0,100,0 > /sys/class/leds/led5/rgb_value
 }
 
+led_red() {
+  echo 10,0,0 > /sys/class/leds/led0/rgb_value
+  echo 10,0,0 > /sys/class/leds/led1/rgb_value
+  echo 10,0,0 > /sys/class/leds/led2/rgb_value
+  echo 10,0,0 > /sys/class/leds/led3/rgb_value
+  echo 10,0,0 > /sys/class/leds/led4/rgb_value
+  echo 10,0,0 > /sys/class/leds/led5/rgb_value
+}
+
 led_blink_orange() {
   led_blink led0 100 30 0
   led_blink led1 100 30 0
@@ -85,41 +94,52 @@ led_off_all(){
 	led_off led5
 }
 
+BLUE_THRESHOLD=5
+ORANGE_THRESHOLD=10
+RED_THRESHOLD=20
+
 [ $ACTION = "pressed" ] && {
 	logger "battery_power_switch pressed, SEEN:$SEEN"
-  led_green
+  	led_green
 	exit 0
 }
 
-[ $SEEN -gt 20 ] && {
+[ $ACTION = "released" ] && {
+[ $SEEN -ge 30 ] && {
 	logger "reset factory!!!!"
 	led_blink_red
 	sleep 2
 	led_off_all
-	fsreset
-	reboot
+	sleep 2
+        led_jeedom
+	#fsreset
+	#reboot
 	exit 0
 }
 
-[ $SEEN -gt 10 ] && {
+[ $SEEN -ge 10 ] && [ $SEEN -lt 30 ] && {
 	logger "demande halt"
 	led_blink_orange
 	sleep 2
   led_off_all
-	halt
+	sleep 2
+        led_jeedom
+	#halt
 	exit 0
 }
 
-[ $SEEN -gt 5 ] && {
+[ $SEEN -ge 5 ] && [ $SEEN -lt 10 ] && {
 	logger "demande reboot"
   led_blink_blue
   sleep 2
   led_off_all
-	reboot
+	sleep 2
+	led_jeedom
+	#reboot
 	exit 0
 }
 
-[ $SEEN -gt 1 ] && {
+[ $SEEN -ge 1 ] && [ $SEEN -lt 5 ] && {
 	logger "battery switch ing"
 	val=`i2cget -f -y 0 0x6a 0x09`
 	ret=$?
@@ -135,4 +155,6 @@ led_off_all(){
 		fi
 	}
 	exit 0
+}
+exit 0
 }
