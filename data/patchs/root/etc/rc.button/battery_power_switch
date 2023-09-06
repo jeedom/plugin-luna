@@ -110,10 +110,8 @@ RED_THRESHOLD=20
 	led_blink_red
 	sleep 2
 	led_off_all
-	sleep 2
-        led_jeedom
-	#fsreset
-	#reboot
+	fsreset
+	reboot
 	exit 0
 }
 
@@ -121,21 +119,17 @@ RED_THRESHOLD=20
 	logger "demande halt"
 	led_blink_orange
 	sleep 2
-  led_off_all
-	sleep 2
-        led_jeedom
-	#halt
+  	led_off_all
+	halt
 	exit 0
 }
 
 [ $SEEN -ge 5 ] && [ $SEEN -lt 10 ] && {
 	logger "demande reboot"
-  led_blink_blue
-  sleep 2
-  led_off_all
-	sleep 2
-	led_jeedom
-	#reboot
+  	led_blink_blue
+  	sleep 2
+  	led_off_all
+	reboot
 	exit 0
 }
 
