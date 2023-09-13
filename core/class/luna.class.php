@@ -235,38 +235,11 @@ class luna extends eqLogic {
       if ($luna->getIsEnable() != 1) {
         continue;
       };
-      /*
-      if (!file_exists("/sys/class/net/eth0/operstate")) {
-        $ethup = 0;
-      } else {
-        $ethup = (trim(file_get_contents("/sys/class/net/eth0/operstate")) == 'up') ? 1 : 0;
-      }
-      if (!file_exists("/sys/class/net/wlan0/operstate")) {
-        $wifiup = 0;
-      } else {
-        $wifiup = (trim(file_get_contents("/sys/class/net/wlan0/operstate")) == 'up') ? 1 : 0;
-      }
-      $wifisignal = str_replace('.', '', shell_exec("sudo tail -n +3 /proc/net/wireless | awk '{ print $3 }'"));
-      $wifiIp = shell_exec("sudo ifconfig wlan0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'");
-      $lanIp = shell_exec("sudo ifconfig eth0 | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'");
-      log::add(__CLASS__, 'debug', 'Lan Ip is :' . $lanIp);
-      log::add(__CLASS__, 'debug', 'Wifi Ip is :' . $wifiIp);
-      $luna->checkAndUpdateCmd('isconnect', $wifiup);
-      $luna->checkAndUpdateCmd('isconnecteth', $ethup);
-      $luna->checkAndUpdateCmd('signal', $wifisignal);
-      $luna->checkAndUpdateCmd('lanip', $lanIp);
-      $luna->checkAndUpdateCmd('wifiip', $wifiIp);*/
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
-      /*if ($luna->getConfiguration('wifiEnabled', 0) == 1) {
-        $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifiSsid', ''));
-      } else {
-        $luna->checkAndUpdateCmd('ssid', 'Aucun');
-      }*/
     }
-    $ltetrouver = config::byKey('4G', 'luna', false);
-    if($ltetrouver != false){
+    if(luna::detectedLte() === true){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE == ""){
         luna::scanLTEModule();
@@ -280,10 +253,7 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', __('Jeedom est démarré, vérification des connexions.', __FILE__));
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($luna)) {
-      //$luna->wifiConnect();
-      //$luna->testHotspot();
-      $ltetrouver = config::byKey('4G', 'luna', false);
-      if($ltetrouver != false){
+      if(luna::detectedLte() === true){
         $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
         if($TTYLTE == ""){
           luna::scanLTEModule();
@@ -830,7 +800,7 @@ class luna extends eqLogic {
 
   public function configjsonlte(){
     log::add(__CLASS__, 'debug', 'CONFIG JSON LTE');
-    if(config::byKey('4G','luna', false) == false){
+    if(luna::detectedLte() === false || luna::detectedLte() == 'scan'){
       return false;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
