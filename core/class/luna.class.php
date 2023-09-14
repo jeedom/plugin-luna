@@ -304,12 +304,10 @@ class luna extends eqLogic {
     $interface = $interface - 1;
     log::add(__CLASS__, 'debug', 'Wifi enabled : ' .'sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan'.$interface);
     $return = [];
-   // if ($eqLogic[0]->getConfiguration('wifiEnabled') == true || $forced == true) {
       $scanresult = shell_exec('sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan'.$interface);
       $results = explode("\n", $scanresult);
       $return = array();
       foreach ($results as $result) {
-        //log::add(__CLASS__, 'debug', $result);
         $result = str_replace('\:', '$%$%', $result);
         $wifiDetail = explode(':', $result);
         $chan = $wifiDetail[3];
@@ -320,14 +318,12 @@ class luna extends eqLogic {
         $signal =  $wifiDetail[1];
         $ssid = str_replace('$%$%', '\:', $wifiDetail[0]);
         if ($ssid != '') {
-         // log::add(__CLASS__, 'debug', $ssid . ' with signal ' . $signal . ' and security ' . $security . ' on channel ' . $chan);
           if (isset($return[$ssid]) && $return[$ssid]['signal'] > $signal) {
             continue;
           }
           $return[$ssid] = array('ssid' => $ssid, 'signal' => $signal, 'security' => $security, 'channel' => $chan);
         }
       }
-    //}
     return $return;
   }
 
@@ -621,8 +617,6 @@ class luna extends eqLogic {
       exec('sudo lsblk -f -J 2>&1', $jsonVolumes);
       $response = false;
       foreach($jsonVolumes as $volume){
-        //log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . json_decode($volume, true));
-        //log::add(__CLASS__, 'debug', 'JSON VOLUME > ' . $volume);
         $valueVolume = json_decode($volume, true);
         if($valueVolume['name'] === 'mmcblk2' && $valueVolume['fstype'] === 'ext3'){
           log::add(__CLASS__, 'debug', 'JSON VOLUME > trouvé');
@@ -673,7 +667,7 @@ class luna extends eqLogic {
     
     /* ----- FIN SD ----- */
 
-      /* ------ DEBUT LORA ----- */
+    /* ------ DEBUT LORA ----- */
   
   public function formatUid($UID){
     $UID = substr($UID, -16);
@@ -945,12 +939,38 @@ class luna extends eqLogic {
     $connect->setEqLogic_id($this->getId());
     $connect->save();
 
+    $connect = $this->getCmd(null, 'connect2');
+    if (!is_object($connect)) {
+      $connect = new lunaCmd();
+      $connect->setLogicalId('connect2');
+      $connect->setIsVisible(1);
+      $connect->setName(__('Connecter Wifi 2', __FILE__));
+      $connect->setOrder(20);
+    }
+    $connect->setType('action');
+    $connect->setSubType('other');
+    $connect->setEqLogic_id($this->getId());
+    $connect->save();
+
     $disconnect = $this->getCmd(null, 'disconnect');
     if (!is_object($disconnect)) {
       $disconnect = new lunaCmd();
       $disconnect->setLogicalId('disconnect');
       $disconnect->setIsVisible(1);
       $disconnect->setName(__('Déconnecter Wifi', __FILE__));
+      $disconnect->setOrder(21);
+    }
+    $disconnect->setType('action');
+    $disconnect->setSubType('other');
+    $disconnect->setEqLogic_id($this->getId());
+    $disconnect->save();
+
+    $disconnect = $this->getCmd(null, 'disconnect2');
+    if (!is_object($disconnect)) {
+      $disconnect = new lunaCmd();
+      $disconnect->setLogicalId('disconnect2');
+      $disconnect->setIsVisible(1);
+      $disconnect->setName(__('Déconnecter Wifi 2', __FILE__));
       $disconnect->setOrder(21);
     }
     $disconnect->setType('action');
@@ -970,6 +990,18 @@ class luna extends eqLogic {
     $isconnect->setSubType('binary');
     $isconnect->save();
 
+    $isconnect = $this->getCmd(null, 'isconnect2');
+    if (!is_object($isconnect)) {
+      $isconnect = new lunaCmd();
+      $isconnect->setName(__('Etat Wifi 2', __FILE__));
+      $isconnect->setOrder(22);
+    }
+    $isconnect->setEqLogic_id($this->getId());
+    $isconnect->setLogicalId('isconnect2');
+    $isconnect->setType('info');
+    $isconnect->setSubType('binary');
+    $isconnect->save();
+
     $signal = $this->getCmd(null, 'signal');
     if (!is_object($signal)) {
       $signal = new lunaCmd();
@@ -978,6 +1010,18 @@ class luna extends eqLogic {
     }
     $signal->setEqLogic_id($this->getId());
     $signal->setLogicalId('signal');
+    $signal->setType('info');
+    $signal->setSubType('numeric');
+    $signal->save();
+
+    $signal = $this->getCmd(null, 'signal2');
+    if (!is_object($signal)) {
+      $signal = new lunaCmd();
+      $signal->setName(__('Signal wifi 2', __FILE__));
+      $signal->setOrder(23);
+    }
+    $signal->setEqLogic_id($this->getId());
+    $signal->setLogicalId('signal2');
     $signal->setType('info');
     $signal->setSubType('numeric');
     $signal->save();
@@ -1006,6 +1050,18 @@ class luna extends eqLogic {
     $wifiip->setSubType('string');
     $wifiip->save();
 
+    $wifiip = $this->getCmd(null, 'wifiip2');
+    if (!is_object($wifiip)) {
+      $wifiip = new lunaCmd();
+      $wifiip->setName(__('Wifi 2 IP', __FILE__));
+      $wifiip->setOrder(25);
+    }
+    $wifiip->setEqLogic_id($this->getId());
+    $wifiip->setLogicalId('wifiip2');
+    $wifiip->setType('info');
+    $wifiip->setSubType('string');
+    $wifiip->save();
+
     $ssid = $this->getCmd(null, 'ssid');
     if (!is_object($ssid)) {
       $ssid = new lunaCmd();
@@ -1014,6 +1070,18 @@ class luna extends eqLogic {
     }
     $ssid->setEqLogic_id($this->getId());
     $ssid->setLogicalId('ssid');
+    $ssid->setType('info');
+    $ssid->setSubType('string');
+    $ssid->save();
+
+    $ssid = $this->getCmd(null, 'ssid2');
+    if (!is_object($ssid)) {
+      $ssid = new lunaCmd();
+      $ssid->setName(__('SSID', __FILE__));
+      $ssid->setOrder(26);
+    }
+    $ssid->setEqLogic_id($this->getId());
+    $ssid->setLogicalId('ssid2');
     $ssid->setType('info');
     $ssid->setSubType('string');
     $ssid->save();
