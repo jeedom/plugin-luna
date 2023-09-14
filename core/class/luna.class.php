@@ -237,8 +237,8 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
-      $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi0Ssid'));
-      $luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi0Ssid'));
+      $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
+      $luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi2Ssid'));
     }
     if(luna::detectedLte() === true){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
