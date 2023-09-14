@@ -1065,7 +1065,7 @@ class luna extends eqLogic {
     $ssid = $this->getCmd(null, 'ssid');
     if (!is_object($ssid)) {
       $ssid = new lunaCmd();
-      $ssid->setName(__('SSID', __FILE__));
+      $ssid->setName(__('SSID du wifi 1', __FILE__));
       $ssid->setOrder(26);
     }
     $ssid->setEqLogic_id($this->getId());
@@ -1077,7 +1077,7 @@ class luna extends eqLogic {
     $ssid = $this->getCmd(null, 'ssid2');
     if (!is_object($ssid)) {
       $ssid = new lunaCmd();
-      $ssid->setName(__('SSID', __FILE__));
+      $ssid->setName(__('SSID du wifi 2', __FILE__));
       $ssid->setOrder(26);
     }
     $ssid->setEqLogic_id($this->getId());
@@ -1151,8 +1151,6 @@ class luna extends eqLogic {
   }
 
   public function postAjax() {
-    //$this->wifiConnect();
-    //$this->testHotspot();
   }
 }
 
