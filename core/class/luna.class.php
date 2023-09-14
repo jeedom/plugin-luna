@@ -234,11 +234,23 @@ class luna extends eqLogic {
       if ($luna->getIsEnable() != 1) {
         continue;
       };
+      $ssid = $luna->getConfiguration('wifi1Ssid', null);
+      $ssid2 = $luna->getConfiguration('wifi2Ssid', null);
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
       $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
+      if($ssid != null){
+        $luna->checkAndUpdateCmd('isconnected', luna::isWificonnected($ssid));
+      }else{
+        $luna->checkAndUpdateCmd('isconnected', false);
+      }
       $luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi2Ssid'));
+      if($ssid2 != null){
+        $luna->checkAndUpdateCmd('isconnected2', luna::isWificonnected($ssid2));
+      }else{
+        $luna->checkAndUpdateCmd('isconnected2', false);
+      }
     }
     if(luna::detectedLte() === true){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
@@ -1007,30 +1019,6 @@ class luna extends eqLogic {
     $isconnect->setType('info');
     $isconnect->setSubType('binary');
     $isconnect->save();
-
-    $signal = $this->getCmd(null, 'signal');
-    if (!is_object($signal)) {
-      $signal = new lunaCmd();
-      $signal->setName(__('Signal', __FILE__));
-      $signal->setOrder(23);
-    }
-    $signal->setEqLogic_id($this->getId());
-    $signal->setLogicalId('signal');
-    $signal->setType('info');
-    $signal->setSubType('numeric');
-    $signal->save();
-
-    $signal = $this->getCmd(null, 'signal2');
-    if (!is_object($signal)) {
-      $signal = new lunaCmd();
-      $signal->setName(__('Signal wifi 2', __FILE__));
-      $signal->setOrder(23);
-    }
-    $signal->setEqLogic_id($this->getId());
-    $signal->setLogicalId('signal2');
-    $signal->setType('info');
-    $signal->setSubType('numeric');
-    $signal->save();
 
     $lanip = $this->getCmd(null, 'lanip');
     if (!is_object($lanip)) {
