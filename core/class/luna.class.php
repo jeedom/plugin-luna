@@ -231,13 +231,14 @@ class luna extends eqLogic {
     $eqLogics = eqLogic::byType('luna');
     foreach ($eqLogics as $luna) {
       log::add(__CLASS__, 'debug', 'Pull Cron luna');
-
       if ($luna->getIsEnable() != 1) {
         continue;
       };
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
+      $luna->checkAndUpdateCmd('ssid', luna->getConfiguration('wifi0Ssid'));
+      $luna->checkAndUpdateCmd('ssid2', luna->getConfiguration('wifi0Ssid'));
     }
     if(luna::detectedLte() === true){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
@@ -381,6 +382,20 @@ class luna extends eqLogic {
     return $return;
   }
 
+  public static function disconnectWifi($interface = 1) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    $device = $interface - 1;
+    shell_exec('sudo nmcli dev disconnect wlan'.$device);
+    return $return;
+  }
+
+  public static function connectWifi($interface = 1) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    $device = $interface - 1;
+    shell_exec('sudo nmcli dev connect wlan'.$device);
+    return $return;
+  }
+
   public static function saveEthernet($data) {
     $eqLogic = eqLogic::byType(__CLASS__);
     log::add(__CLASS__, 'debug', 'save ethernet >>'.json_encode($data));
@@ -407,8 +422,6 @@ class luna extends eqLogic {
         shell_exec('sudo nmcli con modify "Wired connection 1" ipv4.addresses '.luna::convertIP($Ip, $Mask).' ipv4.gateway '.$Router.' ipv4.dns '.$Dns.' ipv4.method manual');
         shell_exec('sudo nmcli con up "Wired connection 1"');
       }
-
-
     return $return;
   }
 
@@ -420,12 +433,7 @@ class luna extends eqLogic {
       shell_exec('sudo nmcli con modify '.$priority.' ipv4.route-metric '.($prio * 100));
       shell_exec('sudo nmcli con up '.$priority);
       $prio++;
-
-
     }
-    //shell_exec('sudo systemctl restart NetworkManager');
-    //sleep(2);
-    //shell_exec('sudo nmcli con up "eth0"');
   }
 
   public static function convertIP($ip,$mask){
@@ -454,10 +462,8 @@ class luna extends eqLogic {
           $conDevice = preg_replace("#(\r\n|\n\r|\n|\r)#","",$conDevice);
         }
         
-
         $return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'active' => $conActive, 'device' => $conDevice);
         log::add(__CLASS__, 'debug', json_encode($return)); 
-
       }
 
     return $return;
@@ -1164,12 +1170,15 @@ class lunaCmd extends cmd {
     $action = $this->getLogicalId();
     switch ($action) {
       case 'connect':
-        $eqLogic->setConfiguration('wifiEnabled', true);
-        $eqLogic->save();
+        luna::disconnectWifi(1);
         break;
       case 'disconnect':
-        $eqLogic->setConfiguration('wifiEnabled', false);
-        $eqLogic->save();
+        luna::connectWifi(1);
+      case 'connect2':
+        luna::disconnectWifi(2);
+        break;
+      case 'disconnect2':
+        luna::connectWifi(2);
         break;
       case 'dsled':
         luna::dsLed( $_options['select']);
