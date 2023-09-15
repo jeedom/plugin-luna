@@ -292,11 +292,11 @@ class luna extends eqLogic {
     if ($countProfile > 1) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
       shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep wifi | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
-      return true;
+      return 'true';
     } else if ($countProfile == 1) {
-      return true;
+      return 'true';
     } else {
-      return false;
+      return 'false';
     }
   }
 
@@ -829,8 +829,8 @@ class luna extends eqLogic {
 
     $exist = luna::isWifiProfileexist('JeedomLTE');
 
-    if(1 === 1){
-    //if($exist === false){
+
+    if($exist === 'false'){
       log::add(__CLASS__, 'debug', 'CREATION DU PROFIL JEEDOMLTE');
       exec("sudo nmcli connection add type gsm ifname '*' con-name JeedomLTE connection.autoconnect yes");
     }
