@@ -18,7 +18,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 	<fieldset>
 	  	<legend><i class="fa fa-signal"></i> {{LTE}}</legend>
 		<?php
-		if(luna::detectedLte() == "true"){
+		if(config::byKey('4G','luna', 'scan') == "OK"){
 		?>
 		<div class="row">
 			<div class="col-sm-6">

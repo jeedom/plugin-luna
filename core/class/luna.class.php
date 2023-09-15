@@ -252,7 +252,7 @@ class luna extends eqLogic {
         $luna->checkAndUpdateCmd('isconnected2', false);
       }
     }
-    if(luna::detectedLte() === true){
+    if(config::byKey('4G','luna', 'scan') === 'OK'){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE == ""){
         luna::scanLTEModule();
@@ -266,7 +266,7 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', __('Jeedom est démarré, vérification des connexions.', __FILE__));
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($luna)) {
-      if(luna::detectedLte() === true){
+      if(config::byKey('4G','luna', 'scan') === 'OK'){
         $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
         if($TTYLTE == ""){
           luna::scanLTEModule();
@@ -812,7 +812,7 @@ class luna extends eqLogic {
 
   public function configjsonlte(){
     log::add(__CLASS__, 'debug', 'CONFIG JSON LTE');
-    if(luna::detectedLte() === false || luna::detectedLte() == 'scan'){
+    if(config::byKey('4G','luna', 'scan') === false || config::byKey('4G','luna', 'scan') == 'scan'){
       return false;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
