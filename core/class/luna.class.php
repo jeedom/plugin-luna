@@ -252,7 +252,7 @@ class luna extends eqLogic {
         $luna->checkAndUpdateCmd('isconnected2', false);
       }
     }
-    if(config::byKey('4G','luna', 'scan') === 'OK'){
+    if(luna::detectedLte() === true){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE == ""){
         luna::scanLTEModule();
@@ -266,7 +266,7 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', __('Jeedom est démarré, vérification des connexions.', __FILE__));
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($luna)) {
-      if(config::byKey('4G','luna', 'scan') === 'OK'){
+      if(luna::detectedLte() === true){
         $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
         if($TTYLTE == ""){
           luna::scanLTEModule();
@@ -292,11 +292,11 @@ class luna extends eqLogic {
     if ($countProfile > 1) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
       shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep wifi | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
-      return 'true';
+      return true;
     } else if ($countProfile == 1) {
-      return 'true';
+      return true;
     } else {
-      return 'false';
+      return false;
     }
   }
 
@@ -771,7 +771,7 @@ class luna extends eqLogic {
     $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
     if($TTYLTE != ""){
       message::add(__CLASS__, __('Puce LTE détecté.', __FILE__));
-      config::save('4G','OK', 'luna');
+      config::save('4G', 'OK', 'luna');
       return true;
     }else{
       message::add(__CLASS__, __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
@@ -786,11 +786,11 @@ class luna extends eqLogic {
       $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE != ""){
         message::add(__CLASS__, __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));
-        config::save('4G','OK', 'luna');
+        config::save('4G', "OK", 'luna');
         return true;
       }else{
         message::add(__CLASS__, __('Puce LTE non-détecté.', __FILE__));
-        config::save('4G','NOK', 'luna');
+        config::save('4G', "NOK", 'luna');
         return false;
       }
     }
@@ -799,7 +799,7 @@ class luna extends eqLogic {
   public function detectedLte (){
       if(config::byKey('4G','luna', null) == null){
         return 'scan';
-      }elseif(config::byKey('4G','luna', null) == 'NOK'){
+      }elseif(config::byKey('4G','luna', null) == "NOK"){
         return false;
       }else{
         return true;
@@ -812,7 +812,7 @@ class luna extends eqLogic {
 
   public function configjsonlte(){
     log::add(__CLASS__, 'debug', 'CONFIG JSON LTE');
-    if(config::byKey('4G','luna', 'scan') === false || config::byKey('4G','luna', 'scan') == 'scan'){
+    if(luna::detectedLte() == 'false' || luna::detectedLte() == 'scan'){
       return false;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
@@ -829,8 +829,7 @@ class luna extends eqLogic {
 
     $exist = luna::isWifiProfileexist('JeedomLTE');
 
-
-    if($exist === 'false'){
+    if($exist === false){
       log::add(__CLASS__, 'debug', 'CREATION DU PROFIL JEEDOMLTE');
       exec("sudo nmcli connection add type gsm ifname '*' con-name JeedomLTE connection.autoconnect yes");
     }
