@@ -286,12 +286,12 @@ class luna extends eqLogic {
     return true;
   }
 
-  public static function isWifiProfileexist($ssid) {
+  public static function isWifiProfileexist($ssid,$type = 'wifi') {
     $result = shell_exec("nmcli --fields NAME con show");
     $countProfile = substr_count($result, $ssid);
     if ($countProfile > 1) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
-      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep wifi | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
+      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep ".$type." | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
       return true;
     } else if ($countProfile == 1) {
       return true;
@@ -797,11 +797,15 @@ class luna extends eqLogic {
   }
 
   public function detectedLte (){
-      if(config::byKey('4G','luna', null) == null){
+    $scan = config::byKey('4G','luna', null);
+      if($scan == null){
+        log::add(__CLASS__, 'debug', 'SCAN');
         return 'scan';
-      }elseif(config::byKey('4G','luna', null) == "NOK"){
+      }elseif($scan == "NOK"){
+        log::add(__CLASS__, 'debug', 'NOK');
         return false;
       }else{
+        log::add(__CLASS__, 'debug', 'OK');
         return true;
       }
   }
@@ -811,8 +815,13 @@ class luna extends eqLogic {
   }
 
   public function configjsonlte(){
-    log::add(__CLASS__, 'debug', 'CONFIG JSON LTE');
-    if(luna::detectedLte() == 'false' || luna::detectedLte() == 'scan'){
+    log::add(__CLASS__, 'debug', 'CONFIG JSON LTE'  .luna::detectedLte());
+    if(luna::detectedLte() === 'false'){
+      log::add(__CLASS__, 'debug', 'FAUX');
+      return false;
+    }
+    if(luna::detectedLte() === 'scan'){
+      log::add(__CLASS__, 'debug', 'FAUX SCAN');
       return false;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
@@ -827,8 +836,9 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', 'USER > ' . $user);
     log::add(__CLASS__, 'debug', 'PASSWORD > ' . $password);
 
-    $exist = luna::isWifiProfileexist('JeedomLTE');
+    $exist = luna::isWifiProfileexist('JeedomLTE', 'gsm');
 
+    log::add(__CLASS__, 'debug', 'EXISTE > ' . $exist);
     if($exist === false){
       log::add(__CLASS__, 'debug', 'CREATION DU PROFIL JEEDOMLTE');
       exec("sudo nmcli connection add type gsm ifname '*' con-name JeedomLTE connection.autoconnect yes");
