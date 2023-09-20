@@ -231,13 +231,26 @@ class luna extends eqLogic {
     $eqLogics = eqLogic::byType('luna');
     foreach ($eqLogics as $luna) {
       log::add(__CLASS__, 'debug', 'Pull Cron luna');
-
       if ($luna->getIsEnable() != 1) {
         continue;
       };
+      $ssid = $luna->getConfiguration('wifi1Ssid', null);
+      $ssid2 = $luna->getConfiguration('wifi2Ssid', null);
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatus());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
+      $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
+      if($ssid != null){
+        $luna->checkAndUpdateCmd('isconnected', luna::isWificonnected($ssid));
+      }else{
+        $luna->checkAndUpdateCmd('isconnected', false);
+      }
+      $luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi2Ssid'));
+      if($ssid2 != null){
+        $luna->checkAndUpdateCmd('isconnected2', luna::isWificonnected($ssid2));
+      }else{
+        $luna->checkAndUpdateCmd('isconnected2', false);
+      }
     }
     if(luna::detectedLte() === true){
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
@@ -273,12 +286,12 @@ class luna extends eqLogic {
     return true;
   }
 
-  public static function isWifiProfileexist($ssid) {
+  public static function isWifiProfileexist($ssid,$type = 'wifi') {
     $result = shell_exec("nmcli --fields NAME con show");
     $countProfile = substr_count($result, $ssid);
     if ($countProfile > 1) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
-      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep wifi | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
+      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep ".$type." | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
       return true;
     } else if ($countProfile == 1) {
       return true;
@@ -381,6 +394,20 @@ class luna extends eqLogic {
     return $return;
   }
 
+  public static function disconnectWifi($interface = 1) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    $device = $interface - 1;
+    shell_exec('sudo nmcli dev disconnect wlan'.$device);
+    return $return;
+  }
+
+  public static function connectWifi($interface = 1) {
+    $eqLogic = eqLogic::byType(__CLASS__);
+    $device = $interface - 1;
+    shell_exec('sudo nmcli dev connect wlan'.$device);
+    return $return;
+  }
+
   public static function saveEthernet($data) {
     $eqLogic = eqLogic::byType(__CLASS__);
     log::add(__CLASS__, 'debug', 'save ethernet >>'.json_encode($data));
@@ -407,8 +434,6 @@ class luna extends eqLogic {
         shell_exec('sudo nmcli con modify "Wired connection 1" ipv4.addresses '.luna::convertIP($Ip, $Mask).' ipv4.gateway '.$Router.' ipv4.dns '.$Dns.' ipv4.method manual');
         shell_exec('sudo nmcli con up "Wired connection 1"');
       }
-
-
     return $return;
   }
 
@@ -420,12 +445,7 @@ class luna extends eqLogic {
       shell_exec('sudo nmcli con modify '.$priority.' ipv4.route-metric '.($prio * 100));
       shell_exec('sudo nmcli con up '.$priority);
       $prio++;
-
-
     }
-    //shell_exec('sudo systemctl restart NetworkManager');
-    //sleep(2);
-    //shell_exec('sudo nmcli con up "eth0"');
   }
 
   public static function convertIP($ip,$mask){
@@ -454,10 +474,8 @@ class luna extends eqLogic {
           $conDevice = preg_replace("#(\r\n|\n\r|\n|\r)#","",$conDevice);
         }
         
-
         $return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'active' => $conActive, 'device' => $conDevice);
         log::add(__CLASS__, 'debug', json_encode($return)); 
-
       }
 
     return $return;
@@ -753,7 +771,7 @@ class luna extends eqLogic {
     $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
     if($TTYLTE != ""){
       message::add(__CLASS__, __('Puce LTE détecté.', __FILE__));
-      config::save('4G', true, 'luna');
+      config::save('4G', 'OK', 'luna');
       return true;
     }else{
       message::add(__CLASS__, __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
@@ -768,22 +786,26 @@ class luna extends eqLogic {
       $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
       if($TTYLTE != ""){
         message::add(__CLASS__, __('Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.', __FILE__));
-        config::save('4G', true, 'luna');
+        config::save('4G', "OK", 'luna');
         return true;
       }else{
         message::add(__CLASS__, __('Puce LTE non-détecté.', __FILE__));
-        config::save('4G', false, 'luna');
+        config::save('4G', "NOK", 'luna');
         return false;
       }
     }
   }
 
   public function detectedLte (){
-      if(config::byKey('4G','luna', null) == null){
+    $scan = config::byKey('4G','luna', null);
+      if($scan == null){
+        log::add(__CLASS__, 'debug', 'SCAN');
         return 'scan';
-      }elseif(config::byKey('4G','luna', null) == false){
+      }elseif($scan == "NOK"){
+        log::add(__CLASS__, 'debug', 'NOK');
         return false;
       }else{
+        log::add(__CLASS__, 'debug', 'OK');
         return true;
       }
   }
@@ -793,8 +815,13 @@ class luna extends eqLogic {
   }
 
   public function configjsonlte(){
-    log::add(__CLASS__, 'debug', 'CONFIG JSON LTE');
-    if(luna::detectedLte() === false || luna::detectedLte() == 'scan'){
+    log::add(__CLASS__, 'debug', 'CONFIG JSON LTE'  .luna::detectedLte());
+    if(luna::detectedLte() === 'false'){
+      log::add(__CLASS__, 'debug', 'FAUX');
+      return false;
+    }
+    if(luna::detectedLte() === 'scan'){
+      log::add(__CLASS__, 'debug', 'FAUX SCAN');
       return false;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
@@ -809,10 +836,10 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', 'USER > ' . $user);
     log::add(__CLASS__, 'debug', 'PASSWORD > ' . $password);
 
-    $exist = luna::isWifiProfileexist('JeedomLTE');
+    $exist = luna::isWifiProfileexist('JeedomLTE', 'gsm');
 
-    if(1 === 1){
-    //if($exist === false){
+    log::add(__CLASS__, 'debug', 'EXISTE > ' . $exist);
+    if($exist === false){
       log::add(__CLASS__, 'debug', 'CREATION DU PROFIL JEEDOMLTE');
       exec("sudo nmcli connection add type gsm ifname '*' con-name JeedomLTE connection.autoconnect yes");
     }
@@ -1002,30 +1029,6 @@ class luna extends eqLogic {
     $isconnect->setSubType('binary');
     $isconnect->save();
 
-    $signal = $this->getCmd(null, 'signal');
-    if (!is_object($signal)) {
-      $signal = new lunaCmd();
-      $signal->setName(__('Signal', __FILE__));
-      $signal->setOrder(23);
-    }
-    $signal->setEqLogic_id($this->getId());
-    $signal->setLogicalId('signal');
-    $signal->setType('info');
-    $signal->setSubType('numeric');
-    $signal->save();
-
-    $signal = $this->getCmd(null, 'signal2');
-    if (!is_object($signal)) {
-      $signal = new lunaCmd();
-      $signal->setName(__('Signal wifi 2', __FILE__));
-      $signal->setOrder(23);
-    }
-    $signal->setEqLogic_id($this->getId());
-    $signal->setLogicalId('signal2');
-    $signal->setType('info');
-    $signal->setSubType('numeric');
-    $signal->save();
-
     $lanip = $this->getCmd(null, 'lanip');
     if (!is_object($lanip)) {
       $lanip = new lunaCmd();
@@ -1065,7 +1068,7 @@ class luna extends eqLogic {
     $ssid = $this->getCmd(null, 'ssid');
     if (!is_object($ssid)) {
       $ssid = new lunaCmd();
-      $ssid->setName(__('SSID', __FILE__));
+      $ssid->setName(__('SSID du wifi 1', __FILE__));
       $ssid->setOrder(26);
     }
     $ssid->setEqLogic_id($this->getId());
@@ -1077,7 +1080,7 @@ class luna extends eqLogic {
     $ssid = $this->getCmd(null, 'ssid2');
     if (!is_object($ssid)) {
       $ssid = new lunaCmd();
-      $ssid->setName(__('SSID', __FILE__));
+      $ssid->setName(__('SSID du wifi 2', __FILE__));
       $ssid->setOrder(26);
     }
     $ssid->setEqLogic_id($this->getId());
@@ -1151,8 +1154,6 @@ class luna extends eqLogic {
   }
 
   public function postAjax() {
-    //$this->wifiConnect();
-    //$this->testHotspot();
   }
 }
 
@@ -1166,12 +1167,15 @@ class lunaCmd extends cmd {
     $action = $this->getLogicalId();
     switch ($action) {
       case 'connect':
-        $eqLogic->setConfiguration('wifiEnabled', true);
-        $eqLogic->save();
+        luna::disconnectWifi(1);
         break;
       case 'disconnect':
-        $eqLogic->setConfiguration('wifiEnabled', false);
-        $eqLogic->save();
+        luna::connectWifi(1);
+      case 'connect2':
+        luna::disconnectWifi(2);
+        break;
+      case 'disconnect2':
+        luna::connectWifi(2);
         break;
       case 'dsled':
         luna::dsLed( $_options['select']);
