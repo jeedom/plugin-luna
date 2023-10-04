@@ -364,27 +364,27 @@ class luna extends eqLogic {
     }
     if($wifiMode == "client"){
       log::add(__CLASS__, 'debug', 'save wifi >>bbbb'.luna::convertIP($wifiIp, $wifiMask));
-      shell_exec('sudo nmcli dev wifi connect '.$wifiSsid.' password '.$wifiPassword);
-      shell_exec('sudo nmcli con down '.$wifiSsid);
-      shell_exec('sudo nmcli con modify '.$wifiSsid.'  ifname wlan'.$device);
+      shell_exec('sudo nmcli dev wifi connect "'.$wifiSsid.'" password "'.$wifiPassword.'"');
+      shell_exec('sudo nmcli con down "'.$wifiSsid.'"');
+      shell_exec('sudo nmcli con modify "'.$wifiSsid.'"  ifname wlan'.$device);
       if($typeAdressage == 'dhcp'){
-        shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.method auto');
+        shell_exec('sudo nmcli con modify "'.$wifiSsid.'" ipv4.method auto');
         if($wifiDnsOpt!=""){
-          shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.ignore-auto-dns yes');
-          shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.dns '.$wifiDnsOpt);
+          shell_exec('sudo nmcli con modify "'.$wifiSsid.'" ipv4.ignore-auto-dns yes');
+          shell_exec('sudo nmcli con modify "'.$wifiSsid.'" ipv4.dns '.$wifiDnsOpt);
         }else{
-          shell_exec('sudo nmcli con modify '.$wifiSsid.' ipv4.ignore-auto-dns no');
+          shell_exec('sudo nmcli con modify "'.$wifiSsid.'" ipv4.ignore-auto-dns no');
         }
-        shell_exec('sudo nmcli con up '.$wifiSsid);
+        shell_exec('sudo nmcli con up "'.$wifiSsid.'"');
       }else{
-        shell_exec('sudo nmcli con modify '.$wifiSsid.'  ipv4.addresses '.luna::convertIP($wifiIp, $wifiMask).' ipv4.gateway '.$wifiRouter.' ipv4.dns '.$wifiDns.' ipv4.method manual');
-        shell_exec('sudo nmcli con modify '.$wifiSsid.'  ifname wlan'.$device);
-        shell_exec('sudo nmcli con up '.$wifiSsid);
+        shell_exec('sudo nmcli con modify "'.$wifiSsid.'"  ipv4.addresses '.luna::convertIP($wifiIp, $wifiMask).' ipv4.gateway '.$wifiRouter.' ipv4.dns '.$wifiDns.' ipv4.method manual');
+        shell_exec('sudo nmcli con modify "'.$wifiSsid.'"  ifname wlan'.$device);
+        shell_exec('sudo nmcli con up "'.$wifiSsid.'"');
       }
       sleep(5);
     }else if($wifiMode == "hotspot"){
       log::add(__CLASS__, 'debug', 'save wifi >>hotspot');
-      shell_exec('sudo nmcli con add type wifi ifname wlan'.$device.' con-name Hostspot-wlan'.$device.' autoconnect yes ssid '.$wifiHotspotName);
+      shell_exec('sudo nmcli con add type wifi ifname wlan'.$device.' con-name Hostspot-wlan'.$device.' autoconnect yes ssid "'.$wifiHotspotName.'"');
       shell_exec('sudo nmcli con modify Hostspot-wlan'.$device.' 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared');
       shell_exec('sudo nmcli con modify Hostspot-wlan'.$device.' wifi-sec.key-mgmt wpa-psk');
       shell_exec('sudo nmcli con modify Hostspot-wlan'.$device.' wifi-sec.psk "'.$wifiHotspotPwd.'"');
