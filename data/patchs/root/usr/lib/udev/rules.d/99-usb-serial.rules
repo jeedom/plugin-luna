@@ -24,3 +24,6 @@ SUBSYSTEM=="tty",ENV{ID_PATH}=="platform-ff5c0000.usb-usb-0:1.1:1.2",SYMLINK+="t
 
 #LTEUSB
 SUBSYSTEM=="tty", ATTRS{idVendor}=="2c7c", ATTRS{idProduct}=="0191", SYMLINK+="ttyUSB-LTE-Quectel"
+
+#LiXee-GSM
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6015", SYMLINK+="ttyUSB-LiXee-GSM"
