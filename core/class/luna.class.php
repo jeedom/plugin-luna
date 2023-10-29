@@ -237,7 +237,7 @@ class luna extends eqLogic {
       $ssid = $luna->getConfiguration('wifi1Ssid', null);
       $ssid2 = $luna->getConfiguration('wifi2Ssid', null);
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
-      $luna->checkAndUpdateCmd('status', luna::batteryStatus());
+      $luna->checkAndUpdateCmd('status', luna::batteryStatusLuna());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
       $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
       if($ssid != null){
@@ -590,7 +590,7 @@ class luna extends eqLogic {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
   }
 
-  public function batteryStatus (){
+  public function batteryStatusLuna (){
     return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
   }
 

@@ -4,7 +4,7 @@ if (!isConnect('admin')) {
 }
 $batteryPourcentage = luna::batteryPourcentage();
 $tempBattery = luna::batteryTemp();
-$status = luna::batteryStatus();
+$status = luna::batteryStatusLuna();
 $powerAVG = luna::batteryPowerAvg();
 
 if($powerAVG == 0){
