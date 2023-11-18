@@ -313,7 +313,6 @@ class luna extends eqLogic {
   }
 
   public static function listWifi($forced = false, $interface = 1) {
-    $eqLogic = eqLogic::byType(__CLASS__);
     $interface = $interface - 1;
     log::add(__CLASS__, 'debug', 'Wifi enabled : ' . 'sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan' . $interface);
     $return = [];
@@ -341,7 +340,6 @@ class luna extends eqLogic {
   }
 
   public static function saveWifi($interface = 1, $data) {
-    $eqLogic = eqLogic::byType(__CLASS__);
     $device = $interface - 1;
     log::add(__CLASS__, 'debug', 'save wifi >>' . json_encode($data));
     $return = [];
@@ -394,21 +392,18 @@ class luna extends eqLogic {
   }
 
   public static function disconnectWifi($interface = 1) {
-    $eqLogic = eqLogic::byType(__CLASS__);
     $device = $interface - 1;
     shell_exec('sudo nmcli dev disconnect wlan' . $device);
     return;
   }
 
   public static function connectWifi($interface = 1) {
-    $eqLogic = eqLogic::byType(__CLASS__);
     $device = $interface - 1;
     shell_exec('sudo nmcli dev connect wlan' . $device);
     return;
   }
 
   public static function saveEthernet($data) {
-    $eqLogic = eqLogic::byType(__CLASS__);
     log::add(__CLASS__, 'debug', 'save ethernet >>' . json_encode($data));
     $return = [];
     $typeAdressage = $data[0]['configuration']['ethernetTypeAdressage'];
@@ -437,7 +432,6 @@ class luna extends eqLogic {
   }
 
   public static function savePriority($priorities) {
-    $eqLogic = eqLogic::byType(__CLASS__);
     log::add(__CLASS__, 'debug', 'save priority >>' . json_encode($priorities));
     $prio = 1;
     foreach ($priorities as $priority) {
@@ -452,7 +446,6 @@ class luna extends eqLogic {
   }
 
   public static function listConnections($interface = 1) {
-    $eqLogic = eqLogic::byType(__CLASS__);
     $interface = $interface - 1;
     log::add(__CLASS__, 'debug', 'Wifi enabled : ' . 'sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan' . $interface);
     $return = [];
@@ -481,12 +474,8 @@ class luna extends eqLogic {
   }
 
   public static function removeConnection($UUID) {
-    $eqLogic = eqLogic::byType(__CLASS__);
-    $return = [];
     shell_exec('sudo nmcli con down ' . $UUID);
-    $scanresult = shell_exec('sudo nmcli con del ' . $UUID);
-
-
+    shell_exec('sudo nmcli con del ' . $UUID);
     return True;
   }
 
