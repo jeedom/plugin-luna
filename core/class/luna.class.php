@@ -1161,6 +1161,7 @@ class lunaCmd extends cmd {
     if ($this->getType() == '') {
       return '';
     }
+    /** @var luna */
     $eqLogic = $this->getEqlogic();
     $action = $this->getLogicalId();
     switch ($action) {
@@ -1176,7 +1177,7 @@ class lunaCmd extends cmd {
         luna::connectWifi(2);
         break;
       case 'dsled':
-        luna::dsLed($_options['select']);
+        $eqLogic->dsLed($_options['select']);
         break;
     }
     $eqLogic->cron5($eqLogic->getId());
