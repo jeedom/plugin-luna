@@ -491,9 +491,10 @@ class luna extends eqLogic {
 
   /* ----- HotSpot ----- */
 
-  public function testHotspot() {
+  public static function testHotspot() {
     $linkForHotspot = __DIR__ . '/../../resources/lnxrouter';
-    if ($this->getConfiguration('hotspotEnabled') == true) {
+    $luna = eqLogic::byLogicalId('wifi', __CLASS__);
+    if ($luna->getConfiguration('hotspotEnabled') == true) {
       $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
       if ($pid != "") {
         luna::activeHotSpot();
@@ -559,7 +560,7 @@ class luna extends eqLogic {
 
   /* ----- DSLED ----- */
 
-  public function dsLed($demande = 'g on') {
+  public static function dsLed($demande = 'g on') {
     $dsledExe = __DIR__ . '/../../resources/dsled/dsled';
     exec('sudo ' . $dsledExe . ' g off');
     exec('sudo ' . $dsledExe . ' r off');
@@ -574,25 +575,25 @@ class luna extends eqLogic {
 
   /* ----- BATTERY ----- */
 
-  public function batteryPourcentage() {
+  public static function batteryPourcentage() {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
   }
 
-  public function batteryStatusLuna() {
+  public static function batteryStatusLuna() {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
   }
 
-  public function batteryTemp() {
+  public static function batteryTemp() {
     $temp = exec('sudo cat /sys/class/power_supply/bq27546-0/temp');
     $temp = $temp / 10;
     return $temp;
   }
 
-  public function batteryPowerAvg() {
+  public static function batteryPowerAvg() {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/power_avg');
   }
 
-  public function batteryPresent() {
+  public static function batteryPresent() {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/present');
   }
 
@@ -600,7 +601,7 @@ class luna extends eqLogic {
 
   /* root etc Patch */
 
-  public function patchLuna() {
+  public static function patchLuna() {
     message::add(__CLASS__, __('Patch Luna', __FILE__));
     exec('sudo cp -r ' . __DIR__ . '/../../data/patchs/root/* /');
     exec('sudo ' . __DIR__ . '/../../data/patchs/patchLuna.sh');
@@ -611,7 +612,7 @@ class luna extends eqLogic {
 
   /* ----- SD ----- */
 
-  public function partitionSD() {
+  public static function partitionSD() {
     exec('sudo unmount ' . $sdSector);
     message::add(__CLASS__, __('Patitionnage en cours', __FILE__));
     exec('sudo chmod +x ../../data/patchs/partitionSD.sh');
@@ -619,7 +620,7 @@ class luna extends eqLogic {
     message::add(__CLASS__, __('Carte SD bien partitionnée', __FILE__));
   }
 
-  public function checkPartitionSD() {
+  public static function checkPartitionSD() {
     exec('sudo lsblk -f -J 2>&1', $jsonVolumes);
     $response = false;
     foreach ($jsonVolumes as $volume) {
@@ -632,7 +633,7 @@ class luna extends eqLogic {
     return $response;
   }
 
-  public function presentSD() {
+  public static function presentSD() {
     $sdSector = "/dev/mmcblk2";
     if (file_exists($sdSector)) {
       return true;
@@ -640,7 +641,7 @@ class luna extends eqLogic {
     return false;
   }
 
-  public function BackupOkInSd() {
+  public static function BackupOkInSd() {
     if (config::byKey('backup::path') == "/media") {
       return true;
     } else {
@@ -648,7 +649,7 @@ class luna extends eqLogic {
     }
   }
 
-  public function mountSD() {
+  public static function mountSD() {
     $sdSector = "/dev/mmcblk2";
     $montage = "/media";
     exec('sudo unmount ' . $sdSector);
@@ -657,14 +658,14 @@ class luna extends eqLogic {
     exec('sudo chown www-data:www-data -R ' . $montage);
   }
 
-  public function changeBackupToSD() {
+  public static function changeBackupToSD() {
     $montage = "/media";
     config::save('backup::path', $montage);
     exec('sudo chmod 775 ' . $montage);
     exec('sudo chown www-data:www-data -R ' . $montage);
   }
 
-  public function changeBackupToEmmc() {
+  public static function changeBackupToEmmc() {
     if (luna::BackupOkInSd()) {
       $montage = "/var/www/html/backup/";
       config::save('backup::path', $montage);
@@ -675,7 +676,7 @@ class luna extends eqLogic {
 
   /* ------ DEBUT LORA ----- */
 
-  public function formatUid($UID) {
+  public static function formatUid($UID) {
     $UID = substr($UID, -16);
     log::add(__CLASS__, 'debug', 'UID -18 > ' . $UID);
     $UID = str_replace('x', '', $UID);
@@ -683,7 +684,7 @@ class luna extends eqLogic {
     return $UID;
   }
 
-  public function detectedLora() {
+  public static function detectedLora() {
     if (config::byKey('gatewayUID', 'luna', null) == null) {
       $UID = exec('cd /usr/bin/lora && sudo ./chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
       if ($UID != "") {
@@ -701,7 +702,7 @@ class luna extends eqLogic {
     }
   }
 
-  public function loraServiceActif() {
+  public static function loraServiceActif() {
     $loraService = exec('sudo systemctl is-active lora.service');
 
     if ($loraService == "activating") {
@@ -711,7 +712,7 @@ class luna extends eqLogic {
     }
   }
 
-  public function loraSwitchMaj($actived = "active") {
+  public static function loraSwitchMaj($actived = "active") {
     if ($actived == "active") {
       message::add(__CLASS__, __('Activation Lora', __FILE__));
       exec('sudo cp ' . __DIR__ . '/../../data/patchs/lora/lora.service /etc/systemd/system/');
@@ -725,7 +726,7 @@ class luna extends eqLogic {
     }
   }
 
-  public function configurationLora() {
+  public static function configurationLora() {
     $uid = config::byKey('gatewayUID', 'luna');
     log::add(__CLASS__, 'debug', 'UID config > ' . $uid);
     if ($uid) {
@@ -741,7 +742,7 @@ class luna extends eqLogic {
     }
   }
 
-  public function installLora() {
+  public static function installLora() {
     if (luna::detectedLora()) {
       message::add(__CLASS__, __('Installation de la partie Lora, car puce Lora detecté', __FILE__));
       if (luna::configurationLora()) {
@@ -755,7 +756,7 @@ class luna extends eqLogic {
 
   /* ----- DEBUT 4G ----- */
 
-  public function scanLTEModule() {
+  public static function scanLTEModule() {
     $TTYLTE = exec('sudo find  /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
     if ($TTYLTE != "") {
       message::add(__CLASS__, __('Puce LTE détecté.', __FILE__));
@@ -784,7 +785,7 @@ class luna extends eqLogic {
     }
   }
 
-  public function detectedLte() {
+  public static function detectedLte() {
     $scan = config::byKey('4G', 'luna', null);
     if ($scan == null) {
       log::add(__CLASS__, 'debug', 'SCAN');
@@ -798,11 +799,11 @@ class luna extends eqLogic {
     }
   }
 
-  public function installLte() {
+  public static function installLte() {
     message::add(__CLASS__, __('LTE > Merci de lancer la détection depuis le plugin Luna', __FILE__));
   }
 
-  public function configjsonlte() {
+  public static function configjsonlte() {
     log::add(__CLASS__, 'debug', 'CONFIG JSON LTE'  . luna::detectedLte());
     if (luna::detectedLte() === 'false') {
       log::add(__CLASS__, 'debug', 'FAUX');
@@ -857,7 +858,7 @@ class luna extends eqLogic {
     luna::lteSwitchMaj();
   }
 
-  public function lteSwitchMaj() {
+  public static function lteSwitchMaj() {
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($luna)) {
       $actived = $luna->getConfiguration('lteActivation');
@@ -875,14 +876,14 @@ class luna extends eqLogic {
     }
   }
 
-  public function configurationPortSms() {
+  public static function configurationPortSms() {
     $pluginSms = plugin::byId('sms');
     if (is_object($pluginSms)) {
       config::save('port', '/dev/ttyLuna-Lte', 'sms');
     }
   }
 
-  public function recuperationConfigModem() {
+  public static function recuperationConfigModem() {
     $modemLte = exec('sudo mmcli --modem=0 -J');
     if ($modemLte == "error: couldn't find modem") {
       log::add(__CLASS__, 'debug', 'Modem non trouvé');
@@ -922,7 +923,7 @@ class luna extends eqLogic {
 
   /* ------ FIN 4G ----- */
 
-  public function switchHost($activated = true) {
+  public static function switchHost($activated = true) {
     exec("sudo apt remove -y dnsmasq");
     exec("sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf");
     exec("sudo sed 's/^auto/#&/' -i /etc/network/interfaces");
@@ -1166,10 +1167,10 @@ class lunaCmd extends cmd {
         luna::connectWifi(2);
         break;
       case 'dsled':
-        $eqLogic->dsLed($_options['select']);
+        luna::dsLed($_options['select']);
         break;
     }
-    $eqLogic->cron5($eqLogic->getId());
+    luna::cron5($eqLogic->getId());
   }
   /*     * **********************Getteur Setteur*************************** */
 }
