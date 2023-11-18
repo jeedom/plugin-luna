@@ -397,14 +397,14 @@ class luna extends eqLogic {
     $eqLogic = eqLogic::byType(__CLASS__);
     $device = $interface - 1;
     shell_exec('sudo nmcli dev disconnect wlan' . $device);
-    return $return;
+    return;
   }
 
   public static function connectWifi($interface = 1) {
     $eqLogic = eqLogic::byType(__CLASS__);
     $device = $interface - 1;
     shell_exec('sudo nmcli dev connect wlan' . $device);
-    return $return;
+    return;
   }
 
   public static function saveEthernet($data) {
