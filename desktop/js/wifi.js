@@ -160,6 +160,11 @@ $('.wifiEnabledCheck').change(function () {
     $('#wifi' + wifiID + 'dnsOptBlock').css('display', 'none')
     $('#wifi' + wifiID + 'hotspotnameBlock').css('display', 'none')
     $('#wifi' + wifiID + 'hotspotpwdBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotdhcpBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotipBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotmaskBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotrouterBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotdnsBlock').css('display', 'none')
     $('#wifi' + wifiID + 'TypeAdressageBlock').css('display', 'none')
     $('#wifi' + wifiID + 'SsidBlock').css('display', 'none')
     $('#wifi' + wifiID + 'PasswordBlock').css('display', 'none')
@@ -178,6 +183,12 @@ $('.wifiMode').change(function () {
       $('#wifi' + wifiID + 'PasswordBlock').css('display', 'block')
       $('#wifi' + wifiID + 'hotspotnameBlock').css('display', 'none')
       $('#wifi' + wifiID + 'hotspotpwdBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotdhcpBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotipBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotmaskBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotrouterBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotdnsBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'TypeAdressageBlock').css('display', 'none')
       $('#wifi' + wifiID + 'dnsOptBlock').css('display', 'none')
       printConnectionsList(wifiID)
       const e = new Event("change");
@@ -190,6 +201,12 @@ $('.wifiMode').change(function () {
       $('#wifi' + wifiID + 'PasswordBlock').css('display', 'none')
       $('#wifi' + wifiID + 'hotspotnameBlock').css('display', 'block')
       $('#wifi' + wifiID + 'hotspotpwdBlock').css('display', 'block')
+      $('#wifi' + wifiID + 'hotspotdhcpBlock').css('display', 'block')
+      $('#wifi' + wifiID + 'hotspotipBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotmaskBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotrouterBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotdnsBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'TypeAdressageBlock').css('display', 'none')
       $('#wifi' + wifiID + 'ipBlock').css('display', 'none')
       $('#wifi' + wifiID + 'maskBlock').css('display', 'none')
       $('#wifi' + wifiID + 'routerBlock').css('display', 'none')
@@ -203,6 +220,11 @@ $('.wifiMode').change(function () {
       $('#wifi' + wifiID + 'dnsOptBlock').css('display', 'none')
       $('#wifi' + wifiID + 'hotspotnameBlock').css('display', 'none')
       $('#wifi' + wifiID + 'hotspotpwdBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotdhcpBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotipBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotmaskBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotrouterBlock').css('display', 'none')
+      $('#wifi' + wifiID + 'hotspotdnsBlock').css('display', 'none')
 
       $('#hotspotEnabledCheck').prop('checked', false)
       $('.wifihotspot').css('display', 'none')
@@ -234,7 +256,20 @@ $('.wifiTypeAdressage').change(function () {
   }
 })
 
-
+$('.wifiTypeDHCPHotspot').change(function () {
+  var wifiID = this.id.match(/\d+/)[0];
+  if (this.checked == true) {
+    $('#wifi' + wifiID + 'hotspotipBlock').css('display', 'block')
+    $('#wifi' + wifiID + 'hotspotmaskBlock').css('display', 'block')
+    $('#wifi' + wifiID + 'hotspotrouterBlock').css('display', 'block')
+    $('#wifi' + wifiID + 'hotspotdnsBlock').css('display', 'block')
+  }else{
+    $('#wifi' + wifiID + 'hotspotipBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotmaskBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotrouterBlock').css('display', 'none')
+    $('#wifi' + wifiID + 'hotspotdnsBlock').css('display', 'none')
+  }
+})
 
 $('#hotspotEnabledCheck').change(function () {
   if (this.checked == true) {

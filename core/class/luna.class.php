@@ -355,6 +355,11 @@ class luna extends eqLogic {
     $wifiDnsOpt = $data[0]['configuration']['wifi' . $interface . 'dnsOpt'];
     $wifiHotspotName = $data[0]['configuration']['wifi' . $interface . 'hotspotname'];
     $wifiHotspotPwd = $data[0]['configuration']['wifi' . $interface . 'hotspotpwd'];
+    $wifiHotspotdhcp = $data[0]['configuration']['wifi' . $interface . 'hotspotdhcp'];
+    $wifiHotspotip = $data[0]['configuration']['wifi' . $interface . 'hotspotip'];
+    $wifiHotspotmask = $data[0]['configuration']['wifi' . $interface . 'hotspotmask'];
+    $wifiHotspotrouter = $data[0]['configuration']['wifi' . $interface . 'hotspotrouter'];
+    $wifiHotspotdns = $data[0]['configuration']['wifi' . $interface . 'hotspotdns'];
     //log::add(__CLASS__, 'debug', 'save wifi >>sudo nmcli dev wlan'.$device.' connect '.$wifiSsid.' password '.$wifiPassword.''. json_encode($data[0]['configuration']));
     if ($stateWifi == 0) {
       shell_exec('sudo nmcli dev disconnect wlan' . $device);
@@ -382,13 +387,23 @@ class luna extends eqLogic {
       sleep(5);
     } else if ($wifiMode == "hotspot") {
       log::add(__CLASS__, 'debug', 'save wifi >>hotspot');
-      shell_exec('sudo nmcli con add type wifi ifname wlan' . $device . ' con-name Hostspot-wlan' . $device . ' autoconnect yes ssid "' . $wifiHotspotName . '"');
-      shell_exec('sudo nmcli con modify Hostspot-wlan' . $device . ' 802-11-wireless.mode ap 802-11-wireless.band bg ipv4.method shared');
-      shell_exec('sudo nmcli con modify Hostspot-wlan' . $device . ' wifi-sec.key-mgmt wpa-psk');
-      shell_exec('sudo nmcli con modify Hostspot-wlan' . $device . ' wifi-sec.psk "' . $wifiHotspotPwd . '"');
-      shell_exec('sudo nmcli con up Hostspot-wlan' . $device);
+      self::cleanWifi($device);
+      log::add(__CLASS__, 'debug', 'save wifi >>sudo nmcli device wifi hotspot ssid "'.$wifiHotspotName.'" password "'.$wifiHotspotPwd.'" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
+      shell_exec('sudo nmcli device wifi hotspot ssid "'.$wifiHotspotName.'" password "'.$wifiHotspotPwd.'" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
+      if($wifiHotspotdhcp == true){
+        log::add(__CLASS__, 'debug', 'save wifi >> sudo nmcli con modify Hotspot-wlan' . $device . ' ipv4.addresses ' . luna::convertIP($wifiHotspotip, $wifiHotspotmask));
+        shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' ipv4.addresses ' . luna::convertIP($wifiHotspotip, $wifiHotspotmask));
+      }
+      shell_exec('sudo nmcli con up Hotspot-wlan' . $device);
     }
     return $return;
+  }
+
+  public static function cleanWifi($device) {
+    log::add(__CLASS__, 'debug', 'clean wifi >>' . $device);
+    shell_exec('sudo nmcli dev disconnect wlan' . $device);
+    shell_exec('sudo nmcli con delete $(nmcli --fields UUID,TYPE con show | grep wifi | awk \'{print $1}\')');
+    return;
   }
 
   public static function disconnectWifi($interface = 1) {
@@ -485,78 +500,7 @@ class luna extends eqLogic {
     return [$interfaceMac, $interfaceIp];
   }
 
-
-
   /* ----- FIN WIFI ----- */
-
-  /* ----- HotSpot ----- */
-
-  public static function testHotspot() {
-    $linkForHotspot = __DIR__ . '/../../resources/lnxrouter';
-    $luna = eqLogic::byLogicalId('wifi', __CLASS__);
-    if ($luna->getConfiguration('hotspotEnabled') == true) {
-      $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
-      if ($pid != "") {
-        luna::activeHotSpot();
-      }
-    } else {
-      shell_exec('sudo nmcli dev disconnect wlan1');
-      //shell_exec('sudo ifconfig wlan1 down');
-    }
-  }
-
-  public static function activeHotSpot() {
-    shell_exec('sudo ifconfig wlan1 up');
-    log::add(__CLASS__, 'debug', __('Activation du Hotspot.', __FILE__));
-    $linkForHotspot = __DIR__ . '/../../resources/lnxrouter';
-    $wlanLink = 'wlan1';
-    $luna = eqLogic::byLogicalId('wifi', __CLASS__);
-    $interfaceInfo = luna::getMac();
-    $macAddress = $interfaceInfo[0];
-    log::add(__CLASS__, 'debug', 'Informations getMac > ' . json_encode($interfaceInfo));
-    $strMac = str_replace(':', '', $macAddress);
-    $wifiPostFix = substr($strMac, -4);
-    if (!is_object($luna)) {
-      log::add(__CLASS__, 'debug', __('Hotspot : erreur 1.', __FILE__));
-      return;
-    }
-    if ($luna->getConfiguration('hotspotEnabled') == true) {
-
-      log::add(__CLASS__, 'debug', __('Hotspot activé.', __FILE__));
-      log::add(__CLASS__, 'debug', 'Executing sudo nmcli dev disconnect wlan1');
-
-      shell_exec('sudo nmcli dev disconnect wlan1');
-      shell_exec('sudo systemctl daemon-reload');
-      $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
-      $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
-      log::add(__CLASS__, 'debug', 'Hotspot PID > ' . $pid);
-      log::add(__CLASS__, 'debug', 'Hotspot LOG instance sup > ' . $log);
-      log::add(__CLASS__, 'debug', 'Hotspot macAddress > ' . $strMac);
-      $luna->setConfiguration('dns', 'wlan1');
-      $luna->setConfiguration('forwardingIPV4', true);
-      $ssid = $luna->getConfiguration('ssidHotspot', 'Jeedomluna-' . $wifiPostFix);
-      $mdp = $luna->getConfiguration('mdpHotspot', $strMac);
-      if ($ssid == 'Jeedomluna-' . $wifiPostFix) {
-        $luna->setConfiguration('ssidHotspot', 'Jeedomluna-' . $wifiPostFix);
-      }
-      if ($mdp == $strMac) {
-        $luna->setConfiguration('mdpHotspot', $strMac);
-      }
-      $luna->save();
-
-      log::add(__CLASS__, 'debug', __('Mise en place du Profil Hotspot.', __FILE__));
-      log::add(__CLASS__, 'debug', 'sudo bash ' . $linkForHotspot . ' --no-virt --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' > /dev/null 2>&1');
-      $log = shell_exec('sudo bash ' . $linkForHotspot . ' --no-virt --daemon --ap ' . $wlanLink . ' ' . $ssid . ' -p ' . $mdp . ' --no-virt > /dev/null 2>&1');
-      log::add(__CLASS__, 'debug', 'Hotspot > ' . $log);
-    } else {
-      shell_exec('sudo systemctl daemon-reload');
-      shell_exec('sudo ifconfig wlan1 up');
-      $pid = shell_exec("sudo bash " . $linkForHotspot . " -l");
-      $log = shell_exec("sudo bash " . $linkForHotspot . " --stop " . $pid . " > /dev/null 2>&1");
-    }
-  }
-
-  /* ----- FIN Hotspot ----- */
 
   /* ----- DSLED ----- */
 
