@@ -34,6 +34,7 @@
         "REMISE A ZERO": "REDEFINIR"
     },
     "plugins\/luna\/desktop\/php\/restore.php": {
+        "401 - Accès non autorisé": "401 - Acesso não autorizado",
         "Restore": "Restaurar",
         "Mise à jour du Recovery": "Atualização de recuperação",
         "Attention, cette opération peut être dangereuse.": "Tenha cuidado, esta operação pode ser perigosa",
@@ -137,6 +138,7 @@
         "Détection du module LTE": "Detecção de módulo LTE"
     },
     "plugins\/luna\/desktop\/php\/ethernet.php": {
+        "401 - Accès non autorisé": "401 - Acesso não autorizado",
         "Ethernet": "Ethernet",
         "Adressage IP": "Endereçamento IP",
         "DHCP": "DHCP",
@@ -165,6 +167,7 @@
         "Battery Active": "Bateria ativa"
     },
     "plugins\/luna\/desktop\/php\/wifi.php": {
+        "401 - Accès non autorisé": "401 - Acesso não autorizado",
         "Wifi 1": "Wi-Fi 1",
         "Activer le wifi 1": "Habilitar Wi-Fi 1",
         "Mode": "Moda",
@@ -184,6 +187,7 @@
         "Nom": "Nome",
         "Mot de passe Hotspot": "Senha do ponto de acesso",
         "mot de passe": "senha",
+        "DHCP du hotspot": "Ponto de acesso DHCP",
         "Réseau wifi": "Rede Wi-Fi",
         "Clef": "Chave",
         "Nom Réseau": "Nome da rede",
@@ -257,10 +261,6 @@
         "Fin de migration.": "Fim da migração",
         "Jeedom est démarré, vérification des connexions.": "Jeedom é iniciado, verificando as conexões",
         "Suppression des profils.": "Exclusão de perfis",
-        "Activation du Hotspot.": "Ativação de pontos de acesso",
-        "Hotspot : erreur 1.": "Ponto de acesso: erro 1",
-        "Hotspot activé.": "Ponto de acesso ativado",
-        "Mise en place du Profil Hotspot.": "Configurando o Perfil do Hotspot",
         "Patch Luna": "Remendo lunar",
         "Patch Luna Fini": "Patch de Luna finalizado",
         "Patitionnage en cours": "Patinação em andamento",

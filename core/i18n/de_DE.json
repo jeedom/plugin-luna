@@ -34,6 +34,7 @@
         "REMISE A ZERO": "ZURÜCKSETZEN"
     },
     "plugins\/luna\/desktop\/php\/restore.php": {
+        "401 - Accès non autorisé": "401 – Unbefugter Zugriff",
         "Restore": "Wiederherstellen",
         "Mise à jour du Recovery": "Wiederherstellungsupdate",
         "Attention, cette opération peut être dangereuse.": "Seien Sie vorsichtig, dieser Vorgang kann gefährlich sein",
@@ -137,6 +138,7 @@
         "Détection du module LTE": "Erkennung von LTE-Modulen"
     },
     "plugins\/luna\/desktop\/php\/ethernet.php": {
+        "401 - Accès non autorisé": "401 – Unbefugter Zugriff",
         "Ethernet": "Ethernet",
         "Adressage IP": "IP-Adressierung",
         "DHCP": "DHCP",
@@ -165,6 +167,7 @@
         "Battery Active": "Batterie aktiv"
     },
     "plugins\/luna\/desktop\/php\/wifi.php": {
+        "401 - Accès non autorisé": "401 – Unbefugter Zugriff",
         "Wifi 1": "WLAN 1",
         "Activer le wifi 1": "WLAN 1 aktivieren",
         "Mode": "Mode",
@@ -184,6 +187,7 @@
         "Nom": "Name",
         "Mot de passe Hotspot": "Hotspot-Passwort",
         "mot de passe": "Passwort",
+        "DHCP du hotspot": "Hotspot-DHCP",
         "Réseau wifi": "WiFi-Netzwerk",
         "Clef": "Schlüssel",
         "Nom Réseau": "Netzwerkname",
@@ -257,10 +261,6 @@
         "Fin de migration.": "Ende der Migration",
         "Jeedom est démarré, vérification des connexions.": "Jeedom wird gestartet und prüft die Verbindungen",
         "Suppression des profils.": "Löschung von Profilen",
-        "Activation du Hotspot.": "Hotspot-Aktivierung",
-        "Hotspot : erreur 1.": "Hotspot: Fehler 1",
-        "Hotspot activé.": "Hotspot aktiviert",
-        "Mise en place du Profil Hotspot.": "Einrichten des Hotspot-Profils",
         "Patch Luna": "Luna-Patch",
         "Patch Luna Fini": "Fertiger Luna-Patch",
         "Patitionnage en cours": "Patinierung im Gange",
