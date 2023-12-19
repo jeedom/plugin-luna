@@ -122,7 +122,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 												$conMetric = shell_exec('sudo nmcli -f ipv4.route-metric -t -m tabular con show '.$conUUID);
 												$conMetric = preg_replace("#(\r\n|\n\r|\n|\r)#","",$conMetric);
 											   	$return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'metric' => $conMetric);
-											   	log::add(__CLASS__, 'debug', json_encode($return)); 
+											   	log::add('luna', 'debug', json_encode($return)); 
 									   
 											 }
 											 usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
