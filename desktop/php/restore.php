@@ -1,5 +1,7 @@
 <?php
-
+if (!isConnect('admin')) {
+	throw new Exception('{{401 - Accès non autorisé}}');
+}
 ?>
 <div role="tabpanel" class="tab-pane" id="restoretab"><br />
 	<fieldset>

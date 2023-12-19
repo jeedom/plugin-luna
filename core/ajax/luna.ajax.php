@@ -17,22 +17,22 @@
  */
 
 try {
-    require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-    include_file('core', 'authentification', 'php');
+  require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
+  include_file('core', 'authentification', 'php');
 
-    if (!isConnect('admin')) {
-        throw new Exception(__('401 - Accès non autorisé', __FILE__));
-    }
+  if (!isConnect('admin')) {
+    throw new Exception(__('401 - Accès non autorisé', __FILE__));
+  }
 
   /* Fonction permettant l'envoi de l'entête 'Content-Type: application/json'
     En V3 : indiquer l'argument 'true' pour contrôler le token d'accès Jeedom
     En V4 : autoriser l'exécution d'une méthode 'action' en GET en indiquant le(s) nom(s) de(s) action(s) dans un tableau en argument
   */
-    ajax::init();
+  ajax::init();
 
   if (init('action') == 'loop_percentage') {
-     luna::loopPercentage();
-     ajax::success();
+    luna::loopPercentage();
+    ajax::success();
   }
 
   if (init('action') == 'startMigration') {
@@ -50,11 +50,6 @@ try {
     ajax::success();
   }
 
-  if (init('action') == 'resetSsid') {
-    luna::resetSsid(init('ssid'));
-    ajax::success();
-  }
-
   if (init('action') == 'partitionSD') {
     luna::partitionSD();
     ajax::success();
@@ -65,12 +60,12 @@ try {
     ajax::success();
   }
 
-  if(init('action') == 'scanLTE'){
+  if (init('action') == 'scanLTE') {
     luna::scanLTEModule();
     ajax::success();
   }
-  
-  if(init('action') == 'loraSwitchMaj'){
+
+  if (init('action') == 'loraSwitchMaj') {
     luna::loraSwitchMaj(init('active'));
     ajax::success();
   }
@@ -86,47 +81,35 @@ try {
   }
 
   if (init('action') == 'savePriority') {
-		ajax::success(luna::savePriority(init('priority')));
-	}
+    ajax::success(luna::savePriority(init('priority')));
+  }
 
   if (init('action') == 'listWifi') {
-		$forced = init('mode');
-		ajax::success(luna::listWifi($forced, init('interface')));
-	}
+    $forced = init('mode');
+    ajax::success(luna::listWifi($forced, init('interface')));
+  }
 
   if (init('action') == 'saveWifi') {
-		ajax::success(luna::saveWifi(init('interface'), init('data')));
-	}
+    ajax::success(luna::saveWifi(init('interface'), init('data')));
+  }
 
   if (init('action') == 'saveEthernet') {
-		ajax::success(luna::saveEthernet(init('data')));
-	}
+    ajax::success(luna::saveEthernet(init('data')));
+  }
 
   if (init('action') == 'listConnections') {
-		ajax::success(luna::listConnections(init('interface')));
-	}
+    ajax::success(luna::listConnections(init('interface')));
+  }
 
   if (init('action') == 'removeConnection') {
-		ajax::success(luna::RemoveConnection(init('UUID')));
-	}
+    ajax::success(luna::RemoveConnection(init('UUID')));
+  }
 
-	if (init('action') == 'macfinder') {
-		ajax::success(luna::getMac(init('interfa')));
-	}
+  if (init('action') == 'macfinder') {
+    ajax::success(luna::getMac(init('interfa')));
+  }
 
-	if (init('action') == 'writeInterfaceFile') {
-		ajax::success(luna::writeInterfaceFile());
-	}
-
-	if (init('action') == 'wifiConnect') {
-		ajax::success(luna::wifiConnect());
-	}
-
-	if (init('action') == 'wifiDisConnect') {
-		ajax::success(luna::wifiDisConnect());
-	}
-
-  if(init('action') == 'recuperationConfigModem'){
+  if (init('action') == 'recuperationConfigModem') {
     ajax::success(luna::recuperationConfigModem());
   }
 
@@ -135,8 +118,8 @@ try {
   }
 
 
-    throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
-    /*     * *********Catch exeption*************** */
+  throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
+  /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
-    ajax::error(displayException($e), $e->getCode());
+  ajax::error(displayException($e), $e->getCode());
 }
