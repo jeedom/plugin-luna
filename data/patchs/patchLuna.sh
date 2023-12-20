@@ -34,4 +34,8 @@ php /var/www/html/core/php/jeecli.php message add "luna" "correction Up Start Le
 sudo chmod 755 /etc/init.d/done
 sudo systemctl restart done
 
+#dnsmasq
+php /var/www/html/core/php/jeecli.php message add "luna" "correction dnsmasq sur la luna"
+sudo apt-get remove -y dnsmasq
+
 return 0
