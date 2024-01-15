@@ -869,8 +869,88 @@ class luna extends eqLogic {
 
   /* ------ FIN 4G ----- */
 
+  /* ----- DEBUT SMS  ----- */
+
+  public static function listGlobalSMS(){
+    $list = self::listSMS();
+    $return = [];
+    foreach ($list as $sms) {
+      $sms = self::readSMS($sms);
+      $return[] = $sms;
+    }
+    return $return;
+  }
+
+  public static function listSMS() {
+    $list = shell_exec('sudo mmcli -m 0 --messaging-list-sms');
+    $list = explode("\n", $list);
+    $listSMS = [];
+    foreach ($list as $sms) {
+      if (preg_match('/\/org\/freedesktop\/ModemManager1\/SMS\/[0-9]+/', $sms)) {
+        $sms = explode('/', $sms);
+        $sms = $sms[5];
+        $sms = explode(' ', $sms);
+        $sms = $sms[0];
+        $listSMS[] = $sms;
+      }
+    }
+    return $listSMS;
+  }
+
+  public static function readSMS($sms) {
+    $sms = shell_exec('sudo mmcli -s ' . $sms);
+    $list = explode("\n", $sms);
+    $listSMS = [];
+    foreach ($list as $sms) {
+      if (preg_match('/Content    |    number:/', $sms)) {
+        $sms = explode(':', $sms);
+        $sms = $sms[1];
+        $sms = trim($sms);
+        $listSMS['number'] = $sms;
+      }
+      if (preg_match('/text:/', $sms)) {
+        $sms = explode(':', $sms);
+        $sms = $sms[1];
+        $sms = trim($sms);
+        $listSMS['text'] = $sms;
+      }
+      if (preg_match('/smsc:/', $sms)) {
+        $sms = explode(':', $sms);
+        $sms = $sms[1];
+        $sms = trim($sms);
+        $listSMS['smsc'] = $sms;
+      }
+      if (preg_match('/state:/', $sms)) {
+        $sms = explode(':', $sms);
+        $sms = $sms[1];
+        $sms = trim($sms);
+        $listSMS['state'] = $sms;
+      }
+    }
+    return $listSMS;
+  }
+
+  public static function deleteSMS($sms) {
+    shell_exec('sudo mmcli -s ' . $sms . ' --messaging-delete-sms=' . $sms);
+  }
+
+  public static function sendSMS($number, $text) {
+    $sms = shell_exec('sudo mmcli -m 0 --messaging-create-sms="text=\'' . $text . '\',number=\'' . $number . '\'"');
+    log::add(__CLASS__, 'debug', 'SMS > ' . $sms);
+    if (preg_match('/\/org\/freedesktop\/ModemManager1\/SMS\/[0-9]+/', $sms)) {
+      log::add(__CLASS__, 'debug', 'SMS > OK');
+      $sms = explode('/', $sms);
+      $smsNumber = trim($sms[5]);
+    }
+    log::add(__CLASS__, 'debug', 'SMS > ' . $smsNumber);
+    log::add(__CLASS__, 'debug', 'SMS > sudo mmcli -s ' . $smsNumber . ' --send');
+    shell_exec('sudo mmcli -s ' . $smsNumber . ' --send');
+  }
+
+  /* ----- FIN SMS ----- */
+
   public static function switchHost($activated = true) {
-    exec("sudo apt remove -y dnsmasq");
+    //exec("sudo apt remove -y dnsmasq");
     exec("sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf");
     exec("sudo sed 's/^auto/#&/' -i /etc/network/interfaces");
     exec("sudo sed 's/^iface/#&/' -i /etc/network/interfaces");
