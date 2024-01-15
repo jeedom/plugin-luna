@@ -90,7 +90,7 @@ try {
   }
 
   if (init('action') == 'saveWifi') {
-    ajax::success(luna::saveWifi(init('interface'), init('data')));
+    ajax::success(luna::saveWifi(init('data'),init('interface')));
   }
 
   if (init('action') == 'saveEthernet') {

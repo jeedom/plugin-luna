@@ -339,7 +339,7 @@ class luna extends eqLogic {
     return $return;
   }
 
-  public static function saveWifi($interface = 1, $data) {
+  public static function saveWifi($data, $interface = 1) {
     $device = $interface - 1;
     log::add(__CLASS__, 'debug', 'save wifi >>' . json_encode($data));
     $return = [];
