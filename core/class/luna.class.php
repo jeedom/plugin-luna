@@ -799,6 +799,8 @@ class luna extends eqLogic {
       exec("sudo nmcli connection modify JeedomLTE gsm.pin ''");
     }
 
+    exec("sudo nmcli connection modify JeedomLTE ipv6.method disabled");
+
     log::add(__CLASS__, 'debug', 'Fin de la configuration LTE > ' . exec("sudo nmcli connection show JeedomLTE"));
     luna::scanLTEModule();
     luna::lteSwitchMaj();
