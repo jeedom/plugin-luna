@@ -3,6 +3,9 @@
         "Changelog Luna": "Änderungsprotokoll Luna",
         "Changelog plugin luna": "Änderungsprotokoll Luna-Plugin",
         "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Zur Erinnerung: Wenn es keine Informationen über die Aktualisierung gibt, bedeutet dies, dass es sich nur um die Aktualisierung von Dokumentation, Übersetzung oder Text handelt",
+        "05\/02\/2024": "05.02.2024",
+        "Correction double Ip": "Doppelte IP-Korrektur",
+        "Ajout des inforamtions APN pour une meilleur connexion 4G": "APN-Informationen für eine bessere 4G-Verbindung hinzugefügt",
         "19\/12\/2023": "19.12.2023",
         "correction de l'erreur (The stream or file \"\/var\/www\/html\/core\/class\/..\/..\/log\/\" could not be opened in append mode": "Fehler behoben (Der Stream oder die Datei „\/var\/www\/html\/core\/class\/..\/..\/log\/“ konnte nicht im Anhängemodus geöffnet werden",
         "failed to open stream": "Fehler beim Öffnen des Streams",
@@ -135,6 +138,12 @@
         "si 4G détectée, lancement d'un module de connexion en arrière plan qui passe automatiquement de l'Ethernet ou wifi à la 4G au besoin": "Wenn 4G erkannt wird, wird im Hintergrund ein Verbindungsmodul gestartet, das bei Bedarf automatisch von Ethernet oder WLAN auf 4G umschaltet",
         "Le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G": "Das SMS-Plugin funktioniert gleichzeitig mit 4G auf dem Luna 4G",
         "Les paramétrages se font dans la page LTE du plugin": "Die Einstellungen werden auf der LTE-Seite des Plugins vorgenommen",
+        "\/": "\/",
+        "\\ Attention il faut des APN de type ipv4 (bouygue": "\\ Achtung, Sie benötigen APNs vom Typ IPv4 (bouygue",
+        "com, Orange": "com, Orange",
+        "orange, free": "orange, kostenlos",
+        "free). \/": "frei). \/",
+        "\\": "\\",
         " ATTENTION.": " WARNUNG.",
         " ATTENTION?": " WARNUNG?",
         "ATTENTION ": "WARNUNG ",
@@ -176,6 +185,13 @@
         " Alimentation]": " Essen]",
         "[Alimentation]": "[Essen]",
         "*Alimentation*": "*Essen*",
-        " Alimentation*": " Essen*"
+        " Alimentation*": " Essen*",
+        " ebouygtel.": " ebouygtel.",
+        " ebouygtel?": " ebouygtel?",
+        "ebouygtel ": "ebouygtel ",
+        " ebouygtel]": " ebouygtel]",
+        "[ebouygtel]": "[ebouygtel]",
+        "*ebouygtel*": "*ebouygtel*",
+        " ebouygtel*": " ebouygtel*"
     }
 }
