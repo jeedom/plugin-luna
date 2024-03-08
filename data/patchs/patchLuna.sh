@@ -38,4 +38,11 @@ sudo systemctl restart done
 php /var/www/html/core/php/jeecli.php message add "luna" "correction dnsmasq sur la luna"
 sudo apt-get remove -y dnsmasq
 
+#wmsgd.service
+php /var/www/html/core/php/jeecli.php message add "luna" "correction double ip sur la luna"
+sudo systemctl stop wmsgd.service
+sudo systemctl disable wmsgd.service
+sudo rm /etc/init.d/wmsgd
+sudo rm /etc/systemd/system/wmsgd.service
+
 return 0

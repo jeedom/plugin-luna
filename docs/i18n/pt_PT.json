@@ -3,6 +3,9 @@
         "Changelog Luna": "Changelog Luna",
         "Changelog plugin luna": "Plugin de registro de alterações luna",
         "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Relembramos que, se não houver informação sobre a atualização, significa que se trata apenas de atualização de documentação, tradução ou texto",
+        "05\/02\/2024": "05\/02\/2024",
+        "Correction double Ip": "Correção de IP duplo",
+        "Ajout des inforamtions APN pour une meilleur connexion 4G": "Adicionadas informações de APN para uma melhor conexão 4G",
         "19\/12\/2023": "19\/12\/2023",
         "correction de l'erreur (The stream or file \"\/var\/www\/html\/core\/class\/..\/..\/log\/\" could not be opened in append mode": "erro corrigido (o fluxo ou arquivo \"\/var\/www\/html\/core\/class\/..\/..\/log\/\" não pôde ser aberto no modo de acréscimo",
         "failed to open stream": "não foi possível abrir o stream",
@@ -135,6 +138,12 @@
         "si 4G détectée, lancement d'un module de connexion en arrière plan qui passe automatiquement de l'Ethernet ou wifi à la 4G au besoin": "se 4G for detectado, lançamento de um módulo de conexão em segundo plano que muda automaticamente de Ethernet ou wifi para 4G, se necessário",
         "Le plugin SMS fonctionne en meme temps que la 4G sur la Luna 4G": "O plugin SMS funciona ao mesmo tempo que 4G no Luna 4G",
         "Les paramétrages se font dans la page LTE du plugin": "As configurações são feitas na página LTE do plugin",
+        "\/": "\/",
+        "\\ Attention il faut des APN de type ipv4 (bouygue": "\\ Atenção você precisa de APNs do tipo IPv4 (bouygue",
+        "com, Orange": "com, laranja",
+        "orange, free": "laranja, grátis",
+        "free). \/": "livre). \/",
+        "\\": "\\",
         " ATTENTION.": " AVISO.",
         " ATTENTION?": " AVISO?",
         "ATTENTION ": "AVISO ",
@@ -176,6 +185,13 @@
         " Alimentation]": " Comida]",
         "[Alimentation]": "[Comida]",
         "*Alimentation*": "*Comida*",
-        " Alimentation*": " Comida*"
+        " Alimentation*": " Comida*",
+        " ebouygtel.": " ebouygtel.",
+        " ebouygtel?": " ebouygtel?",
+        "ebouygtel ": "ebouygtel ",
+        " ebouygtel]": " ebouygtel]",
+        "[ebouygtel]": "[ebouygtel]",
+        "*ebouygtel*": "*ebouygtel*",
+        " ebouygtel*": " ebouygtel*"
     }
 }
