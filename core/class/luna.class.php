@@ -869,6 +869,14 @@ class luna extends eqLogic {
     ];
   }
 
+  public static function cronHourly(){
+    // executer LTE si pas de ppp0 dans un ifconfig
+    $ifconfig = shell_exec('sudo ifconfig');
+    if(strpos($ifconfig, 'ppp0') === false){
+      luna::configjsonlte();
+    }
+  }
+
   /* ------ FIN 4G ----- */
 
   /* ----- DEBUT SMS  ----- */
