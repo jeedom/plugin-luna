@@ -814,6 +814,7 @@ class luna extends eqLogic {
     if ($actived == true) {
       message::add(__CLASS__, __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');
+      exec('sudo lteSearch');
       exec('sudo nmcli connection modify JeedomLTE connection.autoconnect yes');
       exec("sudo nmcli connection up JeedomLTE");
     } else {
