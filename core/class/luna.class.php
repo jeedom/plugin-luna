@@ -636,6 +636,7 @@ class luna extends eqLogic {
   }
 
   public static function changeBackupToSD() {
+    self::mountSD();
     $montage = "/media";
     config::save('backup::path', $montage);
     exec('sudo chmod 775 ' . $montage);
