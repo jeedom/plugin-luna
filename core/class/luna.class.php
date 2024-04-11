@@ -626,6 +626,9 @@ class luna extends eqLogic {
   public static function mountSD() {
     $sdSector = "/dev/mmcblk2";
     $montage = "/media";
+    if (self::isMountedSD()) {
+      return;
+    }
     exec('sudo unmount ' . $sdSector);
     exec('sudo mount ' . $sdSector . ' ' . $montage);
     exec('sudo chmod 775 ' . $montage);
