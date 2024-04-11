@@ -15,6 +15,30 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+document.getElementById('bt_mountSD').addEventListener('click', function() {
+  $.ajax({
+    type: "POST",
+    url: "plugins/luna/core/ajax/luna.ajax.php",
+    data: {
+      action: "mountSD"
+    },
+    dataType: 'json',
+    error: function(request, status, error) {
+      handleAjaxError(request, status, error)
+    },
+    success: function(data) {
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({ message: data.result, level: 'danger' })
+        return
+      }
+      $('#div_alert').showAlert({ message: 'Carte montée sur le système', level: 'success' })
+      location.reload()
+    }
+});
+});
+
+
 $('#bt_changeBackupToSD').off('click').on('click', function() {
     var dialog_title = '<i class="fas fa-sign-in-alt fa-rotate-90"></i> {{Activer backup sur la SD}}'
     var dialog_message = '<center>{{les backups seront maintenant archivés sur cette carte SD.}}</center>'

@@ -557,13 +557,28 @@ class luna extends eqLogic {
 
   /* ----- SD ----- */
 
+
+
+  public static function mountPersistent() {
+      $fstabContent = shell_exec('cat /etc/fstab');
+      $addPersistent = "/dev/mmcblk2 /media auto defaults,nofail 0 0";
+      if (strpos($fstabContent, $addPersistent) === false) {
+          $fstabContent .= "\n" . $addPersistent;
+          shell_exec("echo '$fstabContent' | sudo tee /etc/fstab");
+      }
+  }
+
   public static function partitionSD() {
     $sdSector = "/dev/mmcblk2";
     exec('sudo unmount ' . $sdSector);
-    message::add(__CLASS__, __('Patitionnage en cours', __FILE__));
+    message::add(__CLASS__, __('Partitionnage en cours', __FILE__));
     exec('sudo chmod +x ../../data/patchs/partitionSD.sh');
     exec('sudo ../../data/patchs/partitionSD.sh');
     message::add(__CLASS__, __('Carte SD bien partitionnée', __FILE__));
+    self::mountSD();
+    message::add(__CLASS__, __('Carte SD montée sur le système', __FILE__));
+    self::mountPersistent();
+    message::add(__CLASS__, __('Carte SD montée de manière persistente', __FILE__));
   }
 
   public static function checkPartitionSD() {
@@ -574,6 +589,7 @@ class luna extends eqLogic {
       if ($valueVolume['name'] === 'mmcblk2' && $valueVolume['fstype'] === 'ext3') {
         log::add(__CLASS__, 'debug', 'JSON VOLUME > trouvé');
         $response = true;
+       
       }
     }
     return $response;
@@ -585,6 +601,18 @@ class luna extends eqLogic {
       return true;
     }
     return false;
+  }
+
+
+  public static function isMountedSD() {
+    $sdSector = "/dev/mmcblk2";
+    $montage = "/media";
+    $mount = exec('mount | grep ' . $sdSector);
+    if ($mount == "") {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   public static function BackupOkInSd() {

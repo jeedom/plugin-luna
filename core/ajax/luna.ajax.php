@@ -35,6 +35,13 @@ try {
     ajax::success();
   }
 
+
+  if(init('action') == 'mountSD'){
+    luna::mountSD();
+    luna::mountPersistent();
+    ajax::success();
+  }
+
   if (init('action') == 'startMigration') {
     luna::startMigration();
     ajax::success();
