@@ -16,7 +16,7 @@
  */
 
 
-document.getElementById('bt_mountSD').addEventListener('click', function() {
+document.getElementById('bt_mountSD')?.addEventListener('click', function() {
   $.ajax({
     type: "POST",
     url: "plugins/luna/core/ajax/luna.ajax.php",
