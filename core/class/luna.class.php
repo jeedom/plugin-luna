@@ -388,9 +388,9 @@ class luna extends eqLogic {
     } else if ($wifiMode == "hotspot") {
       log::add(__CLASS__, 'debug', 'save wifi >>hotspot');
       self::cleanWifi($device);
-      log::add(__CLASS__, 'debug', 'save wifi >>sudo nmcli device wifi hotspot ssid "'.$wifiHotspotName.'" password "'.$wifiHotspotPwd.'" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
-      shell_exec('sudo nmcli device wifi hotspot ssid "'.$wifiHotspotName.'" password "'.$wifiHotspotPwd.'" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
-      if($wifiHotspotdhcp == true){
+      log::add(__CLASS__, 'debug', 'save wifi >>sudo nmcli device wifi hotspot ssid "' . $wifiHotspotName . '" password "' . $wifiHotspotPwd . '" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
+      shell_exec('sudo nmcli device wifi hotspot ssid "' . $wifiHotspotName . '" password "' . $wifiHotspotPwd . '" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
+      if ($wifiHotspotdhcp == true) {
         log::add(__CLASS__, 'debug', 'save wifi >> sudo nmcli con modify Hotspot-wlan' . $device . ' ipv4.addresses ' . luna::convertIP($wifiHotspotip, $wifiHotspotmask));
         shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' ipv4.addresses ' . luna::convertIP($wifiHotspotip, $wifiHotspotmask));
       }
@@ -560,12 +560,12 @@ class luna extends eqLogic {
 
 
   public static function mountPersistent() {
-      $fstabContent = shell_exec('cat /etc/fstab');
-      $addPersistent = "/dev/mmcblk2 /media auto defaults,nofail 0 0";
-      if (strpos($fstabContent, $addPersistent) === false) {
-          $fstabContent .= "\n" . $addPersistent;
-          shell_exec("echo '$fstabContent' | sudo tee /etc/fstab");
-      }
+    $fstabContent = shell_exec('cat /etc/fstab');
+    $addPersistent = "/dev/mmcblk2 /media auto defaults,nofail 0 0";
+    if (strpos($fstabContent, $addPersistent) === false) {
+      $fstabContent .= "\n" . $addPersistent;
+      shell_exec("echo '$fstabContent' | sudo tee /etc/fstab");
+    }
   }
 
   public static function partitionSD() {
@@ -589,7 +589,6 @@ class luna extends eqLogic {
       if ($valueVolume['name'] === 'mmcblk2' && $valueVolume['fstype'] === 'ext3') {
         log::add(__CLASS__, 'debug', 'JSON VOLUME > trouvé');
         $response = true;
-       
       }
     }
     return $response;
@@ -783,17 +782,17 @@ class luna extends eqLogic {
 
   public static function configjsonlte() {
     log::add(__CLASS__, 'debug', 'CONFIG JSON LTE'  . luna::detectedLte());
-    if (luna::detectedLte() === 'false') {
+    if (luna::detectedLte() === false) {
       log::add(__CLASS__, 'debug', 'FAUX');
-      return false;
+      return;
     }
     if (luna::detectedLte() === 'scan') {
       log::add(__CLASS__, 'debug', 'FAUX SCAN');
-      return false;
+      return;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (!is_object($luna)) {
-      return false;
+      return;
     }
     $apn = $luna->getConfiguration('lteApn');
     $user = $luna->getConfiguration('lteUser');
@@ -902,10 +901,10 @@ class luna extends eqLogic {
     ];
   }
 
-  public static function cronHourly(){
+  public static function cronHourly() {
     // executer LTE si pas de ppp0 dans un ifconfig
     $ifconfig = shell_exec('sudo ifconfig');
-    if(strpos($ifconfig, 'ppp0') === false){
+    if (strpos($ifconfig, 'ppp0') === false) {
       luna::configjsonlte();
     }
   }
@@ -914,7 +913,7 @@ class luna extends eqLogic {
 
   /* ----- DEBUT SMS  ----- */
 
-  public static function listGlobalSMS(){
+  public static function listGlobalSMS() {
     $list = self::listSMS();
     $return = [];
     foreach ($list as $sms) {
