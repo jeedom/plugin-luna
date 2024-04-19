@@ -570,7 +570,7 @@ class luna extends eqLogic {
 
   public static function partitionSD() {
     $sdSector = "/dev/mmcblk2";
-    exec('sudo unmount ' . $sdSector);
+    exec('sudo umount ' . $sdSector);
     message::add(__CLASS__, __('Partitionnage en cours', __FILE__));
     exec('sudo chmod +x ../../data/patchs/partitionSD.sh');
     exec('sudo ../../data/patchs/partitionSD.sh');
@@ -628,7 +628,7 @@ class luna extends eqLogic {
     if (self::isMountedSD()) {
       return;
     }
-    exec('sudo unmount ' . $sdSector);
+    exec('sudo umount ' . $sdSector);
     exec('sudo mount ' . $sdSector . ' ' . $montage);
     exec('sudo chmod 775 ' . $montage);
     exec('sudo chown www-data:www-data -R ' . $montage);
