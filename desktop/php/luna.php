@@ -97,7 +97,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 								</div>
 								<legend><i class='fa fa-cogs'></i>{{Priorité des connexions}}</legend>
 								<input type="text" id="priority" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="priority" style="display : none;" />
-							
+
 								<div class="table-responsive">
 									<table id="table_connexions" class="table table-bordered table-condensed">
 										<thead>
@@ -122,8 +122,8 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 												$conMetric = shell_exec('sudo nmcli -f ipv4.route-metric -t -m tabular con show '.$conUUID);
 												$conMetric = preg_replace("#(\r\n|\n\r|\n|\r)#","",$conMetric);
 											   	$return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'metric' => $conMetric);
-											   	log::add('luna', 'debug', json_encode($return)); 
-									   
+											   	log::add('luna', 'debug', json_encode($return));
+
 											 }
 											 usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
 											 foreach($return as $conn){
@@ -161,7 +161,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 									<div class="col-lg-4">
 										<span class="label label-info macWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
-								
+
 								</div>
 								<div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse Ip wifi 1}}</label>
@@ -174,7 +174,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 									<div class="col-lg-4">
 										<span class="label label-info macWifi2" style="font-size:1em;cursor:default;"></span>
 									</div>
-								
+
 								</div>
 								<div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse Ip wifi 2}}</label>
@@ -183,7 +183,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 									</div>
 								</div>
 								<?php
-								if(luna::detectedLte() == "true"){
+								if(luna::detectedLte() === true){
 								?>
 									<div class="form-group">
 										<label class="col-lg-4 control-label">{{Adresse Ip LTE}}</label>
@@ -202,16 +202,16 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 					<div class="col-sm-7">
 						<form class="form-horizontal">
 							<fieldset>
-								
+
 							</fieldset>
 						</form>
 					</div>
 					<div class="col-sm-5">
-						
+
 					</div>
 				</div>
 			</div>
-			
+
 			<?php
 				//include des Tabs
 				include_file('desktop', 'wifi', 'php', 'luna');
@@ -222,10 +222,10 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 				include_file('desktop', 'sd', 'php', 'luna');
 				include_file('desktop', 'restore', 'php', 'luna');
 			?>
-			
+
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 			<legend><i class="fa fa-list"></i> {{Commandes}}</legend>
-			
+
 				<div class="table-responsive">
 					<table id="table_cmd" class="table table-bordered table-condensed">
 						<thead>

@@ -60,6 +60,7 @@
         "Carte SD détectée": "SD card detected",
         "refresh": "refresh",
         "Partition": "Partition",
+        "Carte montée": "Mounted card",
         "Sauvegarde Jeedom dans la carte": "Save Jeedom in the card"
     },
     "plugins\/luna\/desktop\/php\/luna.php": {
@@ -263,8 +264,10 @@
         "Suppression des profils.": "Deletion of profiles",
         "Patch Luna": "Luna patch",
         "Patch Luna Fini": "Finished Luna Patch",
-        "Patitionnage en cours": "Patination in progress",
+        "Partitionnage en cours": "Partitioning in progress",
         "Carte SD bien partitionnée": "Well-partitioned SD card",
+        "Carte SD montée sur le système": "System mounted SD card",
+        "Carte SD montée de manière persistente": "Persistently mounted SD card",
         "Activation Lora": "Lora activation",
         "Désactivation Lora": "Lora deactivation",
         "Installation de la partie Lora, car puce Lora detecté": "Installation of the Lora part, because Lora chip detected",

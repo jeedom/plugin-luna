@@ -35,6 +35,8 @@ function luna_install() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
+	luna::mountSD();
+	luna::mountPersistent();
 	luna::patchLuna();
 	luna::switchHost();
 	luna::installLte();
@@ -57,8 +59,11 @@ function luna_update() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
+	luna::mountSD();
+	luna::mountPersistent();
 	luna::patchLuna();
 	luna::switchHost();
 	luna::installLte();
 	luna::installLora();
+
 }

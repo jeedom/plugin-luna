@@ -6,11 +6,21 @@ if (!isConnect('admin')) {
 $checkPartitionSD = luna::checkPartitionSD();
 $presentSD = luna::presentSD();
 $backupSD = luna::BackupOkInSd();
+$isMountedSD = luna::isMountedSD();
 
 if($presentSD == 0){
 	$PresenceSD = '<i class="icon_red fas fa-times"></i>';
 }else{
 	$PresenceSD = '<i class="icon_green fas fa-check"></i> ';
+}
+if($isMountedSD == 0){
+	$MountedSD = '<i class="icon_red fas fa-times"></i>
+	<a class="btn" id="bt_mountSD">
+		<i class="fas fa-check"></i>
+		<span class="hidden-xs"> Monter la carte</span>
+	</a>';
+}else{
+	$MountedSD = '<i class="icon_green fas fa-check"></i>';
 }
 if($checkPartitionSD == 0){
 	$PartitionSD = '<i class="icon_red fas fa-times"></i>
@@ -57,6 +67,7 @@ if($checkPartitionSD == 0){
 					echo '<h4> <b>{{refresh}}</b> : <a class="btn" id="bt_refresh_sd"> <i class="fas fa-redo"></i></a> </h4>';
 				}else{ ?>
 					<h4> <b>{{Partition}}</b> : <?php echo $PartitionSD; ?></h4>
+					<h4> <b>{{Carte montée}}</b> : <?php echo $MountedSD; ?></h4>
 					<h4> <b>{{Sauvegarde Jeedom dans la carte}}</b> : <?php echo $backSD; ?></h4><br />
 				<?php } ?>
 			</div>

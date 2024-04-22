@@ -388,9 +388,9 @@ class luna extends eqLogic {
     } else if ($wifiMode == "hotspot") {
       log::add(__CLASS__, 'debug', 'save wifi >>hotspot');
       self::cleanWifi($device);
-      log::add(__CLASS__, 'debug', 'save wifi >>sudo nmcli device wifi hotspot ssid "'.$wifiHotspotName.'" password "'.$wifiHotspotPwd.'" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
-      shell_exec('sudo nmcli device wifi hotspot ssid "'.$wifiHotspotName.'" password "'.$wifiHotspotPwd.'" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
-      if($wifiHotspotdhcp == true){
+      log::add(__CLASS__, 'debug', 'save wifi >>sudo nmcli device wifi hotspot ssid "' . $wifiHotspotName . '" password "' . $wifiHotspotPwd . '" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
+      shell_exec('sudo nmcli device wifi hotspot ssid "' . $wifiHotspotName . '" password "' . $wifiHotspotPwd . '" ifname wlan' . $device . ' con-name Hotspot-wlan' . $device);
+      if ($wifiHotspotdhcp == true) {
         log::add(__CLASS__, 'debug', 'save wifi >> sudo nmcli con modify Hotspot-wlan' . $device . ' ipv4.addresses ' . luna::convertIP($wifiHotspotip, $wifiHotspotmask));
         shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' ipv4.addresses ' . luna::convertIP($wifiHotspotip, $wifiHotspotmask));
       }
@@ -557,13 +557,28 @@ class luna extends eqLogic {
 
   /* ----- SD ----- */
 
+
+
+  public static function mountPersistent() {
+    $fstabContent = shell_exec('cat /etc/fstab');
+    $addPersistent = "/dev/mmcblk2 /media auto defaults,nofail 0 0";
+    if (strpos($fstabContent, $addPersistent) === false) {
+      $fstabContent .= "\n" . $addPersistent;
+      shell_exec("echo '$fstabContent' | sudo tee /etc/fstab");
+    }
+  }
+
   public static function partitionSD() {
     $sdSector = "/dev/mmcblk2";
-    exec('sudo unmount ' . $sdSector);
-    message::add(__CLASS__, __('Patitionnage en cours', __FILE__));
+    exec('sudo umount ' . $sdSector);
+    message::add(__CLASS__, __('Partitionnage en cours', __FILE__));
     exec('sudo chmod +x ../../data/patchs/partitionSD.sh');
     exec('sudo ../../data/patchs/partitionSD.sh');
     message::add(__CLASS__, __('Carte SD bien partitionnée', __FILE__));
+    self::mountSD();
+    message::add(__CLASS__, __('Carte SD montée sur le système', __FILE__));
+    self::mountPersistent();
+    message::add(__CLASS__, __('Carte SD montée de manière persistente', __FILE__));
   }
 
   public static function checkPartitionSD() {
@@ -587,6 +602,18 @@ class luna extends eqLogic {
     return false;
   }
 
+
+  public static function isMountedSD() {
+    $sdSector = "/dev/mmcblk2";
+    $montage = "/media";
+    $mount = exec('mount | grep ' . $sdSector);
+    if ($mount == "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   public static function BackupOkInSd() {
     if (config::byKey('backup::path') == "/media") {
       return true;
@@ -598,13 +625,17 @@ class luna extends eqLogic {
   public static function mountSD() {
     $sdSector = "/dev/mmcblk2";
     $montage = "/media";
-    exec('sudo unmount ' . $sdSector);
+    if (self::isMountedSD()) {
+      return;
+    }
+    exec('sudo umount ' . $sdSector);
     exec('sudo mount ' . $sdSector . ' ' . $montage);
     exec('sudo chmod 775 ' . $montage);
     exec('sudo chown www-data:www-data -R ' . $montage);
   }
 
   public static function changeBackupToSD() {
+    self::mountSD();
     $montage = "/media";
     config::save('backup::path', $montage);
     exec('sudo chmod 775 ' . $montage);
@@ -751,17 +782,17 @@ class luna extends eqLogic {
 
   public static function configjsonlte() {
     log::add(__CLASS__, 'debug', 'CONFIG JSON LTE'  . luna::detectedLte());
-    if (luna::detectedLte() === 'false') {
+    if (luna::detectedLte() === false) {
       log::add(__CLASS__, 'debug', 'FAUX');
-      return false;
+      return;
     }
     if (luna::detectedLte() === 'scan') {
       log::add(__CLASS__, 'debug', 'FAUX SCAN');
-      return false;
+      return;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
     if (!is_object($luna)) {
-      return false;
+      return;
     }
     $apn = $luna->getConfiguration('lteApn');
     $user = $luna->getConfiguration('lteUser');
@@ -814,6 +845,7 @@ class luna extends eqLogic {
     if ($actived == true) {
       message::add(__CLASS__, __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');
+      exec('sudo lteSearch');
       exec('sudo nmcli connection modify JeedomLTE connection.autoconnect yes');
       exec("sudo nmcli connection up JeedomLTE");
     } else {
@@ -869,11 +901,19 @@ class luna extends eqLogic {
     ];
   }
 
+  public static function cronHourly() {
+    // executer LTE si pas de ppp0 dans un ifconfig
+    $ifconfig = shell_exec('sudo ifconfig');
+    if (strpos($ifconfig, 'ppp0') === false) {
+      luna::configjsonlte();
+    }
+  }
+
   /* ------ FIN 4G ----- */
 
   /* ----- DEBUT SMS  ----- */
 
-  public static function listGlobalSMS(){
+  public static function listGlobalSMS() {
     $list = self::listSMS();
     $return = [];
     foreach ($list as $sms) {
