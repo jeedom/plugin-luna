@@ -268,7 +268,6 @@ $('#saveLuna').off('click').on('click', function() {
       }else{
         location.reload();
       }
-
     }
   })
   jeedom.eqLogic.save({
