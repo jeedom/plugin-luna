@@ -1244,7 +1244,6 @@ class luna extends eqLogic {
     $activationBattery->setType('info');
     $activationBattery->setSubType('binary');
     $activationBattery->save();
-    $activationBatteryId = $activationBattery->getId();
 
     $onBattery = $this->getCmd(null, 'onBattery');
     if (!is_object($onBattery)) {
