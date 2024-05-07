@@ -224,8 +224,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 			?>
 
 			<div role="tabpanel" class="tab-pane" id="commandtab">
-			<legend><i class="fa fa-list"></i> {{Commandes}}</legend>
-
+	
 				<div class="table-responsive">
 					<table id="table_cmd" class="table table-bordered table-condensed">
 						<thead>
