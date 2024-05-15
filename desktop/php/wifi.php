@@ -208,13 +208,17 @@ if (!isConnect('admin')) {
 						</div>
 					</div>
 					<div class="form-group" id='wifi2hotspotipBlock' style="display : none;">
-						<label class="col-lg-3 control-label">{{Adresse IP}} :</label>
+						<label class="col-lg-3 control-label">{{Adresse IP}} :
+							<sup><i class="fas fa-question-circle" tooltip="{{Exemple : si vous choisissez 192.168.4.1, les adresses IP de votre serveur DHCP seront, selon le masque de sous-réseau (255.255.255.0), dans la plage allant de 192.168.4.2 à 192.168.4.254.}}"></i></sup>
+						</label>
 						<div class="col-lg-5">
 							<input type="text" class="eqLogicAttr wifi2 form-control wifi1ip" data-l1key="configuration" data-l2key="wifi2hotspotip" placeholder="{{Adresse IP}}" />
 						</div>
 					</div>
 					<div class="form-group" id='wifi2hotspotmaskBlock' style="display : none;">
-						<label class="col-lg-3 control-label">{{Masque de sous-réseau}} :</label>
+						<label class="col-lg-3 control-label">{{Masque de sous-réseau}} :
+							<sup><i class="fas fa-question-circle" tooltip="{{Voir exemple Adresse IP au dessus.}}"></i></sup>
+						</label>
 						<div class="col-lg-5">
 							<input type="text" class="eqLogicAttr wifi2 form-control wifi1mask" data-l1key="configuration" data-l2key="wifi2hotspotmask" placeholder="{{Masque}}" />
 						</div>
