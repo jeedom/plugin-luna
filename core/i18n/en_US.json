@@ -115,7 +115,7 @@
         "Configuration LTE": "LTE setup",
         "Uniquement si vous avez une carte SIM LTE avec data": "Only if you have an LTE SIM card with data",
         "APN": "APN\n",
-        "APN pour la partie LTE": "APN for the LTE part",
+        "APN pour la partie LTE \/!\\ Attention il faut des APN de type ipv4 (bouygue : ebouygtel.com, Orange : orange, free : free).": "APN for the LTE part \/!\\ Attention you need IPv4 type APNs (bouygue: ebouygtel.com, Orange: orange, free: free)",
         "Utilisateur": "User",
         "User pour la partie LTE": "User for the LTE part",
         "Mot de passe": "Password",
@@ -197,6 +197,8 @@
         "Sauvegarder WIFI 1": "Save WIFI 1",
         "Wifi 2": "Wi-Fi 2",
         "Activer le wifi 2": "Enable wifi 2",
+        "Exemple : si vous choisissez 192.168.4.1, les adresses IP de votre serveur DHCP seront, selon le masque de sous-réseau (255.255.255.0), dans la plage allant de 192.168.4.2 à 192.168.4.254.": "Example: If you choose 192.168.4.1, the IP addresses of your DHCP server will be, depending on the subnet mask (255.255.255.0), in the range from 192.168.4.2 to 192.168.4.254",
+        "Voir exemple Adresse IP au dessus.": "See example IP address above",
         "Sauvegarder WIFI 2": "Save WIFI 2"
     },
     "plugins\/luna\/desktop\/js\/luna.js": {
