@@ -238,6 +238,7 @@ class luna extends eqLogic {
       $ssid2 = $luna->getConfiguration('wifi2Ssid', null);
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatusLuna());
+      $luna->checkAndUpdateCmd('activationBattery', luna::activationBattery());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
       $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
       if ($ssid != null) {
@@ -542,6 +543,26 @@ class luna extends eqLogic {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/present');
   }
 
+  public static function activationBattery() {
+    $battery = exec('sudo i2cget -f -y 0 0x6a 0x09');
+    if($battery == '0x44') {
+      // ON
+      return 1;
+    }
+    else if($battery == '0x20') {
+      // OFF
+      return 0;
+    }
+  }
+
+  public static function onBattery() {
+    return exec('sudo i2cset -f -y 0 0x6a 0x09 0x44');
+  }
+
+  public static function offBattery() {
+    return exec('sudo i2cset -f -y 0 0x6a 0x09 0x20');
+  }
+
   /* ----- FIN BATTERY ----- */
 
   /* root etc Patch */
@@ -831,10 +852,14 @@ class luna extends eqLogic {
     }
 
     exec("sudo nmcli connection modify JeedomLTE ipv6.method disabled");
-
     log::add(__CLASS__, 'debug', 'Fin de la configuration LTE > ' . exec("sudo nmcli connection show JeedomLTE"));
-    luna::scanLTEModule();
-    luna::lteSwitchMaj();
+    if (is_object($luna)) {
+      $actived = $luna->getConfiguration('lteActivation');
+      if($actived == 1){
+        luna::scanLTEModule();
+      }
+      luna::lteSwitchMaj();
+    }
   }
 
   public static function lteSwitchMaj() {
@@ -1207,6 +1232,48 @@ class luna extends eqLogic {
     $tempBattery->setType('info');
     $tempBattery->setSubType('string');
     $tempBattery->save();
+
+    $activationBattery = $this->getCmd(null, 'activationBattery');
+    if (!is_object($activationBattery)) {
+      $activationBattery = new lunaCmd();
+      $activationBattery->setName(__('Etat batterie', __FILE__));
+      $activationBattery->setOrder(1);
+    }
+    $activationBattery->setEqLogic_id($this->getId());
+    $activationBattery->setLogicalId('activationBattery');
+    $activationBattery->setType('info');
+    $activationBattery->setSubType('binary');
+    $activationBattery->save();
+
+    $onBattery = $this->getCmd(null, 'onBattery');
+    if (!is_object($onBattery)) {
+      $onBattery = new lunaCmd();
+      $onBattery->setName(__('Allumer la batterie', __FILE__));
+      $onBattery->setOrder(1);
+    }
+    $onBattery->setIsVisible(1);
+    $onBattery->setEqLogic_id($this->getId());
+    $onBattery->setLogicalId('onBattery');
+    $onBattery->setType('action');
+    $onBattery->setSubType('other');
+    $onBattery->save();
+  
+
+    $offBattery = $this->getCmd(null, 'offBattery');
+    if (!is_object($offBattery)) {
+      $offBattery = new lunaCmd();
+      $offBattery->setName(__('Eteindre la batterie', __FILE__));
+      $offBattery->setOrder(1);
+    }
+    $offBattery->setIsVisible(1);
+    $offBattery->setEqLogic_id($this->getId());
+    $offBattery->setLogicalId('offBattery');
+    $offBattery->setType('action');
+    $offBattery->setSubType('other');
+    $offBattery->save();
+
+
+
   }
 
   public function postAjax() {
@@ -1236,6 +1303,14 @@ class lunaCmd extends cmd {
         break;
       case 'dsled':
         luna::dsLed($_options['select']);
+        break;
+      case 'onBattery':
+        luna::onBattery();
+        break;
+      case 'offBattery':
+        luna::offBattery();
+        break;
+      default:
         break;
     }
     luna::cron5($eqLogic->getId());

@@ -298,6 +298,9 @@
         "Battery": "Battery",
         "Status alimentation": "Power status",
         "Température Batterie": "Battery Temperature",
+        "Etat batterie": "Battery status",
+        "Allumer la batterie": "Turn on the battery",
+        "Eteindre la batterie": "Turn off the battery",
         "prelancement": "pre-launch"
     },
     "plugins\/luna\/core\/api\/luna.api.php": {

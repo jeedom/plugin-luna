@@ -71,7 +71,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">*{{APN}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{APN pour la partie LTE}}"></i></sup>
+								<sup><i class="fas fa-question-circle tooltips" title="{{APN pour la partie LTE /!\ Attention il faut des APN de type ipv4 (bouygue : ebouygtel.com, Orange : orange, free : free).}}"></i></sup>
 							</label>
 							<div class="col-lg-4">
 								<input class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="lteApn" />
