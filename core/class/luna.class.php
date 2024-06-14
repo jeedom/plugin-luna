@@ -242,15 +242,15 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
       $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
       if ($ssid != null) {
-        $luna->checkAndUpdateCmd('isconnected', luna::isWificonnected($ssid));
+        $luna->checkAndUpdateCmd('isconnect', luna::isWificonnected($ssid));
       } else {
-        $luna->checkAndUpdateCmd('isconnected', false);
+        $luna->checkAndUpdateCmd('isconnect', false);
       }
       $luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi2Ssid'));
       if ($ssid2 != null) {
-        $luna->checkAndUpdateCmd('isconnected2', luna::isWificonnected($ssid2));
+        $luna->checkAndUpdateCmd('isconnect2', luna::isWificonnected($ssid2));
       } else {
-        $luna->checkAndUpdateCmd('isconnected2', false);
+        $luna->checkAndUpdateCmd('isconnect2', false);
       }
     }
     if (luna::detectedLte() === true) {
