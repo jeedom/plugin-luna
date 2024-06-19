@@ -162,10 +162,12 @@
     },
     "plugins\/luna\/desktop\/php\/battery.php": {
         "401 - Accès non autorisé": "401 - Acceso no autorizado",
+        "SECTEUR": "SECTOR",
+        "BATTERIE": "Batería",
         "Batterie": "Batería",
         "Température": "Temperatura",
         "Status": "Estado",
-        "Battery Active": "Batería activa"
+        "Alimentation actuelle de la Luna": "Fuente de alimentación actual de Luna"
     },
     "plugins\/luna\/desktop\/php\/wifi.php": {
         "401 - Accès non autorisé": "401 - Acceso no autorizado",
