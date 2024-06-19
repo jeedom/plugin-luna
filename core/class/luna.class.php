@@ -252,6 +252,7 @@ class luna extends eqLogic {
       } else {
         $luna->checkAndUpdateCmd('isconnect2', false);
       }
+      $luna->refreshWidget();
     }
     if (luna::detectedLte() === true) {
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
@@ -462,6 +463,52 @@ class luna extends eqLogic {
     return $ip . "/" . strlen(str_replace("0", "", decbin(ip2long($mask))));
   }
 
+
+  public function createArrayWidgets(){
+    $jsonTemplate = dirname(__FILE__) . '/../../data/widgetTemplate/widget.json';
+    $json = file_get_contents($jsonTemplate);
+    log::add('luna', 'debug', 'Json Template : '.$jsonTemplate);
+    $logicalEqlogic = $this->getLogicalId();
+    log::add('luna', 'debug', 'Create Array Widgets for EqlogicId : '.$logicalEqlogic);
+    $arrayCommands = array();
+    $logicalsCmds = array(
+      'activationBattery','status','refresh','battery', 'tempBattery', 'onBattery', 'offBattery', 
+      'dsled', 'lanip','isconnect', 'isconnect2','ssid', 'ssid2', 'wifiip', 'wifiip2',
+      'connect', 'disconnect', 'connect2', 'disconnect2'
+    );
+    $cmds = $this->getCmd();
+    foreach($cmds as $cmd){
+      if(in_array($cmd->getLogicalId(), $logicalsCmds)){
+        $arrayCommands[] = array(
+          'logicalId' => $cmd->getLogicalId(),
+          'id' => $cmd->getId()
+        );
+      }
+    }
+    $jsonArray = json_decode($json, true);
+
+    foreach ($arrayCommands as $command) {
+       $logicalIdWithDelimiter = $command['logicalId'] . "::";
+        foreach ($jsonArray as $key => $value) {
+            if (strpos($key, $logicalIdWithDelimiter) !== false) {
+              $newKey = str_replace($logicalIdWithDelimiter, $command['id'] ."::", $key);
+              unset($jsonArray[$key]);
+              $jsonArray[$newKey] = $value;
+               
+            }
+      
+        }
+    }
+    foreach($jsonArray as $key => $value){
+      log::add('luna', 'debug', 'Key : '.$key);
+     $this->setDisplay($key, $value);
+    }
+    
+    $this->save(true);
+  
+  }
+  
+
   public static function listConnections($interface = 1) {
     $interface = $interface - 1;
     log::add(__CLASS__, 'debug', 'Wifi enabled : ' . 'sudo nmcli -f SSID,SIGNAL,SECURITY,CHAN -t -m tabular dev wifi list ifname wlan' . $interface);
@@ -522,11 +569,17 @@ class luna extends eqLogic {
   /* ----- BATTERY ----- */
 
   public static function batteryPourcentage() {
-    return exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
+    log::add('luna', 'debug', 'GET BATTERY POURCENTAGE');
+    $capacity =  exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
+    log::add('luna', 'debug', 'BATTERY POURCENTAGE > ' . $capacity);
+    return $capacity;
   }
 
   public static function batteryStatusLuna() {
-    return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
+    log::add('luna', 'debug', 'GET BATTERY STATUS');
+    $status =  exec('sudo cat /sys/class/power_supply/bq27546-0/status');
+    log::add('luna', 'debug', 'GET BATTERY STATUS : ' .$status);
+    return $status;
   }
 
   public static function batteryTemp() {
@@ -539,8 +592,17 @@ class luna extends eqLogic {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/power_avg');
   }
 
+  public static function batteryPowerCurrent() {
+    log::add('luna', 'debug', 'GET BATTERY CURRENT');
+    $current =  exec('sudo cat /sys/class/power_supply/bq27546-0/health');
+    log::add('luna', 'debug', 'GET BATTERY CURRENT : ' .$current);
+  }
+
   public static function batteryPresent() {
-    return exec('sudo cat /sys/class/power_supply/bq27546-0/present');
+    log::add('luna', 'debug', 'GET BATTERY PRESENT');
+    $present =  exec('sudo cat /sys/class/power_supply/bq27546-0/present');
+    log::add('luna', 'debug', 'GET BATTERY PRESENT '.$present);
+    return $present;
   }
 
   public static function activationBattery() {
