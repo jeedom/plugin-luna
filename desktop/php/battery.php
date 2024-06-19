@@ -8,9 +8,9 @@ $status = luna::batteryStatusLuna();
 $powerAVG = luna::batteryPowerAvg();
 
 if($powerAVG == 0){
-  $batteryActivated = '<i class="icon_red fas fa-times"></i>';
+  $batteryActivated = '{{SECTEUR}}';
 }else{
-  $batteryActivated = '<i class="icon_green fas fa-check"></i>';
+  $batteryActivated = '{{BATTERIE}}';
 }
 
 if($status == "Charging"){
@@ -39,7 +39,7 @@ if($status == "Charging"){
         <h3> <b>{{Batterie}}</b> : <?php echo $batteryPourcentage ?> % </h3><br />
         <h4> <b>{{Température}}</b> : <?php echo $tempBattery ?> °C </h4>
         <h4> <b>{{Status}}</b> : <?php echo $status; ?> <?php echo $iconStatus;?></h4>
-        <h4> <b>{{Battery Active}}</b> : <?php echo $batteryActivated ?> </h4>
+        <h4> <b>{{Alimentation actuelle de la Luna}}</b> : <?php echo $batteryActivated ?> </h4>
     </div>
     </div>
   </fieldset> 
