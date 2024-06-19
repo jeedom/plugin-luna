@@ -33,7 +33,9 @@ function luna_install() {
 		$eqLogic->save();
 	}
 	foreach (eqLogic::byType('luna') as $luna) {
+		$luna->createArrayWidgets();
 		$luna->save();
+		
 	}
 	luna::mountSD();
 	luna::mountPersistent();

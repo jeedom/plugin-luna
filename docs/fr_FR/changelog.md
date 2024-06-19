@@ -10,6 +10,7 @@
 
 - Activation de la batterie a la mise a jour et installation du plugin
 - Correction Syntaxe sur l'onglet Batterie pour plus de précision
+- Ajout d'un templateWidget sur la tuile du dashboard
 
 # 02/05/2024
 
