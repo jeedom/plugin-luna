@@ -298,14 +298,17 @@
         "SSID du wifi 1": "WiFi SSID 1",
         "SSID du wifi 2": "WiFi 2 SSID",
         "Rafraichir": "Refresh",
-        "Led": "LEDs",
+        "Couleur Led": "Color LED",
         "Battery": "Battery",
         "Status alimentation": "Power status",
         "Température Batterie": "Battery Temperature",
-        "Etat batterie": "Battery status",
+        "Batterie Activée": "Battery Activated",
         "Allumer la batterie": "Turn on the battery",
         "Eteindre la batterie": "Turn off the battery",
         "prelancement": "pre-launch"
+    },
+    "plugins\/luna\/core\/template\/widgets.html": {
+        "Affiche durée ou date de la valeur": "Displays duration or date of the value"
     },
     "plugins\/luna\/core\/api\/luna.api.php": {
         "Objet JSONRPC non défini": "JSONRPC object not defined",
