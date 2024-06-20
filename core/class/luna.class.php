@@ -1249,7 +1249,7 @@ class luna extends eqLogic {
       $dsled = new lunaCmd();
       $dsled->setOrder(10);
     }
-    $dsled->setName(__('Led', __FILE__));
+    $dsled->setName(__('Couleur Led', __FILE__));
     $dsled->setLogicalId('dsled');
     $dsled->setEqLogic_id($this->getId());
     $dsled->setType('action');
@@ -1298,12 +1298,14 @@ class luna extends eqLogic {
     $activationBattery = $this->getCmd(null, 'activationBattery');
     if (!is_object($activationBattery)) {
       $activationBattery = new lunaCmd();
-      $activationBattery->setName(__('Etat batterie', __FILE__));
+      $activationBattery->setName(__('Batterie Activée', __FILE__));
       $activationBattery->setOrder(1);
     }
+    $activationBattery->setName(__('Batterie Activée', __FILE__));
     $activationBattery->setEqLogic_id($this->getId());
     $activationBattery->setLogicalId('activationBattery');
     $activationBattery->setType('info');
+    $activationBattery->setIsVisible(0);
     $activationBattery->setSubType('binary');
     $activationBattery->save();
 
@@ -1318,6 +1320,11 @@ class luna extends eqLogic {
     $onBattery->setLogicalId('onBattery');
     $onBattery->setType('action');
     $onBattery->setSubType('other');
+    $arr = [];
+    $arr['time'] = 'duration';
+    $onBattery->setDisplay(parameters, $arr);
+    $onBattery->setTemplate('dashboard', 'luna::ActivationBattery');
+    $onBattery->setValue($activationBattery->getId());
     $onBattery->save();
   
 
@@ -1332,6 +1339,11 @@ class luna extends eqLogic {
     $offBattery->setLogicalId('offBattery');
     $offBattery->setType('action');
     $offBattery->setSubType('other');
+    $arr = [];
+    $arr['time'] = 'duration';
+    $offBattery->setDisplay(parameters, $arr);
+    $offBattery->setTemplate('dashboard', 'luna::ActivationBattery');
+    $offBattery->setValue($activationBattery->getId());
     $offBattery->save();
 
 
