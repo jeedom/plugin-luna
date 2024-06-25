@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
   rows.forEach(function(row) {
     row.addEventListener('mouseover', function() {
       this.style.border = '1px solid #94CA00';
+      this.style.transform = 'scale(1.02)';
     });
 
     row.addEventListener('mouseout', function() {
@@ -194,8 +195,21 @@ function printMacLte() {
 //   printMacWifi2()
 // }, 5000)
 
+$("#table_connexions").sortable({
+  axis: "y",
+  cursor: "move",
+  items: ".conn",
+  placeholder: "ui-state-highlight",
+  tolerance: "intersect",
+  forcePlaceholderSize: true,
+  stop: function(event, ui) {
+    $('#table_connexions .conn').each(function(index) {
+      $(this).find("td").eq(1).text(index + 1);
+    });
+  }
+});
 
-$("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
+// $("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
 $("#table_cmd").sortable({ axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
 
 /* Fonction permettant l'affichage des commandes dans l'équipement */
