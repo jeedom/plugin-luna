@@ -88,6 +88,7 @@ try {
   }
 
   if (init('action') == 'savePriority') {
+    log::add('luna', 'debug', 'savePriority');
     ajax::success(luna::savePriority(init('priority')));
   }
 

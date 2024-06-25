@@ -15,10 +15,30 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-printMacLan()
-printMacWifi()
-printMacLte()
-printMacWifi2()
+
+document.addEventListener('DOMContentLoaded', function() {
+  var conns = document.querySelectorAll('.conn');
+
+  conns.forEach(function(conn) {
+    conn.addEventListener('mouseover', function() {
+          this.style.border = '1px solid #94CA00';
+      });
+
+      conn.addEventListener('mouseout', function() {
+          this.style.border = '';
+      });
+  });
+});
+
+
+function printEqLogic(_eqLogic) {
+  printMacLan()
+  printMacWifi()
+  printMacLte()
+  printMacWifi2()
+}
+
+
 
 function changeInformation(key, info = "") {
   if(info == ''){
@@ -27,7 +47,7 @@ function changeInformation(key, info = "") {
   $(key).empty().append(info)
 }
 
-$("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
+
 
 
 function printMacLan() {
@@ -135,13 +155,15 @@ function printMacLte() {
   })
 }
 
-window.setInterval(function() {
-  printMacLan()
-  printMacWifi()
-  printMacLte()
-  printMacWifi2()
-}, 5000)
+// window.setInterval(function() {
+//   printMacLan()
+//   printMacWifi()
+//   printMacLte()
+//   printMacWifi2()
+// }, 5000)
 
+
+$("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
 $("#table_cmd").sortable({ axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
 
 /* Fonction permettant l'affichage des commandes dans l'équipement */
@@ -266,6 +288,7 @@ $('#saveLuna').off('click').on('click', function() {
         $('#div_alert').showAlert({ message: data.result, level: 'danger' })
         return
       }else{
+        console.log('reload')
         location.reload();
       }
     }
