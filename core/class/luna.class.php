@@ -569,16 +569,12 @@ class luna extends eqLogic {
   /* ----- BATTERY ----- */
 
   public static function batteryPourcentage() {
-    log::add('luna', 'debug', 'GET BATTERY POURCENTAGE');
     $capacity =  exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
-    log::add('luna', 'debug', 'BATTERY POURCENTAGE > ' . $capacity);
     return $capacity;
   }
 
   public static function batteryStatusLuna() {
-    log::add('luna', 'debug', 'GET BATTERY STATUS');
     $status =  exec('sudo cat /sys/class/power_supply/bq27546-0/status');
-    log::add('luna', 'debug', 'GET BATTERY STATUS : ' .$status);
     return $status;
   }
 
@@ -593,15 +589,11 @@ class luna extends eqLogic {
   }
 
   public static function batteryPowerCurrent() {
-    log::add('luna', 'debug', 'GET BATTERY CURRENT');
     $current =  exec('sudo cat /sys/class/power_supply/bq27546-0/health');
-    log::add('luna', 'debug', 'GET BATTERY CURRENT : ' .$current);
   }
 
   public static function batteryPresent() {
-    log::add('luna', 'debug', 'GET BATTERY PRESENT');
     $present =  exec('sudo cat /sys/class/power_supply/bq27546-0/present');
-    log::add('luna', 'debug', 'GET BATTERY PRESENT '.$present);
     return $present;
   }
 
