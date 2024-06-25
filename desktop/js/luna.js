@@ -17,16 +17,48 @@
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  var conns = document.querySelectorAll('.conn');
+  var rows = document.querySelectorAll('.conn');
 
-  conns.forEach(function(conn) {
-    conn.addEventListener('mouseover', function() {
-          this.style.border = '1px solid #94CA00';
-      });
+  rows.forEach(function(row) {
+    row.addEventListener('mouseover', function() {
+      this.style.border = '1px solid #94CA00';
+    });
 
-      conn.addEventListener('mouseout', function() {
-          this.style.border = '';
+    row.addEventListener('mouseout', function() {
+      this.style.border = '';
+    });
+
+    row.addEventListener('mousedown', function() {
+
+      this.longPressTimer = setTimeout(() => {
+        this.style.backgroundColor = '#94CA00'; 
+        Array.from(this.children).forEach(child => {
+          child.style.color = '#94CA00'; 
+        });
+        this.style.transform = 'scale(1.02)';
+        this.style.transition = 'transform 0.25s ease, background-color 0.25s ease, color 0.25s ease';
+      }, 100);
+    });
+
+    row.addEventListener('mouseup', function() {
+      clearTimeout(this.longPressTimer);
+      this.style.backgroundColor = ''; 
+      Array.from(this.children).forEach(child => {
+        child.style.color = ''; 
       });
+      this.style.transform = '';
+      this.style.transition = 'transform 0.25s ease, background-color 0.25s ease, color 0.25s ease';
+    });
+
+    row.addEventListener('mouseleave', function() {
+      clearTimeout(this.longPressTimer);
+      this.style.backgroundColor = '';
+      Array.from(this.children).forEach(child => {
+        child.style.color = ''; 
+      });
+      this.style.transform = '';
+      this.style.transition = 'transform 0.25s ease, background-color 0.25s ease, color 0.25s ease';
+    });
   });
 });
 
