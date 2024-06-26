@@ -7,7 +7,7 @@ $tempBattery = luna::batteryTemp();
 $status = luna::batteryStatusLuna();
 $powerAVG = luna::batteryPowerAvg();
 
-if($powerAVG == 0){
+if($status != 'Discharging'){
   $batteryActivated = '{{SECTEUR}}';
 }else{
   $batteryActivated = '{{BATTERIE}}';
