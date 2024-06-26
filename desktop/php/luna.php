@@ -128,7 +128,8 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 											   	log::add('luna', 'debug', json_encode($return));
 
 											 }
-											 usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
+											 usort($return, function($a, $b) { return $a['metric'] <=> $b['metric']; });
+											// usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
 											$displayIndex = 1;
 											foreach($return as $index => $conn){											
 												if($conn['name'] != 'tun0' && $conn['name'] != "" ){
