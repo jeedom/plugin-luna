@@ -322,6 +322,7 @@ class luna extends eqLogic {
     $results = explode("\n", $scanresult);
     $return = array();
     foreach ($results as $result) {
+      // log::add('luna', 'debug', 'Wifi scan : ' . $result);
       $result = str_replace('\:', '$%$%', $result);
       $wifiDetail = explode(':', $result);
       $chan = $wifiDetail[3];
@@ -457,6 +458,7 @@ class luna extends eqLogic {
       shell_exec('sudo nmcli con up ' . $priority);
       $prio++;
     }
+    return true;
   }
 
   public static function convertIP($ip, $mask) {

@@ -16,7 +16,7 @@
  */
 
 
-document.addEventListener('DOMContentLoaded', function() {
+
   var rows = document.querySelectorAll('.conn');
 
   rows.forEach(function(row) {
@@ -61,8 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
       this.style.transition = 'transform 0.25s ease, background-color 0.25s ease, color 0.25s ease';
     });
   });
-});
-
 
 function printEqLogic(_eqLogic) {
   printMacLan()
@@ -316,38 +314,101 @@ function ajax_start_percentage() {
 }
 
 
+// $('#saveLuna').off('click').on('click', function() {
+//   $.showLoading();
+//   $("#priority").val($("#table_connexions").sortable('toArray'));
+//   $.ajax({
+//     type: "POST",
+//     url: "plugins/luna/core/ajax/luna.ajax.php",
+//     data: {
+//       action: "savePriority",
+//       priority: $("#table_connexions").sortable('toArray')
+//     },
+//     dataType: 'json',
+//     async: true,
+//     global: false,
+//     error: function(request, status, error) {
+//       handleAjaxError(request, status, error)
+//     },
+//     success: function(data) {
+//       if (data.state != 'ok') {
+//         $('#div_alert').showAlert({ message: data.result, level: 'danger' })
+//         return
+//       }else{
+//         //$.hideLoading();
+//         location.reload();
+//       }
+//     }
+//   })
+//   jeedom.eqLogic.save({
+//     type: 'luna',
+//     eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
+//     error: function(error) {
+//       $('#div_alert').showAlert({message: error.message, level: 'danger'});
+//     },
+//     success: function() {
+
+//     }
+//   });
+// });
+
 $('#saveLuna').off('click').on('click', function() {
+    if (window.intervalAlertId) {
+      clearInterval(window.intervalAlertId);
+  }
+  window.intervalAlertId = setInterval(function() {
+      $('#div_alert').showAlert({ message: 'Modifications en cours, veuillez patientez .....', level: 'success' });
+  }, 6000);
+  var intervalId = setInterval(function() {
+    $.showLoading();
+}, 1000);
   $("#priority").val($("#table_connexions").sortable('toArray'));
-  $.ajax({
-    type: "POST",
-    url: "plugins/luna/core/ajax/luna.ajax.php",
-    data: {
-      action: "savePriority",
-      priority: $("#table_connexions").sortable('toArray')
-    },
-    dataType: 'json',
-    error: function(request, status, error) {
-      handleAjaxError(request, status, error)
-    },
-    success: function(data) {
-      if (data.state != 'ok') {
-        $('#div_alert').showAlert({ message: data.result, level: 'danger' })
-        return
-      }else{
-        console.log('reload')
-        location.reload();
+
+  var savePriorityPromise = new Promise(function(resolve, reject) {
+    $.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: "savePriority",
+        priority: $("#table_connexions").sortable('toArray')
+      },
+      dataType: 'json',
+      async: true,
+      global: false,
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+        reject(error);
+      },
+      success: function(data) {
+        if (data.state != 'ok') {
+          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+          reject(data.result);
+        } else {
+          resolve();
+        }
       }
-    }
-  })
-  jeedom.eqLogic.save({
-    type: 'luna',
-    eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
-    error: function(error) {
-      $('#div_alert').showAlert({message: error.message, level: 'danger'});
-    },
-    success: function() {
-
-    }
+    });
   });
-});
 
+  savePriorityPromise.then(function() {
+    clearInterval(intervalId);
+    clearInterval(intervalAlertId);
+    $('#div_alert').showAlert({ message: 'Rechargement de la page en cours.....', level: 'success' });
+    jeedom.eqLogic.save({
+      type: 'luna',
+      eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
+      error: function(error) {
+        $('#div_alert').showAlert({message: error.message, level: 'danger'});
+      },
+      success: function() {
+  
+      }
+    });
+    location.reload();
+  }).catch(function(error) {
+    clearInterval(intervalId);
+    clearInterval(intervalAlertId);
+    console.error("Erreur lors de la sauvegarde de la priorité", error);
+  });
+
+});

@@ -259,6 +259,11 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 
 }
 
+.conn.hover-style {
+  border: 1px solid #94CA00;
+  transform: scale(1.02);
+}
+
 
 </style>
 
