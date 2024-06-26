@@ -88,10 +88,15 @@ try {
   }
 
   if (init('action') == 'savePriority') {
-    ajax::success(luna::savePriority(init('priority')));
+    log::add('luna', 'debug', 'savePriority');
+    $return = luna::savePriority(init('priority'));
+    if($return == true){
+      ajax::success();
+    }
   }
 
   if (init('action') == 'listWifi') {
+    log::add('luna', 'debug', 'listWifi');
     $forced = init('mode');
     ajax::success(luna::listWifi($forced, init('interface')));
   }

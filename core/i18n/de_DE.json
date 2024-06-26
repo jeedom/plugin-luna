@@ -83,6 +83,7 @@
         "Activer": "Ermöglichen",
         "Visible": "Sichtbar",
         "Priorité des connexions": "Priorität der Verbindungen",
+        "Priorité": "Priorität",
         "Type": "Art",
         "Nom": "Nachname",
         "Metric": "Metrisch",
@@ -115,7 +116,7 @@
         "Configuration LTE": "LTE-Setup",
         "Uniquement si vous avez une carte SIM LTE avec data": "Nur wenn Sie eine LTE-SIM-Karte mit Daten haben",
         "APN": "APN",
-        "APN pour la partie LTE": "APN für den LTE-Teil",
+        "APN pour la partie LTE \/!\\ Attention il faut des APN de type ipv4 (bouygue : ebouygtel.com, Orange : orange, free : free).": "APN für den LTE-Teil \/!\\ Achtung, Sie benötigen APNs vom Typ IPv4 (Bouygue: ebouygtel.com, Orange: Orange, Free: Free)",
         "Utilisateur": "Benutzer",
         "User pour la partie LTE": "Benutzer für den LTE-Teil",
         "Mot de passe": "Passwort",
@@ -162,10 +163,12 @@
     },
     "plugins\/luna\/desktop\/php\/battery.php": {
         "401 - Accès non autorisé": "401 – Unbefugter Zugriff",
+        "SECTEUR": "SEKTOR",
+        "BATTERIE": "BATTERIE",
         "Batterie": "Batterie",
         "Température": "Temperatur",
         "Status": "Status",
-        "Battery Active": "Batterie aktiv"
+        "Alimentation actuelle de la Luna": "Lunas aktuelle Stromversorgung"
     },
     "plugins\/luna\/desktop\/php\/wifi.php": {
         "401 - Accès non autorisé": "401 – Unbefugter Zugriff",
@@ -197,6 +200,8 @@
         "Sauvegarder WIFI 1": "WLAN speichern 1",
         "Wifi 2": "WLAN 2",
         "Activer le wifi 2": "Aktivieren Sie WLAN 2",
+        "Exemple : si vous choisissez 192.168.4.1, les adresses IP de votre serveur DHCP seront, selon le masque de sous-réseau (255.255.255.0), dans la plage allant de 192.168.4.2 à 192.168.4.254.": "Beispiel: Wenn Sie 192.168.4.1 wählen, liegen die IP-Adressen Ihres DHCP-Servers je nach Subnetzmaske (255.255.255.0) im Bereich von 192.168.4.2 bis 192.168.4.254",
+        "Voir exemple Adresse IP au dessus.": "Siehe Beispiel-IP-Adresse oben",
         "Sauvegarder WIFI 2": "Sparen Sie WLAN 2"
     },
     "plugins\/luna\/desktop\/js\/luna.js": {
@@ -294,14 +299,17 @@
         "SSID du wifi 1": "WLAN-SSID 1",
         "SSID du wifi 2": "WiFi 2 SSID",
         "Rafraichir": "Aktualisierung",
-        "Led": "Leuchtdioden",
+        "Couleur Led": "Farb-LED",
         "Battery": "Batterie",
         "Status alimentation": "Stromstatus",
         "Température Batterie": "Batterietemperatur",
-        "Etat batterie": "Batteriestatus",
+        "Batterie Activée": "Batterieaktiviert",
         "Allumer la batterie": "Schalten Sie den Akku ein",
         "Eteindre la batterie": "Schalten Sie den Akku aus",
         "prelancement": "vor der Markteinführung"
+    },
+    "plugins\/luna\/core\/template\/widgets.html": {
+        "Affiche durée ou date de la valeur": "Zeigt die Dauer oder das Datum des Werts an"
     },
     "plugins\/luna\/core\/api\/luna.api.php": {
         "Objet JSONRPC non défini": "JSONRPC-Objekt nicht definiert",

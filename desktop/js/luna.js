@@ -15,10 +15,61 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-printMacLan()
-printMacWifi()
-printMacLte()
-printMacWifi2()
+
+
+  var rows = document.querySelectorAll('.conn');
+
+  rows.forEach(function(row) {
+    row.addEventListener('mouseover', function() {
+      this.style.border = '1px solid #94CA00';
+      this.style.transform = 'scale(1.02)';
+    });
+
+    row.addEventListener('mouseout', function() {
+      this.style.border = '';
+    });
+
+    row.addEventListener('mousedown', function() {
+
+      this.longPressTimer = setTimeout(() => {
+        this.style.backgroundColor = '#94CA00'; 
+        Array.from(this.children).forEach(child => {
+          child.style.color = '#94CA00'; 
+        });
+        this.style.transform = 'scale(1.02)';
+        this.style.transition = 'transform 0.25s ease, background-color 0.25s ease, color 0.25s ease';
+      }, 100);
+    });
+
+    row.addEventListener('mouseup', function() {
+      clearTimeout(this.longPressTimer);
+      this.style.backgroundColor = ''; 
+      Array.from(this.children).forEach(child => {
+        child.style.color = ''; 
+      });
+      this.style.transform = '';
+      this.style.transition = 'transform 0.25s ease, background-color 0.25s ease, color 0.25s ease';
+    });
+
+    row.addEventListener('mouseleave', function() {
+      clearTimeout(this.longPressTimer);
+      this.style.backgroundColor = '';
+      Array.from(this.children).forEach(child => {
+        child.style.color = ''; 
+      });
+      this.style.transform = '';
+      this.style.transition = 'transform 0.25s ease, background-color 0.25s ease, color 0.25s ease';
+    });
+  });
+
+function printEqLogic(_eqLogic) {
+  printMacLan()
+  printMacWifi()
+  printMacLte()
+  printMacWifi2()
+}
+
+
 
 function changeInformation(key, info = "") {
   if(info == ''){
@@ -27,7 +78,7 @@ function changeInformation(key, info = "") {
   $(key).empty().append(info)
 }
 
-$("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
+
 
 
 function printMacLan() {
@@ -135,13 +186,28 @@ function printMacLte() {
   })
 }
 
-window.setInterval(function() {
-  printMacLan()
-  printMacWifi()
-  printMacLte()
-  printMacWifi2()
-}, 5000)
+// window.setInterval(function() {
+//   printMacLan()
+//   printMacWifi()
+//   printMacLte()
+//   printMacWifi2()
+// }, 5000)
 
+$("#table_connexions").sortable({
+  axis: "y",
+  cursor: "move",
+  items: ".conn",
+  placeholder: "ui-state-highlight",
+  tolerance: "intersect",
+  forcePlaceholderSize: true,
+  stop: function(event, ui) {
+    $('#table_connexions .conn').each(function(index) {
+      $(this).find("td").eq(1).text(index + 1);
+    });
+  }
+});
+
+// $("#table_connexions").sortable({ axis: "y", cursor: "move", items: ".conn", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
 $("#table_cmd").sortable({ axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true })
 
 /* Fonction permettant l'affichage des commandes dans l'équipement */
@@ -248,37 +314,101 @@ function ajax_start_percentage() {
 }
 
 
+// $('#saveLuna').off('click').on('click', function() {
+//   $.showLoading();
+//   $("#priority").val($("#table_connexions").sortable('toArray'));
+//   $.ajax({
+//     type: "POST",
+//     url: "plugins/luna/core/ajax/luna.ajax.php",
+//     data: {
+//       action: "savePriority",
+//       priority: $("#table_connexions").sortable('toArray')
+//     },
+//     dataType: 'json',
+//     async: true,
+//     global: false,
+//     error: function(request, status, error) {
+//       handleAjaxError(request, status, error)
+//     },
+//     success: function(data) {
+//       if (data.state != 'ok') {
+//         $('#div_alert').showAlert({ message: data.result, level: 'danger' })
+//         return
+//       }else{
+//         //$.hideLoading();
+//         location.reload();
+//       }
+//     }
+//   })
+//   jeedom.eqLogic.save({
+//     type: 'luna',
+//     eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
+//     error: function(error) {
+//       $('#div_alert').showAlert({message: error.message, level: 'danger'});
+//     },
+//     success: function() {
+
+//     }
+//   });
+// });
+
 $('#saveLuna').off('click').on('click', function() {
+    if (window.intervalAlertId) {
+      clearInterval(window.intervalAlertId);
+  }
+  window.intervalAlertId = setInterval(function() {
+      $('#div_alert').showAlert({ message: 'Modifications en cours, veuillez patientez .....', level: 'success' });
+  }, 6000);
+  var intervalId = setInterval(function() {
+    $.showLoading();
+}, 1000);
   $("#priority").val($("#table_connexions").sortable('toArray'));
-  $.ajax({
-    type: "POST",
-    url: "plugins/luna/core/ajax/luna.ajax.php",
-    data: {
-      action: "savePriority",
-      priority: $("#table_connexions").sortable('toArray')
-    },
-    dataType: 'json',
-    error: function(request, status, error) {
-      handleAjaxError(request, status, error)
-    },
-    success: function(data) {
-      if (data.state != 'ok') {
-        $('#div_alert').showAlert({ message: data.result, level: 'danger' })
-        return
-      }else{
-        location.reload();
+
+  var savePriorityPromise = new Promise(function(resolve, reject) {
+    $.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: "savePriority",
+        priority: $("#table_connexions").sortable('toArray')
+      },
+      dataType: 'json',
+      async: true,
+      global: false,
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+        reject(error);
+      },
+      success: function(data) {
+        if (data.state != 'ok') {
+          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+          reject(data.result);
+        } else {
+          resolve();
+        }
       }
-    }
-  })
-  jeedom.eqLogic.save({
-    type: 'luna',
-    eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
-    error: function(error) {
-      $('#div_alert').showAlert({message: error.message, level: 'danger'});
-    },
-    success: function() {
-
-    }
+    });
   });
-});
 
+  savePriorityPromise.then(function() {
+    clearInterval(intervalId);
+    clearInterval(intervalAlertId);
+    $('#div_alert').showAlert({ message: 'Rechargement de la page en cours.....', level: 'success' });
+    jeedom.eqLogic.save({
+      type: 'luna',
+      eqLogics: $("#lunaPanel").getValues('.eqLogicAttr'),
+      error: function(error) {
+        $('#div_alert').showAlert({message: error.message, level: 'danger'});
+      },
+      success: function() {
+  
+      }
+    });
+    location.reload();
+  }).catch(function(error) {
+    clearInterval(intervalId);
+    clearInterval(intervalAlertId);
+    console.error("Erreur lors de la sauvegarde de la priorité", error);
+  });
+
+});

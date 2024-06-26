@@ -102,9 +102,12 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 									<table id="table_connexions" class="table table-bordered table-condensed">
 										<thead>
 											<tr>
+											    <th style="width:50px;"></th>
+												<th style="min-width:50px;width:70px;"> {{Priorité}}</th>
 												<th style="min-width:50px;width:70px;"> {{Type}}</th>
 												<th style="min-width:120px;width:250px;">{{Nom}}</th>
 												<th style="width:130px;">{{Metric}}</th>
+												
 											</tr>
 										</thead>
 										<tbody>
@@ -125,12 +128,15 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 											   	log::add('luna', 'debug', json_encode($return));
 
 											 }
-											 usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
-											 foreach($return as $conn){
+											 usort($return, function($a, $b) { return $a['metric'] <=> $b['metric']; });
+											// usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
+											$displayIndex = 1;
+											foreach($return as $index => $conn){											
 												if($conn['name'] != 'tun0' && $conn['name'] != "" ){
-													echo '<tr class="conn" id="'.$conn['UUID'].'" ><td>'.$conn['type'].'</td><td>'.$conn['name'].'</td><td>'.$conn['metric'].'</td></tr>';
+													echo '<tr class="conn" id="'.$conn['UUID'].'"><td class="arrowSortable"><i class="icon fas fa-arrows-alt-v"></i></td><td>'.($displayIndex).'</td><td>'.$conn['type'].'</td><td>'.$conn['name'].'</td><td>'.$conn['metric'].'</td></tr>';
+													$displayIndex++;
 												}
-											 }
+											}
 											?>
 										</tbody>
 									</table>
@@ -245,6 +251,22 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 		</div>
 	</div>
 </div>
+
+
+<style>
+
+.arrowSortable:hover{
+	cursor: move;
+
+}
+
+.conn.hover-style {
+  border: 1px solid #94CA00;
+  transform: scale(1.02);
+}
+
+
+</style>
 
 <!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
 <?php include_file('desktop', 'luna', 'js', 'luna'); ?>

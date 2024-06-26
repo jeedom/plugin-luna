@@ -242,16 +242,17 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
       $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
       if ($ssid != null) {
-        $luna->checkAndUpdateCmd('isconnected', luna::isWificonnected($ssid));
+        $luna->checkAndUpdateCmd('isconnect', luna::isWificonnected($ssid));
       } else {
-        $luna->checkAndUpdateCmd('isconnected', false);
+        $luna->checkAndUpdateCmd('isconnect', false);
       }
       $luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi2Ssid'));
       if ($ssid2 != null) {
-        $luna->checkAndUpdateCmd('isconnected2', luna::isWificonnected($ssid2));
+        $luna->checkAndUpdateCmd('isconnect2', luna::isWificonnected($ssid2));
       } else {
-        $luna->checkAndUpdateCmd('isconnected2', false);
+        $luna->checkAndUpdateCmd('isconnect2', false);
       }
+      $luna->refreshWidget();
     }
     if (luna::detectedLte() === true) {
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
@@ -321,6 +322,7 @@ class luna extends eqLogic {
     $results = explode("\n", $scanresult);
     $return = array();
     foreach ($results as $result) {
+      // log::add('luna', 'debug', 'Wifi scan : ' . $result);
       $result = str_replace('\:', '$%$%', $result);
       $wifiDetail = explode(':', $result);
       $chan = $wifiDetail[3];
@@ -456,11 +458,58 @@ class luna extends eqLogic {
       shell_exec('sudo nmcli con up ' . $priority);
       $prio++;
     }
+    return true;
   }
 
   public static function convertIP($ip, $mask) {
     return $ip . "/" . strlen(str_replace("0", "", decbin(ip2long($mask))));
   }
+
+
+  public function createArrayWidgets(){
+    $jsonTemplate = dirname(__FILE__) . '/../../data/widgetTemplate/widget.json';
+    $json = file_get_contents($jsonTemplate);
+    log::add('luna', 'debug', 'Json Template : '.$jsonTemplate);
+    $logicalEqlogic = $this->getLogicalId();
+    log::add('luna', 'debug', 'Create Array Widgets for EqlogicId : '.$logicalEqlogic);
+    $arrayCommands = array();
+    $logicalsCmds = array(
+      'activationBattery','status','refresh','battery', 'tempBattery', 'onBattery', 'offBattery', 
+      'dsled', 'lanip','isconnect', 'isconnect2','ssid', 'ssid2', 'wifiip', 'wifiip2',
+      'connect', 'disconnect', 'connect2', 'disconnect2'
+    );
+    $cmds = $this->getCmd();
+    foreach($cmds as $cmd){
+      if(in_array($cmd->getLogicalId(), $logicalsCmds)){
+        $arrayCommands[] = array(
+          'logicalId' => $cmd->getLogicalId(),
+          'id' => $cmd->getId()
+        );
+      }
+    }
+    $jsonArray = json_decode($json, true);
+
+    foreach ($arrayCommands as $command) {
+       $logicalIdWithDelimiter = $command['logicalId'] . "::";
+        foreach ($jsonArray as $key => $value) {
+            if (strpos($key, $logicalIdWithDelimiter) !== false) {
+              $newKey = str_replace($logicalIdWithDelimiter, $command['id'] ."::", $key);
+              unset($jsonArray[$key]);
+              $jsonArray[$newKey] = $value;
+               
+            }
+      
+        }
+    }
+    foreach($jsonArray as $key => $value){
+      log::add('luna', 'debug', 'Key : '.$key);
+     $this->setDisplay($key, $value);
+    }
+    
+    $this->save(true);
+  
+  }
+  
 
   public static function listConnections($interface = 1) {
     $interface = $interface - 1;
@@ -522,11 +571,13 @@ class luna extends eqLogic {
   /* ----- BATTERY ----- */
 
   public static function batteryPourcentage() {
-    return exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
+    $capacity =  exec('sudo cat /sys/class/power_supply/bq27546-0/capacity');
+    return $capacity;
   }
 
   public static function batteryStatusLuna() {
-    return exec('sudo cat /sys/class/power_supply/bq27546-0/status');
+    $status =  exec('sudo cat /sys/class/power_supply/bq27546-0/status');
+    return $status;
   }
 
   public static function batteryTemp() {
@@ -539,8 +590,13 @@ class luna extends eqLogic {
     return exec('sudo cat /sys/class/power_supply/bq27546-0/power_avg');
   }
 
+  public static function batteryPowerCurrent() {
+    $current =  exec('sudo cat /sys/class/power_supply/bq27546-0/health');
+  }
+
   public static function batteryPresent() {
-    return exec('sudo cat /sys/class/power_supply/bq27546-0/present');
+    $present =  exec('sudo cat /sys/class/power_supply/bq27546-0/present');
+    return $present;
   }
 
   public static function activationBattery() {
@@ -1187,7 +1243,7 @@ class luna extends eqLogic {
       $dsled = new lunaCmd();
       $dsled->setOrder(10);
     }
-    $dsled->setName(__('Led', __FILE__));
+    $dsled->setName(__('Couleur Led', __FILE__));
     $dsled->setLogicalId('dsled');
     $dsled->setEqLogic_id($this->getId());
     $dsled->setType('action');
@@ -1236,12 +1292,14 @@ class luna extends eqLogic {
     $activationBattery = $this->getCmd(null, 'activationBattery');
     if (!is_object($activationBattery)) {
       $activationBattery = new lunaCmd();
-      $activationBattery->setName(__('Etat batterie', __FILE__));
+      $activationBattery->setName(__('Batterie Activée', __FILE__));
       $activationBattery->setOrder(1);
     }
+    $activationBattery->setName(__('Batterie Activée', __FILE__));
     $activationBattery->setEqLogic_id($this->getId());
     $activationBattery->setLogicalId('activationBattery');
     $activationBattery->setType('info');
+    $activationBattery->setIsVisible(0);
     $activationBattery->setSubType('binary');
     $activationBattery->save();
 
@@ -1256,6 +1314,11 @@ class luna extends eqLogic {
     $onBattery->setLogicalId('onBattery');
     $onBattery->setType('action');
     $onBattery->setSubType('other');
+    $arr = [];
+    $arr['time'] = 'duration';
+    $onBattery->setDisplay(parameters, $arr);
+    $onBattery->setTemplate('dashboard', 'luna::ActivationBattery');
+    $onBattery->setValue($activationBattery->getId());
     $onBattery->save();
   
 
@@ -1270,6 +1333,11 @@ class luna extends eqLogic {
     $offBattery->setLogicalId('offBattery');
     $offBattery->setType('action');
     $offBattery->setSubType('other');
+    $arr = [];
+    $arr['time'] = 'duration';
+    $offBattery->setDisplay(parameters, $arr);
+    $offBattery->setTemplate('dashboard', 'luna::ActivationBattery');
+    $offBattery->setValue($activationBattery->getId());
     $offBattery->save();
 
 
