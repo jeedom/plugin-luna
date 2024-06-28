@@ -20,6 +20,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
 function luna_install() {
+	luna::verifLTEScript();
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Installation du module Luna', __FILE__));
@@ -47,6 +48,7 @@ function luna_install() {
 }
 
 function luna_update() {
+	luna::verifLTEScript();
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Mise à jour du module Luna', __FILE__));

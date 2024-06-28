@@ -256,9 +256,9 @@ class luna extends eqLogic {
     }
     if (luna::detectedLte() === true) {
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
-      if ($TTYLTE == "") {
-        luna::scanLTEModule();
-      }
+      // if ($TTYLTE == "") {
+      //   luna::scanLTEModule();
+      // }
     }
   }
 
@@ -839,6 +839,34 @@ class luna extends eqLogic {
     }
   }
 
+
+  public static function verifLTEScript(){
+    $ltetrouver = exec('sudo lteSearch');
+    if ($ltetrouver == 1) {
+      config::save('isLte', 'LTE', 'luna');
+      message::add(__CLASS__, __('Detection de la puce LTE fini > puce trouvé', __FILE__));
+    } elseif ($ltetrouver == 2) {
+      config::save('isLte', 'NOLTE', 'luna');
+      message::add(__CLASS__, __('Detection de la puce LTE fini > puce non presente', __FILE__));
+    } 
+  }
+
+
+  public static function isLTELuna(){
+    $maxWaitTime = 120; 
+    $startTime = time(); 
+    $isLte = null;
+    while (time() - $startTime < $maxWaitTime) {
+        $isLte = config::byKey('isLte', 'luna', null);
+        if($isLte != null){
+          break;
+        }else{
+          usleep(500000); 
+        }
+    }
+    return $isLte; 
+  }
+
   public static function detectedLte() {
     $scan = config::byKey('4G', 'luna', null);
     if ($scan == null) {
@@ -959,7 +987,7 @@ class luna extends eqLogic {
     $operatorName = $modem['3gpp']['operator-name'];
     $signalPercent = $modem['generic']['signal-quality']['value'];
     $state = $modem['generic']['state'];
-    $stateFailedReason = $modem['generic']['state-failed-reason'];
+    $stateFailedReason = $modem['generic']['state-failed-reason'] == 'sim-missing' ? 'Pas de carte SIM présente' : $modem['generic']['state-failed-reason'];
     $unlockRequired = $modem['generic']['unlock-required'];
     $unlockRetries = $modem['generic']['unlock-retries'];
 
@@ -1359,15 +1387,15 @@ class lunaCmd extends cmd {
     $action = $this->getLogicalId();
     switch ($action) {
       case 'connect':
-        luna::disconnectWifi(1);
+        luna::connectWifi(1);
         break;
       case 'disconnect':
-        luna::connectWifi(1);
+        luna::disconnectWifi(1);
       case 'connect2':
-        luna::disconnectWifi(2);
+        luna::connectWifi(2); 
         break;
       case 'disconnect2':
-        luna::connectWifi(2);
+        luna::disconnectWifi(2);
         break;
       case 'dsled':
         luna::dsLed($_options['select']);

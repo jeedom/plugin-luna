@@ -30,6 +30,14 @@ try {
   */
   ajax::init();
 
+
+  if(init('action') == 'isLTELuna'){
+    $return = luna::isLTELuna();
+    if($return){
+      ajax::success();
+    }
+  }
+
   if (init('action') == 'loop_percentage') {
     luna::loopPercentage();
     ajax::success();
@@ -114,7 +122,7 @@ try {
   }
 
   if (init('action') == 'removeConnection') {
-    ajax::success(luna::RemoveConnection(init('UUID')));
+    ajax::success(luna::removeConnection(init('UUID')));
   }
 
   if (init('action') == 'macfinder') {

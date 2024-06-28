@@ -18,7 +18,8 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 		<fieldset>
 			<legend><i class="fa fa-signal"></i> {{LTE}}</legend>
 			<?php
-			if (luna::detectedLte() === true) {
+			$isLte = config::byKey('isLte', 'luna');
+			if ($isLte == 'LTE') {
 			?>
 				<div class="row">
 					<div class="col-sm-6">
@@ -55,7 +56,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 								}
 							}
 						} else {
-							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> {{Le plugin SMS n\'est pas installé}}</div>';
+							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> {{Le plugin SMS n&#39;est pas installé}}</div>';
 						}
 						?>
 					</div>
@@ -174,9 +175,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 			} else {
 ?>
 	<div class="row">
-		<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> {{Votre Luna n'as pas de module LTE integrer, le plugin prend en charge uniquement les Luna 4G.}}</div>
-		<center><a class="btn btn-info" id="bt_scanLTE">
-				<i class="fas fa-search"></i> {{Détection du module LTE}}</a></center>
+		<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> {{Votre Luna ne possède pas le module LTE}}</div>
 	</div>
 <?php
 			}
