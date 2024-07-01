@@ -66,7 +66,7 @@ function printEqLogic(_eqLogic) {
   printMacLan()
   printMacWifi()
   printMacLte()
-  printMacWifi2()
+  //printMacWifi2()
 }
 
 

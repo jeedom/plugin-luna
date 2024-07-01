@@ -19,6 +19,8 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
+$cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
+
 function luna_install() {
 	luna::verifLTEScript();
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
@@ -32,6 +34,13 @@ function luna_install() {
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
+	}else{
+		foreach($cmdsToRemove as $logical){
+			$cmd = $eqLogic->getCmd(null, $logical);
+			if(is_object($cmd)){
+				$cmd->remove();
+			}
+		}
 	}
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->createArrayWidgets();
@@ -60,6 +69,13 @@ function luna_update() {
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
+	}else{
+		foreach($cmdsToRemove as $logical){
+			$cmd = $eqLogic->getCmd(null, $logical);
+			if(is_object($cmd)){
+				$cmd->remove();
+			}
+		}
 	}
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();

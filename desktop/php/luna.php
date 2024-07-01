@@ -194,21 +194,21 @@ sendVarToJS('isLte', $isLte);
 										<span class="label label-info ipWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse MAC wifi 2}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info macWifi2" style="font-size:1em;cursor:default;"></span>
 									</div>
 
-								</div>
-								<div class="form-group">
+								</div> -->
+								<!-- <div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse Ip wifi 2}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info ipWifi2" style="font-size:1em;cursor:default;"></span>
 									</div>
-								</div>
+								</div> -->
 								<?php
-								if(luna::detectedLte() === true){
+								if(config::byKey('isLte', 'luna') == 'LTE'){
 								?>
 									<div class="form-group">
 										<label class="col-lg-4 control-label">{{Adresse Ip LTE}}</label>

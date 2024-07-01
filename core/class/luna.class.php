@@ -235,7 +235,7 @@ class luna extends eqLogic {
         continue;
       };
       $ssid = $luna->getConfiguration('wifi1Ssid', null);
-      $ssid2 = $luna->getConfiguration('wifi2Ssid', null);
+      //$ssid2 = $luna->getConfiguration('wifi2Ssid', null);
       $luna->checkAndUpdateCmd('battery', luna::batteryPourcentage());
       $luna->checkAndUpdateCmd('status', luna::batteryStatusLuna());
       $luna->checkAndUpdateCmd('activationBattery', luna::activationBattery());
@@ -246,12 +246,12 @@ class luna extends eqLogic {
       } else {
         $luna->checkAndUpdateCmd('isconnect', false);
       }
-      $luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi2Ssid'));
-      if ($ssid2 != null) {
-        $luna->checkAndUpdateCmd('isconnect2', luna::isWificonnected($ssid2));
-      } else {
-        $luna->checkAndUpdateCmd('isconnect2', false);
-      }
+      //$luna->checkAndUpdateCmd('ssid2', $luna->getConfiguration('wifi2Ssid'));
+      // if ($ssid2 != null) {
+      //   $luna->checkAndUpdateCmd('isconnect2', luna::isWificonnected($ssid2));
+      // } else {
+      //   $luna->checkAndUpdateCmd('isconnect2', false);
+      // }
       $luna->refreshWidget();
     }
     $isLte = config::byKey('isLte', 'luna', null);
@@ -1132,18 +1132,18 @@ class luna extends eqLogic {
     $connect->setEqLogic_id($this->getId());
     $connect->save();
 
-    $connect = $this->getCmd(null, 'connect2');
-    if (!is_object($connect)) {
-      $connect = new lunaCmd();
-      $connect->setLogicalId('connect2');
-      $connect->setIsVisible(1);
-      $connect->setName(__('Connecter Wifi 2', __FILE__));
-      $connect->setOrder(20);
-    }
-    $connect->setType('action');
-    $connect->setSubType('other');
-    $connect->setEqLogic_id($this->getId());
-    $connect->save();
+    // $connect = $this->getCmd(null, 'connect2');
+    // if (!is_object($connect)) {
+    //   $connect = new lunaCmd();
+    //   $connect->setLogicalId('connect2');
+    //   $connect->setIsVisible(1);
+    //   $connect->setName(__('Connecter Wifi 2', __FILE__));
+    //   $connect->setOrder(20);
+    // }
+    // $connect->setType('action');
+    // $connect->setSubType('other');
+    // $connect->setEqLogic_id($this->getId());
+    // $connect->save();
 
     $disconnect = $this->getCmd(null, 'disconnect');
     if (!is_object($disconnect)) {
@@ -1158,18 +1158,18 @@ class luna extends eqLogic {
     $disconnect->setEqLogic_id($this->getId());
     $disconnect->save();
 
-    $disconnect = $this->getCmd(null, 'disconnect2');
-    if (!is_object($disconnect)) {
-      $disconnect = new lunaCmd();
-      $disconnect->setLogicalId('disconnect2');
-      $disconnect->setIsVisible(1);
-      $disconnect->setName(__('Déconnecter Wifi 2', __FILE__));
-      $disconnect->setOrder(21);
-    }
-    $disconnect->setType('action');
-    $disconnect->setSubType('other');
-    $disconnect->setEqLogic_id($this->getId());
-    $disconnect->save();
+    // $disconnect = $this->getCmd(null, 'disconnect2');
+    // if (!is_object($disconnect)) {
+    //   $disconnect = new lunaCmd();
+    //   $disconnect->setLogicalId('disconnect2');
+    //   $disconnect->setIsVisible(1);
+    //   $disconnect->setName(__('Déconnecter Wifi 2', __FILE__));
+    //   $disconnect->setOrder(21);
+    // }
+    // $disconnect->setType('action');
+    // $disconnect->setSubType('other');
+    // $disconnect->setEqLogic_id($this->getId());
+    // $disconnect->save();
 
     $isconnect = $this->getCmd(null, 'isconnect');
     if (!is_object($isconnect)) {
@@ -1183,17 +1183,17 @@ class luna extends eqLogic {
     $isconnect->setSubType('binary');
     $isconnect->save();
 
-    $isconnect = $this->getCmd(null, 'isconnect2');
-    if (!is_object($isconnect)) {
-      $isconnect = new lunaCmd();
-      $isconnect->setName(__('Etat Wifi 2', __FILE__));
-      $isconnect->setOrder(22);
-    }
-    $isconnect->setEqLogic_id($this->getId());
-    $isconnect->setLogicalId('isconnect2');
-    $isconnect->setType('info');
-    $isconnect->setSubType('binary');
-    $isconnect->save();
+    // $isconnect = $this->getCmd(null, 'isconnect2');
+    // if (!is_object($isconnect)) {
+    //   $isconnect = new lunaCmd();
+    //   $isconnect->setName(__('Etat Wifi 2', __FILE__));
+    //   $isconnect->setOrder(22);
+    // }
+    // $isconnect->setEqLogic_id($this->getId());
+    // $isconnect->setLogicalId('isconnect2');
+    // $isconnect->setType('info');
+    // $isconnect->setSubType('binary');
+    // $isconnect->save();
 
     $lanip = $this->getCmd(null, 'lanip');
     if (!is_object($lanip)) {
@@ -1219,17 +1219,17 @@ class luna extends eqLogic {
     $wifiip->setSubType('string');
     $wifiip->save();
 
-    $wifiip = $this->getCmd(null, 'wifiip2');
-    if (!is_object($wifiip)) {
-      $wifiip = new lunaCmd();
-      $wifiip->setName(__('Wifi 2 IP', __FILE__));
-      $wifiip->setOrder(25);
-    }
-    $wifiip->setEqLogic_id($this->getId());
-    $wifiip->setLogicalId('wifiip2');
-    $wifiip->setType('info');
-    $wifiip->setSubType('string');
-    $wifiip->save();
+    // $wifiip = $this->getCmd(null, 'wifiip2');
+    // if (!is_object($wifiip)) {
+    //   $wifiip = new lunaCmd();
+    //   $wifiip->setName(__('Wifi 2 IP', __FILE__));
+    //   $wifiip->setOrder(25);
+    // }
+    // $wifiip->setEqLogic_id($this->getId());
+    // $wifiip->setLogicalId('wifiip2');
+    // $wifiip->setType('info');
+    // $wifiip->setSubType('string');
+    // $wifiip->save();
 
     $ssid = $this->getCmd(null, 'ssid');
     if (!is_object($ssid)) {
@@ -1243,17 +1243,17 @@ class luna extends eqLogic {
     $ssid->setSubType('string');
     $ssid->save();
 
-    $ssid = $this->getCmd(null, 'ssid2');
-    if (!is_object($ssid)) {
-      $ssid = new lunaCmd();
-      $ssid->setName(__('SSID du wifi 2', __FILE__));
-      $ssid->setOrder(26);
-    }
-    $ssid->setEqLogic_id($this->getId());
-    $ssid->setLogicalId('ssid2');
-    $ssid->setType('info');
-    $ssid->setSubType('string');
-    $ssid->save();
+    // $ssid = $this->getCmd(null, 'ssid2');
+    // if (!is_object($ssid)) {
+    //   $ssid = new lunaCmd();
+    //   $ssid->setName(__('SSID du wifi 2', __FILE__));
+    //   $ssid->setOrder(26);
+    // }
+    // $ssid->setEqLogic_id($this->getId());
+    // $ssid->setLogicalId('ssid2');
+    // $ssid->setType('info');
+    // $ssid->setSubType('string');
+    // $ssid->save();
 
     $refresh = $this->getCmd(null, 'refresh');
     if (!is_object($refresh)) {
@@ -1391,12 +1391,13 @@ class lunaCmd extends cmd {
         break;
       case 'disconnect':
         luna::disconnectWifi(1);
-      case 'connect2':
-        luna::connectWifi(2); 
         break;
-      case 'disconnect2':
-        luna::disconnectWifi(2);
-        break;
+      // case 'connect2':
+      //   luna::connectWifi(2); 
+      //   break;
+      // case 'disconnect2':
+      //   luna::disconnectWifi(2);
+      //   break;
       case 'dsled':
         luna::dsLed($_options['select']);
         break;
