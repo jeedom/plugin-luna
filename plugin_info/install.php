@@ -42,7 +42,7 @@ function luna_install() {
 	luna::mountPersistent();
 	luna::patchLuna();
 	luna::switchHost();
-	luna::installLte();
+	//luna::installLte();
 	luna::installLora();
 	luna::onBattery();
 }
@@ -68,7 +68,7 @@ function luna_update() {
 	luna::mountPersistent();
 	luna::patchLuna();
 	luna::switchHost();
-	luna::installLte();
+	//luna::installLte();
 	luna::installLora();
 	luna::onBattery();
 
