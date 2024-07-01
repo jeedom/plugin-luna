@@ -182,14 +182,14 @@ sendVarToJS('isLte', $isLte);
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-lg-4 control-label">{{Adresse MAC wifi 1}}</label>
+									<label class="col-lg-4 control-label">{{Adresse MAC wifi}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info macWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 
 								</div>
 								<div class="form-group">
-									<label class="col-lg-4 control-label">{{Adresse Ip wifi 1}}</label>
+									<label class="col-lg-4 control-label">{{Adresse Ip wifi}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info ipWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
