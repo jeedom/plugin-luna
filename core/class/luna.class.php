@@ -401,6 +401,10 @@ class luna extends eqLogic {
         shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' ipv4.addresses ' . luna::convertIP($wifiHotspotip, $wifiHotspotmask));
       }
       shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' connection.autoconnect yes');
+      shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' connection.autoconnect-priority 100');
+      shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' connection.autoconnect-retries 0');
+      shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' connection.multi-connect 3');
+      shell_exec('sudo nmcli con modify Hotspot-wlan' . $device . ' connection.auth-retries 0');
       shell_exec('sudo nmcli con up Hotspot-wlan' . $device);
     }
     return $return;
