@@ -27,7 +27,17 @@ sudo systemctl disable bg96
 sudo rm /usr/bin/bg96
 sudo rm /etc/init.d/bg96
 sudo rm /etc/systemd/system/lte.service
-sudo chmod +x /usr/bin/lteSearch
+sudo rm /usr/bin/lteSearch
+if [ ! -f /usr/bin/jeedomLTE ]; then
+    sudo cp /var/www/html/plugins/luna/data/patchs/root/usr/bin/jeedomLTE /usr/bin/jeedomLTE
+    sudo chmod +x /usr/bin/jeedomLTE
+
+    sudo cp /var/www/html/plugins/luna/data/patchs/lte/jeedomLTE.service /etc/systemd/system/jeedomLTE.service
+    sudo chmod 644 /etc/systemd/system/jeedomLTE.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable jeedomLTE.service
+    sudo systemctl start jeedomLTE.service
+fi
 
 #done
 php /var/www/html/core/php/jeecli.php message add "luna" "correction Up Start Led"

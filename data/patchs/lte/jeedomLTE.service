@@ -1,0 +1,14 @@
+[Unit]
+Description=Jeedom LTE Management Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/jeedomLTE start
+ExecStop=/usr/bin/jeedomLTE stop
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

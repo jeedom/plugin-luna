@@ -822,7 +822,7 @@ class luna extends eqLogic {
       return true;
     } else {
       message::add(__CLASS__, __('Detection de la puce LTE en cours cela peux prendre 2 minutes un message vous avertira une fois le scan fini', __FILE__));
-      $ltetrouver = exec('sudo lteSearch');
+      $ltetrouver = exec('sudo cat /boot/jeedomLTE');
       if ($ltetrouver == 1) {
         message::add(__CLASS__, __('Detection de la puce LTE fini > puce trouvé', __FILE__));
       } elseif ($ltetrouver == 2) {
@@ -843,9 +843,9 @@ class luna extends eqLogic {
     }
   }
 
-
+  //non utilisé
   public static function verifLTEScript(){
-    $ltetrouver = exec('sudo lteSearch');
+    $ltetrouver = exec('sudo cat /boot/jeedomLTE');
     if ($ltetrouver == 1) {
       config::save('isLte', 'LTE', 'luna');
       message::add(__CLASS__, __('Detection de la puce LTE fini > puce trouvé', __FILE__));
@@ -855,7 +855,7 @@ class luna extends eqLogic {
     } 
   }
 
-
+  //utilisé dans ajax pas sur que ce soit encore utile
   public static function isLTELuna(){
     $maxWaitTime = 120; 
     $startTime = time(); 
@@ -943,6 +943,11 @@ class luna extends eqLogic {
       exec("sudo nmcli connection modify JeedomLTE gsm.pin ''");
     }
 
+    //Auto connect
+    exec('sudo nmcli connection modify JeedomLTE connection.multi-connect 3');
+    exec('sudo nmcli connection modify JeedomLTE connection.autoconnect-retries 0');
+    exec('sudo nmcli connection modify JeedomLTE connection.auth-retries 0');
+
     exec("sudo nmcli connection modify JeedomLTE ipv6.method disabled");
     log::add(__CLASS__, 'debug', 'Fin de la configuration LTE > ' . exec("sudo nmcli connection show JeedomLTE"));
     if (is_object($luna)) {
@@ -962,7 +967,8 @@ class luna extends eqLogic {
     if ($actived == true) {
       message::add(__CLASS__, __('Activation LTE, la premiere connexion peut prendre 10 minutes.', __FILE__));
       log::add(__CLASS__, 'debug', 'Activation LTE');
-      exec('sudo lteSearch');
+      //Encore utile ?
+      //exec('sudo lteSearch');
       exec('sudo nmcli connection modify JeedomLTE connection.autoconnect yes');
       exec("sudo nmcli connection up JeedomLTE");
     } else {
