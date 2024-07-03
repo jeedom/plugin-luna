@@ -380,12 +380,11 @@ class luna extends eqLogic {
         } else {
           shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '" ipv4.ignore-auto-dns no');
         }
-        shell_exec('sudo nmcli con up "' . $escpadedWifiSsid . '"');
       } else {
         shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '"  ipv4.addresses ' . luna::convertIP($wifiIp, $wifiMask) . ' ipv4.gateway ' . $wifiRouter . ' ipv4.dns ' . $wifiDns . ' ipv4.method manual');
         shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '"  ifname wlan' . $device);
-        shell_exec('sudo nmcli con up "' . $escpadedWifiSsid . '"');
       }
+      shell_exec('sudo nmcli con up "' . $escpadedWifiSsid . '"');
       sleep(5);
     } else if ($wifiMode == "hotspot") {
       log::add(__CLASS__, 'info', '┌──────────▶︎ :fg-success: Sauvegarde du WiFi Hotspot:/fg: ◀︎───────────');
