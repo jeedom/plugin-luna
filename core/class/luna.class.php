@@ -857,6 +857,7 @@ class luna extends eqLogic {
 
   //utilisé dans ajax pas sur que ce soit encore utile
   public static function isLTELuna(){
+    luna::verifLTEScript();
     $maxWaitTime = 120; 
     $startTime = time(); 
     $isLte = null;

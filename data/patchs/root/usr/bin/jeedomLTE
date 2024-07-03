@@ -95,6 +95,9 @@ case "$1" in
             debug_log "Connection result: $result"
             if [ $result -eq 1 ]; then
                 debug_log "Modem is already connected."
+                if [ ! -f /boot/jeedomLTE ]; then
+                    echo 1 > /boot/jeedomLTE
+                fi
             else
                 max_attempts=5
                 for attempt in $(seq 1 $max_attempts); do
