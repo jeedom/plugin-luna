@@ -384,6 +384,11 @@ class luna extends eqLogic {
         shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '"  ipv4.addresses ' . luna::convertIP($wifiIp, $wifiMask) . ' ipv4.gateway ' . $wifiRouter . ' ipv4.dns ' . $wifiDns . ' ipv4.method manual');
         shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '"  ifname wlan' . $device);
       }
+      shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '" connection.autoconnect yes');
+      shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '" connection.autoconnect-priority 100');
+      shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '" connection.autoconnect-retries 0');
+      shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '" connection.multi-connect 3');
+      shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '" connection.auth-retries 0');
       shell_exec('sudo nmcli con up "' . $escpadedWifiSsid . '"');
       sleep(5);
     } else if ($wifiMode == "hotspot") {
