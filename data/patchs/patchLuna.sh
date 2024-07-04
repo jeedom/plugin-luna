@@ -37,6 +37,12 @@ if [ ! -f /usr/bin/jeedomLTE ]; then
     sudo systemctl daemon-reload
     sudo systemctl enable jeedomLTE.service
     sudo systemctl start jeedomLTE.service
+
+    if [ -f /etc/NetworkManager/system-connections/JeedomLTE.nmconnection ]; then
+        sudo nmcli connection modify JeedomLTE connection.multi-connect 3
+        sudo nmcli connection modify JeedomLTE connection.autoconnect-retries 0
+        sudo nmcli connection modify JeedomLTE connection.auth-retries 0
+    fi
 fi
 
 #done
