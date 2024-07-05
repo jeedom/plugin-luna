@@ -58,7 +58,7 @@ if [ $INSTALL_FLAG -eq 1 ]; then
 fi
 
 if [ $UPDATE_FLAG -eq 1 ]; then
-
+    echo "UPDATE"
 fi
 
 if [ ! -f /usr/bin/jeedomLTE ]; then
