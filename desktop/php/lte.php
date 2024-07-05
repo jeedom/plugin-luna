@@ -62,11 +62,11 @@ $modem       = luna::recuperationConfigModem();
 						?>
 					</div>
 					<div class="col-sm-6">
+					<h3><i class="fa fa-signal"></i> {{Configuration LTE}}</h3>
 					<?php
 					if($modem) {
 						if(empty($modem['stateFailedReason'])) {
 					?>
-						<h3><i class="fa fa-signal"></i> {{Configuration LTE}}</h3>
 						<div class="alert alert-warning">
 							<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
 						</div>
@@ -133,7 +133,14 @@ $modem       = luna::recuperationConfigModem();
 						<br /><br /><br />
 						<?php
 						} else {
-							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> '. $modem['stateFailedReasonLabel'] .'</div>';
+							$stateFailedReasonLabel = '';
+							switch ($modem['stateFailedReason']) {
+								case 'sim-missing':
+									$stateFailedReasonLabel = "{{La carte SIM ne semble pas être présente, l'avez vous insérée correctement ?}}"; //Prévoir un lien vers tuto
+									break;
+								
+							}
+							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> '. $stateFailedReasonLabel .'</div>';
 						}
 							?>
 							<div class="form-group">

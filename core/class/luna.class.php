@@ -1003,7 +1003,7 @@ class luna extends eqLogic {
       $signalPercent          = $modem['generic']['signal-quality']['value'];
       $state                  = $modem['generic']['state'];
       $stateFailedReason      = $modem['generic']['state-failed-reason'];
-      $stateFailedReasonLabel = $modem['generic']['state-failed-reason'] == 'sim-missing' ? 'Pas de carte SIM présente' : $modem['generic']['state-failed-reason'];
+      $stateFailedReasonLabel = $modem['generic']['state-failed-reason'] == 'sim-missing' ? '{{SIM absente}}' : $modem['generic']['state-failed-reason'];
       $unlockRequired         = $modem['generic']['unlock-required'];
       $unlockRetries          = $modem['generic']['unlock-retries'];
   
