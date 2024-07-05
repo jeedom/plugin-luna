@@ -991,20 +991,21 @@ class luna extends eqLogic {
     $getModemList = exec('sudo mmcli -L -J');
     $modemList = json_decode($getModemList, true);
     if (isset($modemList['modem-list']) && count($modemList['modem-list']) > 0) {
-      $modemPath = $modemList['modem-list'][0];
+      $modemPath    = $modemList['modem-list'][0];
       $modemNumber = substr($modemPath, strrpos($modemPath, '/') + 1);
-      $modem = exec("sudo mmcli --modem=$modemNumber -J");
-      $modem = json_decode($modem, true);
+      $modem       = exec("sudo mmcli --modem=$modemNumber -J");
+      $modem       = json_decode($modem, true);
 
       $modem = $modem['modem'];
 
-      $imei = $modem['3gpp']['imei'];
-      $operatorName = $modem['3gpp']['operator-name'];
-      $signalPercent = $modem['generic']['signal-quality']['value'];
-      $state = $modem['generic']['state'];
-      $stateFailedReason = $modem['generic']['state-failed-reason'] == 'sim-missing' ? 'Pas de carte SIM présente' : $modem['generic']['state-failed-reason'];
-      $unlockRequired = $modem['generic']['unlock-required'];
-      $unlockRetries = $modem['generic']['unlock-retries'];
+      $imei                   = $modem['3gpp']['imei'];
+      $operatorName           = $modem['3gpp']['operator-name'];
+      $signalPercent          = $modem['generic']['signal-quality']['value'];
+      $state                  = $modem['generic']['state'];
+      $stateFailedReason      = $modem['generic']['state-failed-reason'];
+      $stateFailedReasonLabel = $modem['generic']['state-failed-reason'] == 'sim-missing' ? 'Pas de carte SIM présente' : $modem['generic']['state-failed-reason'];
+      $unlockRequired         = $modem['generic']['unlock-required'];
+      $unlockRetries          = $modem['generic']['unlock-retries'];
   
       log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
       log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
