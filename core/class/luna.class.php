@@ -1013,16 +1013,17 @@ class luna extends eqLogic {
       log::add(__CLASS__, 'debug', 'STATE > ' . $state);
       log::add(__CLASS__, 'debug', 'STATE FAILED REASON > ' . $stateFailedReason);
       log::add(__CLASS__, 'debug', 'UNLOCK REQUIRED > ' . $unlockRequired);
-      log::add(__CLASS__, 'debug', 'UNLOCK RETRIES > ' . $unlockRetries);
+      log::add(__CLASS__, 'debug', 'UNLOCK RETRIES > ' . print_r($unlockRetries, true));
   
       return [
-        'imei' => $imei,
-        'operatorName' => $operatorName,
-        'signalPercent' => $signalPercent,
-        'state' => $state,
-        'stateFailedReason' => $stateFailedReason,
-        'unlockRequired' => $unlockRequired,
-        'unlockRetries' => $unlockRetries
+        'imei'                   => $imei,
+        'operatorName'           => $operatorName,
+        'signalPercent'          => $signalPercent,
+        'state'                  => $state,
+        'stateFailedReason'      => $stateFailedReason,
+        'stateFailedReasonLabel' => $stateFailedReasonLabel,
+        'unlockRequired'         => $unlockRequired,
+        'unlockRetries'          => $unlockRetries
       ];
     }
     return false;

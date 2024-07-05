@@ -12,6 +12,7 @@ foreach ($plugins as $plugin) {
 	}
 }
 $portSmsLuna = "/dev/ttyLuna-Lte";
+$modem       = luna::recuperationConfigModem();
 ?>
 <div role="tabpanel" class="tab-pane" id="LTEtab"><br />
 	<form id="ltePanel" class="form-horizontal">
@@ -61,6 +62,10 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						?>
 					</div>
 					<div class="col-sm-6">
+					<?php
+					if($modem) {
+						if(empty($modem['stateFailedReason'])) {
+					?>
 						<h3><i class="fa fa-signal"></i> {{Configuration LTE}}</h3>
 						<div class="alert alert-warning">
 							<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
@@ -120,14 +125,16 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						<br />
 						<div class="form-actions">
 							<div class="col-lg-12">
-								<a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i>{{Sauvegarder les APN}}</a>
+								<a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i> {{Sauvegarder les APN}}</a>
 							</div>
 						</div>
 						<br /><br /><br />
 						<i>*{{Seul l'apn est obligatoire}}</i>
 						<br /><br /><br />
 						<?php
-						if($modem = luna::recuperationConfigModem()) {
+						} else {
+							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> '. $modem['stateFailedReasonLabel'] .'</div>';
+						}
 							?>
 							<div class="form-group">
 								<label class="col-lg-3 control-label">{{IMEI}}
