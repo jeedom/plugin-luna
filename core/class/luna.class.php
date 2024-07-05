@@ -988,41 +988,43 @@ class luna extends eqLogic {
   }
 
   public static function recuperationConfigModem() {
-    $modemLte = exec('sudo mmcli --modem=0 -J');
-    if ($modemLte == "error: couldn't find modem") {
-      log::add(__CLASS__, 'debug', 'Modem non trouvé');
-      return false;
+    $getModemList = exec('sudo mmcli -L -J');
+    $modemList = json_decode($getModemList, true);
+    if (isset($data['modem-list']) && count($data['modem-list']) > 0) {
+      $modemPath = $modemList['modem-list'][0];
+      $modemNumber = substr($modemPath, strrpos($modemPath, '/') + 1);
+      $modem = exec("sudo mmcli --modem=$modemNumber -J");
+      $modem = json_decode($modem, true);
+
+      $modem = $modem['modem'];
+
+      $imei = $modem['3gpp']['imei'];
+      $operatorName = $modem['3gpp']['operator-name'];
+      $signalPercent = $modem['generic']['signal-quality']['value'];
+      $state = $modem['generic']['state'];
+      $stateFailedReason = $modem['generic']['state-failed-reason'] == 'sim-missing' ? 'Pas de carte SIM présente' : $modem['generic']['state-failed-reason'];
+      $unlockRequired = $modem['generic']['unlock-required'];
+      $unlockRetries = $modem['generic']['unlock-retries'];
+  
+      log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
+      log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
+      log::add(__CLASS__, 'debug', 'SIGNAL PERCENT > ' . $signalPercent);
+      log::add(__CLASS__, 'debug', 'STATE > ' . $state);
+      log::add(__CLASS__, 'debug', 'STATE FAILED REASON > ' . $stateFailedReason);
+      log::add(__CLASS__, 'debug', 'UNLOCK REQUIRED > ' . $unlockRequired);
+      log::add(__CLASS__, 'debug', 'UNLOCK RETRIES > ' . $unlockRetries);
+  
+      return [
+        'imei' => $imei,
+        'operatorName' => $operatorName,
+        'signalPercent' => $signalPercent,
+        'state' => $state,
+        'stateFailedReason' => $stateFailedReason,
+        'unlockRequired' => $unlockRequired,
+        'unlockRetries' => $unlockRetries
+      ];
     }
-    $modem = json_decode($modemLte, true);
-    log::add(__CLASS__, 'debug', 'Modem > ' . $modemLte);
-
-    $modem = $modem['modem'];
-
-    $imei = $modem['3gpp']['imei'];
-    $operatorName = $modem['3gpp']['operator-name'];
-    $signalPercent = $modem['generic']['signal-quality']['value'];
-    $state = $modem['generic']['state'];
-    $stateFailedReason = $modem['generic']['state-failed-reason'] == 'sim-missing' ? 'Pas de carte SIM présente' : $modem['generic']['state-failed-reason'];
-    $unlockRequired = $modem['generic']['unlock-required'];
-    $unlockRetries = $modem['generic']['unlock-retries'];
-
-    log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
-    log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
-    log::add(__CLASS__, 'debug', 'SIGNAL PERCENT > ' . $signalPercent);
-    log::add(__CLASS__, 'debug', 'STATE > ' . $state);
-    log::add(__CLASS__, 'debug', 'STATE FAILED REASON > ' . $stateFailedReason);
-    log::add(__CLASS__, 'debug', 'UNLOCK REQUIRED > ' . $unlockRequired);
-    log::add(__CLASS__, 'debug', 'UNLOCK RETRIES > ' . $unlockRetries);
-
-    return [
-      'imei' => $imei,
-      'operatorName' => $operatorName,
-      'signalPercent' => $signalPercent,
-      'state' => $state,
-      'stateFailedReason' => $stateFailedReason,
-      'unlockRequired' => $unlockRequired,
-      'unlockRetries' => $unlockRetries
-    ];
+    return false;
   }
 
   public static function cronHourly() {

@@ -128,46 +128,51 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						<i>*{{Seul l'apn est obligatoire}}</i>
 						<br /><br /><br />
 						<?php
-						$modem = luna::recuperationConfigModem();
-						?>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{IMEI}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{IMEI de la Luna}}"></i></sup>
-							</label>
-							<div class="col-lg-4">
-								<input class="form-control" value="<?php echo $modem['imei']; ?>" disabled />
+						if($modem = luna::recuperationConfigModem()) {
+							?>
+							<div class="form-group">
+								<label class="col-lg-3 control-label">{{IMEI}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{IMEI de la Luna}}"></i></sup>
+								</label>
+								<div class="col-lg-4">
+									<input class="form-control" value="<?php echo $modem['imei']; ?>" disabled />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Nom de l'opérateur}}
-							</label>
-							<div class="col-lg-4">
-								<input class="form-control" value="<?php echo $modem['operatorName']; ?>" disabled />
+							<div class="form-group">
+								<label class="col-lg-3 control-label">{{Nom de l'opérateur}}
+								</label>
+								<div class="col-lg-4">
+									<input class="form-control" value="<?php echo $modem['operatorName']; ?>" disabled />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Signal}}
-							</label>
-							<div class="col-lg-4">
-								<input class="form-control" value="<?php echo $modem['signalPercent']; ?>" disabled />
+							<div class="form-group">
+								<label class="col-lg-3 control-label">{{Signal}}
+								</label>
+								<div class="col-lg-4">
+									<input class="form-control" value="<?php echo $modem['signalPercent']; ?>" disabled />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Etat}}
-							</label>
-							<div class="col-lg-4">
-								<input class="form-control" value="<?php echo $modem['state']; ?>" disabled />
-								<input class="form-control" value="<?php echo $modem['stateFailedReason']; ?>" disabled />
+							<div class="form-group">
+								<label class="col-lg-3 control-label">{{Etat}}
+								</label>
+								<div class="col-lg-4">
+									<input class="form-control" value="<?php echo $modem['state']; ?>" disabled />
+									<input class="form-control" value="<?php echo $modem['stateFailedReason']; ?>" disabled />
+								</div>
 							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Deblocage SIM}}
-							</label>
-							<div class="col-lg-4">
-								<input class="form-control" value="<?php echo $modem['unlockRequired']; ?>" disabled />
-								<input class="form-control" value="<?php json_encode($modem['unlockRetries']); ?>" disabled />
+							<div class="form-group">
+								<label class="col-lg-3 control-label">{{Deblocage SIM}}
+								</label>
+								<div class="col-lg-4">
+									<input class="form-control" value="<?php echo $modem['unlockRequired']; ?>" disabled />
+									<input class="form-control" value="<?php json_encode($modem['unlockRetries']); ?>" disabled />
+								</div>
 							</div>
-						</div>
+						<?php
+						} else {
+							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> {{Aucun modem n\'est configuré}}</div>';
+						}
+					?>
 					</div>
 	</form>
 </div>
