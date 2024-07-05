@@ -121,7 +121,7 @@ $portSmsLuna = "/dev/ttyLuna-Lte";
 						<div class="form-actions">
 							<label class="col-lg-3 control-label">{{Gestion LTE}}</label>
 							<div class="col-lg-4">
-								<a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i> *{{Re-Lancer}}</a>
+								<a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i> *{{Sauvegarder les APN}}</a>
 							</div>
 						</div>
 						<br /><br /><br />

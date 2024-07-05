@@ -990,7 +990,7 @@ class luna extends eqLogic {
   public static function recuperationConfigModem() {
     $getModemList = exec('sudo mmcli -L -J');
     $modemList = json_decode($getModemList, true);
-    if (isset($data['modem-list']) && count($data['modem-list']) > 0) {
+    if (isset($modemList['modem-list']) && count($modemList['modem-list']) > 0) {
       $modemPath = $modemList['modem-list'][0];
       $modemNumber = substr($modemPath, strrpos($modemPath, '/') + 1);
       $modem = exec("sudo mmcli --modem=$modemNumber -J");
