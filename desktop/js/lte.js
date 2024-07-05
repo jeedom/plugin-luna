@@ -87,18 +87,4 @@ $('#bt_saveLTE').off('click').on('click', function() {
       }
     })
   })
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var stateFailedReason = document.getElementById('stateFailedReason').value;
-    if (stateFailedReason === 'sim-missing') {
-        var formFields = document.querySelectorAll('.form-control');
-        var saveButton = document.getElementById('bt_saveLTE'); 
-        formFields.forEach(function(field) {
-            field.disabled = true;
-        });
-        if (saveButton) {
-            saveButton.disabled = true;
-        }
-    }
-});
   
