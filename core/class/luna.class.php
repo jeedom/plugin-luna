@@ -627,10 +627,13 @@ class luna extends eqLogic {
 
   /* root etc Patch */
 
-  public static function patchLuna() {
+  public static function patchLuna($_type = null) {
+    if(!is_null($_type))  
+      $arg = '--' . $_type;
+    
     message::add(__CLASS__, __('Patch Luna', __FILE__));
     exec('sudo cp -r ' . __DIR__ . '/../../data/patchs/root/* /');
-    exec('sudo ' . __DIR__ . '/../../data/patchs/patchLuna.sh');
+    exec('sudo ' . __DIR__ . '/../../data/patchs/patchLuna.sh ' . $arg);
     message::add(__CLASS__, __('Patch Luna Fini', __FILE__));
   }
 
