@@ -1011,12 +1011,14 @@ class luna extends eqLogic {
       $unlockRetries          = $modem['generic']['unlock-retries'];
 
       $simID= false;
+      log::add(__CLASS__, 'debug', 'simID string > ' . $modem['generic']['sim']);
       if($modem['generic']['state-failed-reason'] == 'sim-missing') {
         $stateFailedReasonLabel ='{{SIM absente}}';
       } else {
         $stateFailedReasonLabel = $modem['generic']['state-failed-reason'];
         $simID = substr($modem['generic']['sim'], strrpos($modem['generic']['sim'], '/') + 1);
       }
+      log::add(__CLASS__, 'debug', 'simID string > ' . $simID);
   
       log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
       log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
@@ -1042,6 +1044,7 @@ class luna extends eqLogic {
   }
 
   public static function unlockSim($_pin) {
+    log::add(__CLASS__, 'debug', 'UNLOCK SIM > ' . $_pin);
     $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($eqLogic)) {
       $eqLogic->setConfiguration('ltePin', $_pin);
@@ -1049,7 +1052,9 @@ class luna extends eqLogic {
     } 
     $modem = self::recuperationConfigModem();
     if($modem['simID']) {
-      return shell_exec('sudo mmcli -m '.$modem['simID'].' --pin='.$_pin);
+      $unlockCmd = 'sudo mmcli -i '.$modem['simID'].' --pin='.$_pin;
+      log::add(__CLASS__, 'debug', 'UNLOCK SIM CMD > ' . $unlockCmd);
+      return shell_exec($unlockCmd);
     }
     return false;
   }

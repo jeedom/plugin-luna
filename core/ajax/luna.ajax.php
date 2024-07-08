@@ -145,12 +145,17 @@ try {
     }
   }
   
-  if(init('action') == 'unlockSIM'){
-    $pin =init('pin');
+  if(init('action') == 'unlockSim'){
+    $pin = init('pin');
+    log::add('luna', 'debug', 'unlockSim ' . $pin);
     if(empty($pin)){
       ajax::error('Le code PIN est vide');
     }
-    ajax::success(luna::unlockSIM($pin));
+    $return = luna::unlockSIM($pin);
+
+    if($return){
+      ajax::success();
+    }
   }
 
   if(init('action') == 'getModemInfo'){

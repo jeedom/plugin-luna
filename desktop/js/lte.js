@@ -16,7 +16,8 @@
  */
 
 
-$('#bt_saveLTE').off('click').on('click', function() {
+$('#bt_saveLTE').off('click').on('click', function(event) {
+  event.preventDefault();
   jeedom.eqLogic.save({
     type: 'luna',
     eqLogics: $("#ltePanel").getValues('.eqLogicAttr'),
@@ -90,11 +91,13 @@ $('#bt_saveLTE').off('click').on('click', function() {
   })
 
   document.getElementById('bt_saveUnlockSim')?.addEventListener('click', function() {
+    var pin = document.getElementById('ltePin').value;
     domUtils.ajax({
       type: "POST",
       url: "plugins/luna/core/ajax/luna.ajax.php",
       data: {
-        action: "unlockSim"
+        action: 'unlockSim',
+        pin: pin
       },
       dataType: 'json',
       error: function(request, status, error) {
@@ -105,7 +108,7 @@ $('#bt_saveLTE').off('click').on('click', function() {
             message: '{{Déblocage de la SIM}}',
             level: 'success'
           });
-          location.reload();
+          //location.reload();
       }
     });
   });
