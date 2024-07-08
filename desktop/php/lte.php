@@ -65,10 +65,26 @@ $modem       = luna::recuperationConfigModem();
 					<h3><i class="fa fa-signal"></i> {{Configuration LTE}}</h3>
 					<?php
 					if($modem) {
-						if(empty($modem['stateFailedReason'])) {
+						if($modem['stateFailedReason'] == '--') {
 					?>
 						<div class="alert alert-warning">
 							<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">{{Code Pin}}
+								<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
+							</label>
+							<div class="col-lg-2">
+								<input class="eqLogicAttr form-control form-lte" type="number" data-l1key="configuration" data-l2key="ltePin" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-lg-3 control-label">{{Activer la Data}}
+								<sup><i class="fas fa-question-circle tooltips" title="{{Prise en charge de la data via la connexion LTE, pour les sim avec data}}"></i></sup>
+							</label>
+							<div class="col-lg-4">
+								<input type="checkbox" class="eqLogicAttr form-control  form-lte" data-l1key="configuration" data-l2key="lteActivation" checked />
+							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-lg-3">
@@ -97,22 +113,6 @@ $modem       = luna::recuperationConfigModem();
 							</label>
 							<div class="col-lg-4">
 								<input class="eqLogicAttr form-control form-lte" data-l1key="configuration" data-l2key="ltePassword" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Code Pin}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
-							</label>
-							<div class="col-lg-2">
-								<input class="eqLogicAttr form-control form-lte" type="number" data-l1key="configuration" data-l2key="ltePin" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Activation Data}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{Prise en charge de la data via la connexion LTE, pour les sim avec data}}"></i></sup>
-							</label>
-							<div class="col-lg-4">
-								<input type="checkbox" class="eqLogicAttr form-control  form-lte" data-l1key="configuration" data-l2key="lteActivation" checked />
 							</div>
 						</div>
 						<div class="form-group">
