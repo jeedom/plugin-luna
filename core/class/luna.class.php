@@ -1006,9 +1006,17 @@ class luna extends eqLogic {
       $signalPercent          = $modem['generic']['signal-quality']['value'];
       $state                  = $modem['generic']['state'];
       $stateFailedReason      = $modem['generic']['state-failed-reason'];
-      $stateFailedReasonLabel = $modem['generic']['state-failed-reason'] == 'sim-missing' ? '{{SIM absente}}' : $modem['generic']['state-failed-reason'];
+      
       $unlockRequired         = $modem['generic']['unlock-required'];
       $unlockRetries          = $modem['generic']['unlock-retries'];
+
+      $simID= false;
+      if($modem['generic']['state-failed-reason'] == 'sim-missing') {
+        $stateFailedReasonLabel ='{{SIM absente}}';
+      } else {
+        $stateFailedReasonLabel = $modem['generic']['state-failed-reason'];
+        $simID = substr($modem['generic']['sim'], strrpos($modem['generic']['sim'], '/') + 1);
+      }
   
       log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
       log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
@@ -1026,10 +1034,49 @@ class luna extends eqLogic {
         'stateFailedReason'      => $stateFailedReason,
         'stateFailedReasonLabel' => $stateFailedReasonLabel,
         'unlockRequired'         => $unlockRequired,
-        'unlockRetries'          => $unlockRetries
+        'unlockRetries'          => $unlockRetries,
+        'simID'                  => $simID
       ];
     }
     return false;
+  }
+
+  public static function unlockSim($_pin) {
+    $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
+    if (is_object($eqLogic)) {
+      $eqLogic->setConfiguration('ltePin', $_pin);
+      $eqLogic->save(true);
+    } 
+    $modem = self::recuperationConfigModem();
+    if($modem['simID']) {
+      return shell_exec('sudo mmcli -m '.$modem['simID'].' --pin='.$_pin);
+    }
+    return false;
+  }
+
+  public static function startJeedomLTE() {
+    shell_exec('sudo systemctl start jeedomLTE.service');
+    return exec('sudo systemctl is-active jeedomLTE.service');
+  }
+
+  public static function stopJeedomLTE() {
+    shell_exec('sudo systemctl stop jeedomLTE.service');
+    return exec('sudo systemctl is-active jeedomLTE.service');
+  }
+
+  public static function isModemLuna(){
+    $maxWaitTime = 60; 
+    $startTime = time(); 
+    $isLte = null;
+    while (time() - $startTime < $maxWaitTime) {
+    $result =  self::recuperationConfigModem();
+        if($result != False){
+          break;
+        }else{
+          usleep(500000); 
+        }
+    }
+    return $result; 
   }
 
   public static function cronHourly() {
@@ -1039,6 +1086,7 @@ class luna extends eqLogic {
       luna::configjsonlte();
     }
   }
+
 
   /* ------ FIN 4G ----- */
 

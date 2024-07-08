@@ -15,6 +15,7 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 $('#bt_saveLTE').off('click').on('click', function() {
   jeedom.eqLogic.save({
     type: 'luna',
@@ -87,4 +88,59 @@ $('#bt_saveLTE').off('click').on('click', function() {
       }
     })
   })
+
+  document.getElementById('bt_saveUnlockSim')?.addEventListener('click', function() {
+    domUtils.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: "unlockSim"
+      },
+      dataType: 'json',
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+      },
+      success: function() {
+          $('#div_alert').showAlert({
+            message: '{{Déblocage de la SIM}}',
+            level: 'success'
+          });
+          location.reload();
+      }
+    });
+  });
   
+
+  document.getElementById('bt_startJeedomLTE')?.addEventListener('click', function() {
+    if (window.intervalAlertModem) {
+      clearInterval(window.intervalAlertModem);
+    }
+    window.intervalAlertModem = setInterval(function() {
+      $('#div_alert').showAlert({ message: '{{Activation du modem en cours}}...', level: 'success' });
+    }, 5000);
+    var intervalModem = setInterval(function() {
+      $.showLoading();
+    }, 1000);
+    domUtils.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: "startJeedomLTE"
+      },
+      dataType: 'json',
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+      },
+
+      success: function(data) {
+        if (data.state != 'ok') {
+          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+        } else {
+            clearInterval(window.intervalAlertModem);
+            clearInterval(intervalModem); 
+            $.hideLoading();
+            location.reload();
+        }
+      }
+    });
+  });

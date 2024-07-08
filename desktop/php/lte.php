@@ -62,14 +62,11 @@ $modem       = luna::recuperationConfigModem();
 						?>
 					</div>
 					<div class="col-sm-6">
-					<h3><i class="fa fa-signal"></i> {{Configuration LTE}}</h3>
+					<h3><i class="fa fa-signal"></i> {{Configuration GSM-LTE}}</h3>
 					<?php
 					if($modem) {
 						if($modem['stateFailedReason'] == '--') {
 					?>
-						<div class="alert alert-warning">
-							<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
-						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">{{Code Pin}}
 								<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
@@ -77,6 +74,16 @@ $modem       = luna::recuperationConfigModem();
 							<div class="col-lg-2">
 								<input class="eqLogicAttr form-control form-lte" type="number" data-l1key="configuration" data-l2key="ltePin" />
 							</div>
+							<?php if( $modem['state'] == 'locked' ) { ?>
+							<div class="col-lg-2">
+								<a class="btn btn-info" id="bt_saveUnlockSim"><i class="fas fa-check-circle"></i> {{Débloquer carte SIM}}</a>
+							</div>
+							<?php } ?>
+						</div>
+						<br />
+						<?php if( $modem['state'] != 'locked' ) { ?>
+						<div class="alert alert-warning">
+							<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
 						</div>
 						<div class="form-group">
 							<label class="col-lg-3 control-label">{{Activer la Data}}
@@ -132,6 +139,7 @@ $modem       = luna::recuperationConfigModem();
 						<i>*{{Seul l'apn est obligatoire}}</i>
 						<br /><br /><br />
 						<?php
+							} //End if modem locked
 						} else {
 							$stateFailedReasonLabel = '';
 							switch ($modem['stateFailedReason']) {
@@ -184,7 +192,13 @@ $modem       = luna::recuperationConfigModem();
 							</div>
 						<?php
 						} else {
-							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> {{Aucun modem n\'est configuré}}</div>';
+						?>
+							<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> {{Aucun modem n'est configuré}}</div>
+							<div class="col-md-6 col-sm-6">
+								<label>{{Démarrer le Modem}}</label>
+								<a class="btn btn-success btn-xs" id="bt_startJeedomLTE"><i class="fas fa-play"></i></a>
+							</div>
+						<?php
 						}
 					?>
 					</div>

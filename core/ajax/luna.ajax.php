@@ -137,6 +137,26 @@ try {
     ajax::success(luna::configurationPortSms());
   }
 
+  if(init('action') == 'startJeedomLTE'){
+    luna::startJeedomLTE();
+    $return = luna::isModemLuna();
+    if($return){
+      ajax::success();
+    }
+  }
+  
+  if(init('action') == 'unlockSIM'){
+    $pin =init('pin');
+    if(empty($pin)){
+      ajax::error('Le code PIN est vide');
+    }
+    ajax::success(luna::unlockSIM($pin));
+  }
+
+  if(init('action') == 'getModemInfo'){
+    ajax::success(luna::getModemInfo());
+  }
+
   throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
   /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
