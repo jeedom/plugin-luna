@@ -216,7 +216,7 @@ sendVarToJS('isLte', $isLte);
 								if(config::byKey('isLte', 'luna') == 'LTE'){
 								?>
 									<div class="form-group">
-										<label class="col-lg-4 control-label">{{Adresse Ip LTE}}</label>
+										<label class="col-lg-4 control-label" id="labelLTE">{{Adresse Ip LTE}}</label>
 										<div class="col-lg-4">
 											<span class="label label-info ipLte" style="font-size:1em;cursor:default;"></span>
 										</div>

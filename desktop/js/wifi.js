@@ -46,7 +46,6 @@ function printWifiList(forced = false, interface = 1) {
 }
 
 function saveWifi(interface, datas) {
-  console.log(datas)
   $.ajax({
     type: "POST",
     url: "plugins/luna/core/ajax/luna.ajax.php",

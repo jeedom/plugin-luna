@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 $cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
 
 function luna_install() {
-	luna::verifLTEScript();
+	luna::patchLuna('install');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Installation du module Luna', __FILE__));
@@ -49,14 +49,15 @@ function luna_install() {
 	}
 	luna::mountSD();
 	luna::mountPersistent();
-	luna::patchLuna('install');
 	luna::switchHost();
 	//luna::installLte();
 	luna::installLora();
 	luna::onBattery();
+	//luna::verifLTEScript();
 }
 
 function luna_update() {
+	luna::patchLuna('update');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Mise à jour du module Luna', __FILE__));
@@ -81,10 +82,11 @@ function luna_update() {
 	}
 	luna::mountSD();
 	luna::mountPersistent();
-	luna::patchLuna('update');
+	
 	luna::switchHost();
 	//luna::installLte();
 	luna::installLora();
 	luna::onBattery();
+	//luna::verifLTEScript();
 
 }
