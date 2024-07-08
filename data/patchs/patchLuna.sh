@@ -61,7 +61,7 @@ if [ $UPDATE_FLAG -eq 1 ]; then
     echo "UPDATE"
 fi
 
-if [ ! -f /usr/bin/jeedomLTE ]; then
+if [ ! -f /boot/jeedomLTE ]; then
     sudo cp /var/www/html/plugins/luna/data/patchs/root/usr/bin/jeedomLTE /usr/bin/jeedomLTE
     sudo chmod +x /usr/bin/jeedomLTE
 
