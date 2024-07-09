@@ -46,7 +46,6 @@ function printWifiList(forced = false, interface = 1) {
 }
 
 function saveWifi(interface, datas) {
-  console.log(datas)
   $.ajax({
     type: "POST",
     url: "plugins/luna/core/ajax/luna.ajax.php",
@@ -318,24 +317,23 @@ $('#saveWifi1').off('click').on('click', function () {
 
 })
 
-$('#saveWifi2').off('click').on('click', function () {
-  console.log('saveWifi2')
-  console.log($("#wifi2Panel").getValues('.eqLogicAttr'))
-  console.log('saveWifi20')
-  jeedom.eqLogic.save({
-    type: 'luna',
-    eqLogics: $("#wifi2Panel").getValues('.eqLogicAttr'),
-    error: function (error) {
-      $('#div_alert').showAlert({ message: error.message, level: 'danger' });
-    },
-    success: function () {
-      console.log('savewifi2ok', $("#wifi2Panel").getValues('.eqLogicAttr'))
-    }
-  });
-  //var ssid = $('.eqLogicAttr[data-l1key=configuration][data-l2key=wifiSsid]').options[liste.selectedIndex].text
-  saveWifi(2, $("#wifi2Panel").getValues('.eqLogicAttr'))
+// $('#saveWifi2').off('click').on('click', function () {
+//   console.log('saveWifi2')
+//   console.log($("#wifi2Panel").getValues('.eqLogicAttr'))
+//   console.log('saveWifi20')
+//   jeedom.eqLogic.save({
+//     type: 'luna',
+//     eqLogics: $("#wifi2Panel").getValues('.eqLogicAttr'),
+//     error: function (error) {
+//       $('#div_alert').showAlert({ message: error.message, level: 'danger' });
+//     },
+//     success: function () {
+//       console.log('savewifi2ok', $("#wifi2Panel").getValues('.eqLogicAttr'))
+//     }
+//   });
+//   saveWifi(2, $("#wifi2Panel").getValues('.eqLogicAttr'))
 
-})
+// })
 
 /*function hideAllChamps(wifiID) {
   console.log('#wifi'+wifiID+'TypeAdressageBlock')

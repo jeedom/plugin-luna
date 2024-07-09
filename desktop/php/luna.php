@@ -7,6 +7,21 @@ $plugin = plugin::byId('luna');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogics = eqLogic::byType($plugin->getId());
 $eqLogic = luna::byLogicalId('wifi', 'luna');
+
+$isLte = null;
+$lte = config::byKey('isLte', 'luna');
+if (isset($lte)) {
+	if($lte == 'LTE'){
+		$isLte = 'LTE';
+	}else if($lte == 'NOLTE'){
+		$isLte = 'NOLTE';
+	}else{
+		$isLte = null;
+	}
+}
+sendVarToJS('isLte', $isLte);
+
+
 ?>
 
 <div class="row row-overflow">
@@ -54,8 +69,17 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 			<li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i> {{Commandes}}</a></li>
 			<li role="presentation"><a href="#wifitab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-wifi"></i> {{WIFI}}</a></li>
 			<li role="presentation"><a href="#ethernettab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-network-wired"></i> {{Ethernet}}</a></li>
-			<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal"></i> {{LTE}}</a></li>
-			<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> {{Lora}}</a></li>
+			<?php
+			if($isLte == 'LTE'){
+				echo '<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal" ></i> {{LTE}}</a></li>';
+			}
+			?>
+			<?php
+			if(luna::detectedLora()){
+				echo '<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> {{Lora}}</a></li>';
+			}
+			?>
+			
 			<li role="presentation"><a href="#batterytab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-battery-full"></i> {{Batterie}}</a></li>
 			<li role="presentation"><a href="#sdtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-sd-card"></i> {{Carte SD}}</a></li>
 			<li role="presentation"><a href="#restoretab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-clone"></i> {{Restore}}</a></li>
@@ -163,36 +187,36 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-lg-4 control-label">{{Adresse MAC wifi 1}}</label>
+									<label class="col-lg-4 control-label">{{Adresse MAC wifi}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info macWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 
 								</div>
 								<div class="form-group">
-									<label class="col-lg-4 control-label">{{Adresse Ip wifi 1}}</label>
+									<label class="col-lg-4 control-label">{{Adresse Ip wifi}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info ipWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 								</div>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse MAC wifi 2}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info macWifi2" style="font-size:1em;cursor:default;"></span>
 									</div>
 
-								</div>
-								<div class="form-group">
+								</div> -->
+								<!-- <div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse Ip wifi 2}}</label>
 									<div class="col-lg-4">
 										<span class="label label-info ipWifi2" style="font-size:1em;cursor:default;"></span>
 									</div>
-								</div>
+								</div> -->
 								<?php
-								if(luna::detectedLte() === true){
+								if(config::byKey('isLte', 'luna') == 'LTE'){
 								?>
 									<div class="form-group">
-										<label class="col-lg-4 control-label">{{Adresse Ip LTE}}</label>
+										<label class="col-lg-4 control-label" id="labelLTE">{{Adresse Ip LTE}}</label>
 										<div class="col-lg-4">
 											<span class="label label-info ipLte" style="font-size:1em;cursor:default;"></span>
 										</div>
@@ -271,9 +295,54 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 <!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
 <?php include_file('desktop', 'luna', 'js', 'luna'); ?>
 <script>
+
+
+
+  if(isLte === null || isLte == undefined || isLte == ''){
+ 
+	if (window.intervalAlertLTE) {
+      clearInterval(window.intervalAlertLTE);
+  	}
+  	window.intervalAlertLTE = setInterval(function() {
+      $('#div_alert').showAlert({ message: 'Configuration en cours de votre plugin...', level: 'success' });
+  	}, 2000);
+	var intervalLTE = setInterval(function() {
+		$.showLoading();
+	}, 1000);
+    $.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: "isLTELuna",
+      },
+      dataType: 'json',
+	  async: true,
+      global: false,
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+      },
+      success: function(data) {
+        if (data.state != 'ok') {
+          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+        } else {
+			clearInterval(window.intervalAlertLTE);
+			clearInterval(intervalLTE);		
+			if(data.result == 'LTE'){
+				$('#div_alert').showAlert({ message: 'LTE Operationnel', level: 'danger' });
+			}
+			$.hideLoading();
+			location.reload();
+        }
+      }
+    });
+  }
+
+
+
 	setTimeout(() => {
 		document.querySelector('.eqLogicDisplayCard[data-eqlogic_id="<?php echo $eqLogic->getId() ?>"]')?.click()
 	}, 100);
+
 </script>
 
 <!-- Inclusion du fichier javascript du core - NE PAS MODIFIER NI SUPPRIMER -->

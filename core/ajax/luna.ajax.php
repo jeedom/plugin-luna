@@ -30,6 +30,14 @@ try {
   */
   ajax::init();
 
+
+  if(init('action') == 'isLTELuna'){
+    $return = luna::isLTELuna();
+    if($return){
+      ajax::success();
+    }
+  }
+
   if (init('action') == 'loop_percentage') {
     luna::loopPercentage();
     ajax::success();
@@ -114,7 +122,7 @@ try {
   }
 
   if (init('action') == 'removeConnection') {
-    ajax::success(luna::RemoveConnection(init('UUID')));
+    ajax::success(luna::removeConnection(init('UUID')));
   }
 
   if (init('action') == 'macfinder') {
@@ -127,6 +135,29 @@ try {
 
   if (init('action') == 'configurationPortSms') {
     ajax::success(luna::configurationPortSms());
+  }
+
+  if(init('action') == 'startJeedomLTE'){
+    luna::startJeedomLTE();
+    $return = luna::waitLuna('recuperationConfigModem');
+    if($return){
+      ajax::success();
+    }
+  }
+  
+  if(init('action') == 'unlockSim'){
+    $pin = init('pin');
+    if(empty($pin)){
+      ajax::error('Le code PIN est vide');
+    }
+    $return = luna::waitLuna('unlockSIM', $pin);
+    if($return){
+      ajax::success();
+    }
+  }
+
+  if(init('action') == 'getModemInfo'){
+    ajax::success(luna::getModemInfo());
   }
 
   throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));

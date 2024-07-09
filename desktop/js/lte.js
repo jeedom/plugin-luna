@@ -15,7 +15,9 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-$('#bt_saveLTE').off('click').on('click', function() {
+
+$('#bt_saveLTE').off('click').on('click', function(event) {
+  event.preventDefault();
   jeedom.eqLogic.save({
     type: 'luna',
     eqLogics: $("#ltePanel").getValues('.eqLogicAttr'),
@@ -87,4 +89,73 @@ $('#bt_saveLTE').off('click').on('click', function() {
       }
     })
   })
+
+  document.getElementById('bt_saveUnlockSim')?.addEventListener('click', function() {
+    if (window.intervalAlertSim) {
+      clearInterval(window.intervalAlertSim);
+    }
+    window.intervalAlertSim = setInterval(function() {
+      $('#div_alert').showAlert({ message: '{{Déblocage de la carte SIM en cours}}...', level: 'success' });
+    }, 5000);
+    var intervalSIM = setInterval(function() {
+      $.showLoading();
+    }, 1000);
+    var pin = document.getElementById('ltePin').value;
+    domUtils.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: 'unlockSim',
+        pin: pin
+      },
+      dataType: 'json',
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+      },
+      success: function() {
+        if (data.state != 'ok') {
+          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+        } else {
+            clearInterval(window.intervalAlertSim);
+            clearInterval(intervalSIM); 
+            $.hideLoading();
+            location.reload();
+        }
+      }
+    });
+  });
   
+
+  document.getElementById('bt_startJeedomLTE')?.addEventListener('click', function() {
+    if (window.intervalAlertModem) {
+      clearInterval(window.intervalAlertModem);
+    }
+    window.intervalAlertModem = setInterval(function() {
+      $('#div_alert').showAlert({ message: '{{Activation du modem en cours}}...', level: 'success' });
+    }, 5000);
+    var intervalModem = setInterval(function() {
+      $.showLoading();
+    }, 1000);
+    domUtils.ajax({
+      type: "POST",
+      url: "plugins/luna/core/ajax/luna.ajax.php",
+      data: {
+        action: "startJeedomLTE"
+      },
+      dataType: 'json',
+      error: function(request, status, error) {
+        handleAjaxError(request, status, error);
+      },
+
+      success: function(data) {
+        if (data.state != 'ok') {
+          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+        } else {
+            clearInterval(window.intervalAlertModem);
+            clearInterval(intervalModem); 
+            $.hideLoading();
+            location.reload();
+        }
+      }
+    });
+  });

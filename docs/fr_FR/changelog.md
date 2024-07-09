@@ -6,6 +6,11 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 09/07/2024
+
+- Mise en place d'un service LTE pour reconnecter le modem
+- Reprise de l'UI sur la partie LTE
+- Ajout de plusieurs paramètres pour l'auto connecte des connexions wifi et hotspot (il faut supprimer la connexion wifi et la recréer)
 
 # 25/06/2024
 

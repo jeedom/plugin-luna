@@ -40,7 +40,7 @@ if(luna::detectedLora()){
 		<?php
 		}else{
 			?>
-				<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> {{Votre Luna n'as pas de module Lora integré, le plugin prend en charge uniquement les Luna Lora.}}</div>
+				<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> {{Votre Luna ne possède de module Lora integré.}}</div>
 			<?php
 		}
 		?>

@@ -19,7 +19,11 @@
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
+$cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
+
 function luna_install() {
+	config::save('isLte', 'NOLTE', 'luna');
+	luna::patchLuna('install');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Installation du module Luna', __FILE__));
@@ -31,6 +35,13 @@ function luna_install() {
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
+	}else{
+		foreach($cmdsToRemove as $logical){
+			$cmd = $eqLogic->getCmd(null, $logical);
+			if(is_object($cmd)){
+				$cmd->remove();
+			}
+		}
 	}
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->createArrayWidgets();
@@ -39,14 +50,38 @@ function luna_install() {
 	}
 	luna::mountSD();
 	luna::mountPersistent();
-	luna::patchLuna();
 	luna::switchHost();
-	luna::installLte();
 	luna::installLora();
 	luna::onBattery();
+	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	if (trim($result) != "exists") {
+		$maxWaitTime = 180; 
+		$startTime = time(); 
+		$isLte = null;
+		while (time() - $startTime < $maxWaitTime) {
+			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+			if(trim($result) != "exists"){
+				$isLte = shell_exec('sudo cat /boot/jeedomLTE');
+				if(trim($isLte) == "2"){
+					config::save('isLte', 'NOLTE', 'luna');
+				} else {
+					config::save('isLte', 'LTE', 'luna');
+				}
+				break;
+			}else{
+			  usleep(500000); 
+			}
+		}
+		config::save('isLte', 'NOLTE', 'luna');
+	}
 }
 
 function luna_update() {
+	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	if (trim($result) != "exists") {
+		config::save('isLte', 'NOLTE', 'luna');
+	}
+	luna::patchLuna('update');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Mise à jour du module Luna', __FILE__));
@@ -58,16 +93,42 @@ function luna_update() {
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
+	}else{
+		foreach($cmdsToRemove as $logical){
+			$cmd = $eqLogic->getCmd(null, $logical);
+			if(is_object($cmd)){
+				$cmd->remove();
+			}
+		}
 	}
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
 	luna::mountSD();
 	luna::mountPersistent();
-	luna::patchLuna();
+	
 	luna::switchHost();
-	luna::installLte();
 	luna::installLora();
 	luna::onBattery();
-
+	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	if (trim($result) != "exists") {
+		$maxWaitTime = 180; 
+		$startTime = time(); 
+		$isLte = null;
+		while (time() - $startTime < $maxWaitTime) {
+			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+			if(trim($result) != "exists"){
+				$isLte = shell_exec('sudo cat /boot/jeedomLTE');
+				if(trim($isLte) == "2"){
+					config::save('isLte', 'NOLTE', 'luna');
+				} else {
+					config::save('isLte', 'LTE', 'luna');
+				}
+				break;
+			}else{
+			  usleep(500000); 
+			}
+		}
+		config::save('isLte', 'NOLTE', 'luna');
+	}
 }

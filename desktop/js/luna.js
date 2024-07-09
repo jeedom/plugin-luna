@@ -63,10 +63,54 @@
   });
 
 function printEqLogic(_eqLogic) {
-  printMacLan()
-  printMacWifi()
-  printMacLte()
-  printMacWifi2()
+  $('.macLteCoche').empty().append('<i class="icon_red fas fa-times"></i>')
+  $('.ipLte').hide()
+  $('#labelLTE').hide()
+  jeedom.network.getInterfacesInfo({
+    error: function(error) {
+      jeedomUtils.showAlert({
+        message: error.message,
+        level: 'danger'
+      })
+    },
+    success: function(_interfaces) {
+      console.log('interfaces', _interfaces) 
+      _interfaces.forEach(function(_interface) {
+          if(_interface.ifname == 'eth0'){
+              changeInformation('.macLan', _interface.address)
+              _interface.addr_info.forEach(function(_addr_info) {
+                if(_addr_info.family == 'inet'){
+                  changeInformation('.ipLan', _addr_info.local)
+                }
+              })
+          }
+          if(_interface.ifname == 'wlan0'){
+            changeInformation('.macWifi', _interface.address)
+            _interface.addr_info.forEach(function(_addr_info) {
+              if(_addr_info.family == 'inet'){
+                changeInformation('.ipWifi', _addr_info.local)
+              }
+            })
+          }
+          if(_interface.ifname == 'ppp0'){
+            //changeInformation('.macLan', _interface.address)
+            _interface.addr_info.forEach(function(_addr_info) {
+              if(_addr_info.family == 'inet'){
+                $('.macLteCoche').empty().append('<i class="icon_green fas fa-check"></i>')
+                $('.ipLte').show()
+                $('#labelLTE').show()
+                changeInformation('.ipLte', _addr_info.local)
+              }
+            })
+          }
+      })
+
+    }
+  })
+  //printMacLan()
+ // printMacWifi()
+ // printMacLte()
+  //printMacWifi2()
 }
 
 

@@ -5,16 +5,16 @@ if (!isConnect('admin')) {
 ?>
 
 <div role="tabpanel" class="tab-pane" id="wifitab"><br />
-	<div class="row">
-		<div class="col-sm-6">
+	<div class="row" style="display:flex;flex-direction:column; align-items:center;align-content:center;justify-content:center;">
+		<div class="col-sm-12" >
 			<form id="wifi1Panel" class="form-horizontal">
 				<fieldset>
-					<legend><i class="fa fa-wifi"></i> {{Wifi 1}}</legend>
+					<legend><i class="fa fa-wifi"></i> {{Wifi}}</legend>
 					<div class="form-group">
 						<div class="col-lg-3">
 						</div>
 						<input type="text" class="eqLogicAttr wifi1 form-control" data-l1key="id" style="display : none;" />
-						<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr wifi1 ipfixwifienabled wifiEnabledCheck" data-l1key="configuration" data-l2key="wifi1Enabled" id="wifi1EnabledCheck" unchecked />{{Activer le wifi 1}}</label>
+						<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr wifi1 ipfixwifienabled wifiEnabledCheck" data-l1key="configuration" data-l2key="wifi1Enabled" id="wifi1EnabledCheck" unchecked />{{Activer le wifi}}</label>
 					</div>
 					<br />
 					<div class="form-group" id='wifi1ModeBlock' style="display : none;">
@@ -127,9 +127,9 @@ if (!isConnect('admin')) {
 				</table>
 			</form>
 			<div class="col-sm-4"></div>
-			<div class="col-sm-6" style="text-align: center;"><a class="btn btn-sm btn-success eqLogicAction" id="saveWifi1"><i class="fas fa-check-circle"></i> {{Sauvegarder WIFI 1}}</a></div>
+			<div class="col-sm-6" style="text-align: center;"><a class="btn btn-sm btn-success eqLogicAction" id="saveWifi1"><i class="fas fa-check-circle"></i> {{Sauvegarder WIFI}}</a></div>
 		</div>
-		<div class="col-sm-6">
+		<!-- <div class="col-sm-6">
 		<form id="wifi2Panel" class="form-horizontal">
 				<fieldset>
 					<legend><i class="fa fa-wifi"></i> {{Wifi 2}}</legend>
@@ -254,8 +254,8 @@ if (!isConnect('admin')) {
 				</table>
 			</form>
 			<div class="col-sm-4"></div>
-			<div class="col-sm-6" style="text-align: center;"><a class="btn btn-sm btn-success eqLogicAction" id="saveWifi2"><i class="fas fa-check-circle"></i> {{Sauvegarder WIFI 2}}</a></div>
-		</div>
+			<div class="col-sm-6" style="text-align: center;"><a class="btn btn-sm btn-success eqLogicAction" id="saveWifi2"><i class="fas fa-check-circle"></i> {{Sauvegarder WIFI 2}}</a></div> -->
+		<!-- </div> -->
 	</div>
 </div>
 
