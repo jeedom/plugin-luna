@@ -10,7 +10,7 @@
 
 - Mise en place d'un service LTE pour reconnecter le modem
 - Reprise de l'UI sur la partie LTE
-- Ajout de plusieurs paramètres pour l'auto connecte des connexions wifi et hotspot
+- Ajout de plusieurs paramètres pour l'auto connecte des connexions wifi et hotspot (il faut supprimer la connexion wifi et la recréer)
 
 # 25/06/2024
 
