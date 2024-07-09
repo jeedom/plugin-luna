@@ -38,8 +38,8 @@
         "Restore": "Restaurar",
         "Mise à jour du Recovery": "Actualización de recuperación",
         "Attention, cette opération peut être dangereuse.": "Tenga cuidado, esta operación puede ser peligrosa",
-        "La mise à jour du Recovery, permet de telecharger la": "La actualización de recuperación le permite descargar el",
-        "derniere": "último",
+        "La mise à jour du Recovery, permet de télécharger la": "La actualización de recuperación le permite descargar el",
+        "dernière": "último",
         "image de restauration de votre Luna.": "imagen de restaurar tu Luna",
         "Mais aussi de mettre a jour (via cette image) les composants Linux de celle-ci.": "Pero también para actualizar (a través de esta imagen) sus componentes Linux",
         "Votre Luna doit etre": "Tu Luna debe ser",
@@ -50,9 +50,9 @@
         "Le recovery, permet une": "La recuperación permite",
         "remise a zero d'usine": "restablecimiento de fábrica",
         "de la Luna avec l'image inclus dans celle-ci (vous pouvez la mettre à jour via Mise à jour du recovery).": "del Luna con la imagen incluida en él (puede actualizarla mediante Actualización de recuperación)",
-        "Attention a bien": "Ten cuidado",
+        "Attention à bien": "Ten cuidado",
         "sauvegarder": "para salvaguardar",
-        "votre box et recuperer celle-ci sur votre ordinateur avant de lancer le recovery.": "su caja y recupérela en su computadora antes de iniciar la recuperación"
+        "votre box et récuperer celle-ci sur votre ordinateur avant de lancer le recovery.": "su caja y recupérela en su computadora antes de iniciar la recuperación"
     },
     "plugins\/luna\/desktop\/php\/sd.php": {
         "401 - Accès non autorisé": "401 - Acceso no autorizado",
@@ -91,8 +91,8 @@
         "Informations": "Información",
         "Adresse MAC ethernet": "Dirección MAC ethernet",
         "Adresse Ip ethernet": "Dirección ip ethernet",
-        "Adresse MAC wifi 1": "Dirección MAC wifi 1",
-        "Adresse Ip wifi 1": "Dirección ip wifi 1",
+        "Adresse MAC wifi": "Dirección MAC wifi",
+        "Adresse Ip wifi": "Dirección IP wifi",
         "Adresse MAC wifi 2": "Dirección MAC wifi 2",
         "Adresse Ip wifi 2": "Dirección ip wifi 2",
         "Adresse Ip LTE": "Dirección IP LTE",
@@ -112,32 +112,34 @@
         "Port Plugin SMS": "Puerto del complemento SMS",
         "Port a configurer dans le plugin SMS": "Puerto a configurar en el complemento SMS",
         "Les Codes Pin entre les deux plugins sont different.": "Los códigos PIN entre los dos complementos son diferentes",
-        "Le plugin SMS n\\'est pas installé": "El complemento de SMS no está instalado",
-        "Configuration LTE": "Configuración LTE",
+        "Le plugin SMS n&#39;est pas installé": "El complemento de SMS no está instalado",
+        "Configuration GSM-LTE": "Configuración GSM-LTE",
+        "Code Pin": "Código PIN",
+        "ne rien mettre si pas de code pin": "no pongas nada si no hay código pin",
+        "Débloquer carte SIM": "Desbloquear tarjeta SIM",
         "Uniquement si vous avez une carte SIM LTE avec data": "Sólo si tienes una tarjeta SIM LTE con datos",
+        "Activer données cellulaires": "Habilitar datos móviles",
+        "Prise en charge de la data via la connexion LTE, pour les sim avec data": "Soporte para datos mediante conexión LTE, para sims con datos",
         "APN": "APN",
         "APN pour la partie LTE \/!\\ Attention il faut des APN de type ipv4 (bouygue : ebouygtel.com, Orange : orange, free : free).": "APN para la parte LTE \/!\\ Atención, necesitas APN de tipo IPv4 (bouygue: ebouygtel.com, Orange: orange, free: free)",
         "Utilisateur": "Usuario",
         "User pour la partie LTE": "Usuario para la parte LTE",
         "Mot de passe": "Contraseña",
         "Password pour la partie LTE": "Contraseña para la parte LTE",
-        "Code Pin": "Código PIN",
-        "ne rien mettre si pas de code pin": "no pongas nada si no hay código pin",
-        "Activation Data": "Datos de activación",
-        "Prise en charge de la data via la connexion LTE, pour les sim avec data": "Soporte para datos mediante conexión LTE, para sims con datos",
         "Connexion LTE": "Conexión LTE",
         "Verification si votre 4G est bien connecté": "Comprobando si tu 4G está bien conectado",
-        "Gestion LTE": "Gestión LTE",
-        "Re-Lancer": "Relanzar",
+        "Sauvegarder les APN": "Copia de seguridad de APN",
         "Seul l'apn est obligatoire": "Sólo el APN es obligatorio",
+        "La carte SIM ne semble pas être présente, l'avez vous insérée correctement ?": "La tarjeta SIM parece no estar presente, ¿la has insertado correctamente?",
         "IMEI": "IMEI",
         "IMEI de la Luna": "Luna IMEI",
         "Nom de l'opérateur": "Nombre del operador",
         "Signal": "Señal",
         "Etat": "Estado",
         "Deblocage SIM": "Desbloqueo de SIM",
-        "Votre Luna n'as pas de module LTE integrer, le plugin prend en charge uniquement les Luna 4G.": "Tu Luna no tiene un módulo LTE integrado, el complemento solo es compatible con Luna 4G",
-        "Détection du module LTE": "Detección de módulo LTE"
+        "Aucun modem n'est configuré": "No hay ningún módem configurado",
+        "Démarrer le Modem": "Iniciar el módem",
+        "Votre Luna ne possède pas le module LTE": "Tu Luna no tiene el módulo LTE"
     },
     "plugins\/luna\/desktop\/php\/ethernet.php": {
         "401 - Accès non autorisé": "401 - Acceso no autorizado",
@@ -159,7 +161,7 @@
         "Lora": "Laura",
         "Service": "Servicio",
         "Gateway UID": "ID de puerta de enlace",
-        "Votre Luna n'as pas de module Lora integré, le plugin prend en charge uniquement les Luna Lora.": "Tu Luna no tiene un módulo Lora integrado, el complemento solo es compatible con Luna Lora"
+        "Votre Luna ne possède de module Lora integré.": "Tu Luna no tiene un módulo Lora integrado"
     },
     "plugins\/luna\/desktop\/php\/battery.php": {
         "401 - Accès non autorisé": "401 - Acceso no autorizado",
@@ -172,8 +174,8 @@
     },
     "plugins\/luna\/desktop\/php\/wifi.php": {
         "401 - Accès non autorisé": "401 - Acceso no autorizado",
-        "Wifi 1": "Wifi 1",
-        "Activer le wifi 1": "Habilitar wifi 1",
+        "Wifi": "Inalámbrico",
+        "Activer le wifi": "Habilitar wifi",
         "Mode": "Moda",
         "Client Wifi": "Cliente wifi",
         "Hotspot Wifi": "Punto de acceso wifi",
@@ -197,7 +199,7 @@
         "Nom Réseau": "Nombre de red",
         "Etat": "Estado",
         "Action": "Acción",
-        "Sauvegarder WIFI 1": "Guardar WIFI 1",
+        "Sauvegarder WIFI": "WIFI de respaldo",
         "Wifi 2": "Wifi 2",
         "Activer le wifi 2": "Habilitar wifi 2",
         "Exemple : si vous choisissez 192.168.4.1, les adresses IP de votre serveur DHCP seront, selon le masque de sous-réseau (255.255.255.0), dans la plage allant de 192.168.4.2 à 192.168.4.254.": "Ejemplo: Si elige 192.168.4.1, las direcciones IP de su servidor DHCP estarán, dependiendo de la máscara de subred (255.255.255.0), en el rango de 192.168.4.2 a 192.168.4.254",
@@ -234,6 +236,10 @@
     "plugins\/luna\/desktop\/js\/wifi.js": {
         "Connecté": "Conectado",
         "Non connecté": "No conectado"
+    },
+    "plugins\/luna\/desktop\/js\/lte.js": {
+        "Déblocage de la carte SIM en cours": "Desbloqueo de la tarjeta SIM en curso",
+        "Activation du modem en cours": "Activación del módem en curso"
     },
     "plugins\/luna\/desktop\/js\/lora.js": {
         "Activer le module Lora": "Activar el módulo Lora",
@@ -283,6 +289,8 @@
         "Erreur lors de la detection de la puce LTE": "Error al detectar el chip LTE",
         "Puce LTE détecté. Vous pouvez configurer votre operateur depuis la configuration du plugin.": "Chip LTE detectado. Puedes configurar tu operador desde la configuración del plugin",
         "Puce LTE non-détecté.": "Chip LTE no detectado",
+        "Détection de la puce LTE fini > Puce trouvée": "Detección de chip LTE finalizada > Chip encontrado",
+        "Détection de la puce LTE fini > Puce non presente": "Detección del chip LTE terminado > chip no presente",
         "LTE > Merci de lancer la détection depuis le plugin Luna": "LTE > Inicie la detección desde el complemento Luna",
         "Activation LTE, la premiere connexion peut prendre 10 minutes.": "Activación LTE, la primera conexión puede tardar 10 minutos",
         "Désactivation Data LTE": "Desactivar datos LTE",
@@ -306,7 +314,8 @@
         "Batterie Activée": "Activado por batería",
         "Allumer la batterie": "Enciende la batería",
         "Eteindre la batterie": "Apague la batería",
-        "prelancement": "pre lanzamiento"
+        "prelancement": "pre lanzamiento",
+        "SIM absente": "Falta SIM"
     },
     "plugins\/luna\/core\/template\/widgets.html": {
         "Affiche durée ou date de la valeur": "Muestra la duración o fecha del valor"

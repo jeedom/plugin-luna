@@ -6,6 +6,11 @@
 >
 >Como recordatorio, si no hay información sobre la actualización, significa que solo se trata de la actualización de la documentación, la traducción o el texto.
 
+# 09/07/2024
+
+- Configurar un servicio LTE para volver a conectar el módem
+- Reanudación de la UI en la parte LTE
+- Se agregaron varias configuraciones para la conexión automática de wifi y conexiones de punto de acceso (debe eliminar la conexión wifi y volver a crearla))
 
 # 25/06/2024
 

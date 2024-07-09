@@ -6,6 +6,11 @@
 >
 >Zur Erinnerung: Wenn es keine Informationen über die Aktualisierung gibt, bedeutet dies, dass es sich nur um die Aktualisierung von Dokumentation, Übersetzung oder Text handelt.
 
+# 07.09.2024
+
+- Einrichten eines LTE-Dienstes zum erneuten Verbinden des Modems
+- Wiederaufnahme der Benutzeroberfläche auf dem LTE-Teil
+- Mehrere Einstellungen für die automatische Verbindung von WLAN- und Hotspot-Verbindungen hinzugefügt (Sie müssen die WLAN-Verbindung löschen und neu erstellen))
 
 # 25.06.2024
 
