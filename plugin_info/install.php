@@ -53,15 +53,15 @@ function luna_install() {
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
-	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
 		$maxWaitTime = 180; 
 		$startTime = time(); 
 		$isLte = null;
 		while (time() - $startTime < $maxWaitTime) {
-			$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 			if(trim($result) != "exists"){
-				$isLte = shell_exec('cat /boot/jeedomLTE');
+				$isLte = shell_exec('sudo cat /boot/jeedomLTE');
 				if(trim($isLte) == "2"){
 					config::save('isLte', 'NOLTE', 'luna');
 				} else {
@@ -77,7 +77,7 @@ function luna_install() {
 }
 
 function luna_update() {
-	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
 		config::save('isLte', 'NOLTE', 'luna');
 	}
@@ -108,18 +108,17 @@ function luna_update() {
 	luna::mountPersistent();
 	
 	luna::switchHost();
-	//luna::installLte();
 	luna::installLora();
 	luna::onBattery();
-	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
 		$maxWaitTime = 180; 
 		$startTime = time(); 
 		$isLte = null;
 		while (time() - $startTime < $maxWaitTime) {
-			$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 			if(trim($result) != "exists"){
-				$isLte = shell_exec('cat /boot/jeedomLTE');
+				$isLte = shell_exec('sudo cat /boot/jeedomLTE');
 				if(trim($isLte) == "2"){
 					config::save('isLte', 'NOLTE', 'luna');
 				} else {
@@ -132,5 +131,4 @@ function luna_update() {
 		}
 		config::save('isLte', 'NOLTE', 'luna');
 	}
-
 }
