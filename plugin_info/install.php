@@ -62,6 +62,7 @@ function luna_install() {
 			$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 			if(trim($result) != "exists"){
 				config::save('isLte', 'LTE', 'luna');
+				break;
 			}else{
 			  usleep(500000); 
 			}
@@ -114,6 +115,7 @@ function luna_update() {
 			$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 			if(trim($result) != "exists"){
 				config::save('isLte', 'LTE', 'luna');
+				break;
 			}else{
 			  usleep(500000); 
 			}
