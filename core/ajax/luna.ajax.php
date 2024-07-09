@@ -139,7 +139,7 @@ try {
 
   if(init('action') == 'startJeedomLTE'){
     luna::startJeedomLTE();
-    $return = luna::isModemLuna();
+    $return = luna::waitLuna('recuperationConfigModem');
     if($return){
       ajax::success();
     }
@@ -147,12 +147,10 @@ try {
   
   if(init('action') == 'unlockSim'){
     $pin = init('pin');
-    log::add('luna', 'debug', 'unlockSim ' . $pin);
     if(empty($pin)){
       ajax::error('Le code PIN est vide');
     }
-    $return = luna::unlockSIM($pin);
-
+    $return = luna::waitLuna('unlockSIM', $pin);
     if($return){
       ajax::success();
     }

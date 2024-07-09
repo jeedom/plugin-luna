@@ -91,6 +91,15 @@ $('#bt_saveLTE').off('click').on('click', function(event) {
   })
 
   document.getElementById('bt_saveUnlockSim')?.addEventListener('click', function() {
+    if (window.intervalAlertSim) {
+      clearInterval(window.intervalAlertSim);
+    }
+    window.intervalAlertSim = setInterval(function() {
+      $('#div_alert').showAlert({ message: '{{Déblocage de la carte SIM en cours}}...', level: 'success' });
+    }, 5000);
+    var intervalSIM = setInterval(function() {
+      $.showLoading();
+    }, 1000);
     var pin = document.getElementById('ltePin').value;
     domUtils.ajax({
       type: "POST",
@@ -104,11 +113,14 @@ $('#bt_saveLTE').off('click').on('click', function(event) {
         handleAjaxError(request, status, error);
       },
       success: function() {
-          $('#div_alert').showAlert({
-            message: '{{Déblocage de la SIM}}',
-            level: 'success'
-          });
-          //location.reload();
+        if (data.state != 'ok') {
+          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+        } else {
+            clearInterval(window.intervalAlertSim);
+            clearInterval(intervalSIM); 
+            $.hideLoading();
+            location.reload();
+        }
       }
     });
   });

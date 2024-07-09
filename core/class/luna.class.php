@@ -1084,6 +1084,27 @@ class luna extends eqLogic {
     return $result; 
   }
 
+  public static function waitLuna($_method, $_params = null) {
+    $maxWaitTime = 60; 
+    $startTime = time(); 
+    $result = null;
+    $reflectedMethod = new ReflectionMethod(__CLASS__, $_method);
+    $acceptsParams = $reflectedMethod->getNumberOfParameters() > 0;
+    while (time() - $startTime < $maxWaitTime) {
+      if ($acceptsParams && $_params !== null) {
+          $result = self::$_method($_params);
+      } else {
+          $result = self::$_method();
+      }
+      if($result != null){
+        break;
+      }else{
+        usleep(500000); 
+      }
+    }
+    return $result; 
+  }
+
   public static function cronHourly() {
     // executer LTE si pas de ppp0 dans un ifconfig
     $ifconfig = shell_exec('sudo ifconfig');
