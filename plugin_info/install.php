@@ -22,6 +22,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 $cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
 
 function luna_install() {
+	config::save('isLte', 'NOLTE', 'luna');
 	luna::patchLuna('install');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
@@ -50,13 +51,30 @@ function luna_install() {
 	luna::mountSD();
 	luna::mountPersistent();
 	luna::switchHost();
-	//luna::installLte();
 	luna::installLora();
 	luna::onBattery();
-	//luna::verifLTEScript();
+	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	if (trim($result) != "exists") {
+		$maxWaitTime = 60; 
+		$startTime = time(); 
+		$isLte = null;
+		while (time() - $startTime < $maxWaitTime) {
+			$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+			if(trim($result) != "exists"){
+				config::save('isLte', 'LTE', 'luna');
+			}else{
+			  usleep(500000); 
+			}
+		}
+		config::save('isLte', 'NOLTE', 'luna');
+	}
 }
 
 function luna_update() {
+	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	if (trim($result) != "exists") {
+		config::save('isLte', 'NOLTE', 'luna');
+	}
 	luna::patchLuna('update');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
@@ -87,6 +105,20 @@ function luna_update() {
 	//luna::installLte();
 	luna::installLora();
 	luna::onBattery();
-	//luna::verifLTEScript();
+	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+	if (trim($result) != "exists") {
+		$maxWaitTime = 60; 
+		$startTime = time(); 
+		$isLte = null;
+		while (time() - $startTime < $maxWaitTime) {
+			$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+			if(trim($result) != "exists"){
+				config::save('isLte', 'LTE', 'luna');
+			}else{
+			  usleep(500000); 
+			}
+		}
+		config::save('isLte', 'NOLTE', 'luna');
+	}
 
 }
