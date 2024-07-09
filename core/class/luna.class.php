@@ -854,17 +854,17 @@ class luna extends eqLogic {
     $ltetrouver = exec('sudo cat /boot/jeedomLTE');
     if ($ltetrouver == 1) {
       config::save('isLte', 'LTE', 'luna');
-      message::add(__CLASS__, __('Detection de la puce LTE fini > puce trouvé', __FILE__));
+      message::add(__CLASS__, __('Détection de la puce LTE fini > Puce trouvée', __FILE__));
     } elseif ($ltetrouver == 2) {
       config::save('isLte', 'NOLTE', 'luna');
-      message::add(__CLASS__, __('Detection de la puce LTE fini > puce non presente', __FILE__));
+      message::add(__CLASS__, __('Détection de la puce LTE fini > Puce non presente', __FILE__));
     } 
   }
 
   //utilisé dans ajax pas sur que ce soit encore utile
   public static function isLTELuna(){
     luna::verifLTEScript();
-    $maxWaitTime = 120; 
+    $maxWaitTime = 60; 
     $startTime = time(); 
     $isLte = null;
     while (time() - $startTime < $maxWaitTime) {
