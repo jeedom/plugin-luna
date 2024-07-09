@@ -1069,21 +1069,6 @@ class luna extends eqLogic {
     return exec('sudo systemctl is-active jeedomLTE.service');
   }
 
-  public static function isModemLuna(){
-    $maxWaitTime = 60; 
-    $startTime = time(); 
-    $isLte = null;
-    while (time() - $startTime < $maxWaitTime) {
-    $result =  self::recuperationConfigModem();
-        if($result != False){
-          break;
-        }else{
-          usleep(500000); 
-        }
-    }
-    return $result; 
-  }
-
   public static function waitLuna($_method, $_params = null) {
     $maxWaitTime = 60; 
     $startTime = time(); 
