@@ -104,9 +104,16 @@ function luna_update() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
+	for ($i=1; $i < 3; $i++) { 
+		if($ssid = $eqLogic->getConfiguration('wifi'.$i.'Ssid', null)){
+			log::add('luna', 'debug', 'Update wifi'.$i.'Ssid : '.$ssid);
+			shell_exec('sudo nmcli con modify "' . $ssid . '" connection.autoconnect-retries 0');
+			shell_exec('sudo nmcli con modify "' . $ssid . '" connection.multi-connect 3');
+			shell_exec('sudo nmcli con modify "' . $ssid . '" connection.auth-retries 0');
+		}
+	}
 	luna::mountSD();
 	luna::mountPersistent();
-	
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
