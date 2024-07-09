@@ -368,8 +368,11 @@ class luna extends eqLogic {
     }
     if ($wifiMode == "client") {
       $escpadedWifiSsid = escapeshellarg($wifiSsid);
-      log::add(__CLASS__, 'debug', 'save wifi >>bbbb' . luna::convertIP($wifiIp, $wifiMask));
-      shell_exec('sudo nmcli dev wifi connect "' . $escpadedWifiSsid . '" password "' . $wifiPassword . '"');
+      $escpadedWifiSsid = $wifiSsid;
+      log::add(__CLASS__, 'debug', 'save wifi >>bbbb' . $escpadedWifiSsid);
+      $connect = shell_exec('sudo nmcli dev wifi connect "' . $escpadedWifiSsid . '" password "' . $wifiPassword . '"');
+      //https://wiki.ubuntu.com/DebuggingNetworkManager/ReasonCodes
+      log::add(__CLASS__, 'debug', 'save wifi ' . $test);
       shell_exec('sudo nmcli con down "' . $escpadedWifiSsid . '"');
       shell_exec('sudo nmcli con modify "' . $escpadedWifiSsid . '"  ifname wlan' . $device);
       if ($typeAdressage == 'dhcp') {
