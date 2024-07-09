@@ -55,7 +55,7 @@ function luna_install() {
 	luna::onBattery();
 	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
-		$maxWaitTime = 60; 
+		$maxWaitTime = 180; 
 		$startTime = time(); 
 		$isLte = null;
 		while (time() - $startTime < $maxWaitTime) {
@@ -107,7 +107,7 @@ function luna_update() {
 	luna::onBattery();
 	$result = shell_exec('test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
-		$maxWaitTime = 60; 
+		$maxWaitTime = 180; 
 		$startTime = time(); 
 		$isLte = null;
 		while (time() - $startTime < $maxWaitTime) {
