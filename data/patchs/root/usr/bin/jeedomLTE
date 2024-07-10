@@ -57,7 +57,7 @@ _modem_on() {
     echo 1 > /sys/class/leds/ltepwr/brightness
     echo 1 > /sys/class/leds/lteldo/brightness
     echo 1 > /sys/class/leds/lterst/brightness
-    sleep 30
+    sleep 40
 }
 
 _modem_off() {
