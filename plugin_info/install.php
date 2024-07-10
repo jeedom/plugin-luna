@@ -53,6 +53,7 @@ function luna_install() {
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
+	$waitFileExist = false;
 	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
 		$maxWaitTime = 180; 
@@ -61,18 +62,20 @@ function luna_install() {
 		while (time() - $startTime < $maxWaitTime) {
 			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 			if(trim($result) != "exists"){
-				$isLte = shell_exec('sudo cat /boot/jeedomLTE');
-				if(trim($isLte) == "2"){
-					config::save('isLte', 'NOLTE', 'luna');
-				} else {
-					config::save('isLte', 'LTE', 'luna');
-				}
+				$waitFileExist = true;
 				break;
 			}else{
 			  usleep(500000); 
 			}
 		}
-		config::save('isLte', 'NOLTE', 'luna');
+		if($waitFileExist){
+			$isLte = shell_exec('sudo cat /boot/jeedomLTE');
+			if(trim($isLte) == "2"){
+				config::save('isLte', 'NOLTE', 'luna');
+			} else {
+				config::save('isLte', 'LTE', 'luna');
+			}
+		}
 	}
 }
 
@@ -117,6 +120,7 @@ function luna_update() {
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
+	$waitFileExist = false;
 	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
 		$maxWaitTime = 180; 
@@ -125,17 +129,19 @@ function luna_update() {
 		while (time() - $startTime < $maxWaitTime) {
 			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 			if(trim($result) != "exists"){
-				$isLte = shell_exec('sudo cat /boot/jeedomLTE');
-				if(trim($isLte) == "2"){
-					config::save('isLte', 'NOLTE', 'luna');
-				} else {
-					config::save('isLte', 'LTE', 'luna');
-				}
+				$waitFileExist = true;
 				break;
 			}else{
 			  usleep(500000); 
 			}
 		}
-		config::save('isLte', 'NOLTE', 'luna');
+	}
+	if($waitFileExist){
+		$isLte = shell_exec('sudo cat /boot/jeedomLTE');
+		if(trim($isLte) == "2"){
+			config::save('isLte', 'NOLTE', 'luna');
+		} else {
+			config::save('isLte', 'LTE', 'luna');
+		}
 	}
 }

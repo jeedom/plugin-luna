@@ -72,7 +72,10 @@ $modem       = luna::recuperationConfigModem();
 								<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
 							</label>
 							<div class="col-lg-2">
-								<input id="ltePin" class="eqLogicAttr form-control form-lte" type="number" data-l1key="configuration" data-l2key="ltePin" />
+								<input id="ltePin" class="eqLogicAttr form-control form-lte inputPassword" type="number" data-l1key="configuration" data-l2key="ltePin" />
+								<span class="input-group-btn">
+									<a class="btn btn-default form-control bt_showPass roundedRight"><i class="fas fa-eye"></i></a>
+								</span>
 							</div>
 							<?php if( $modem['state'] == 'locked' ) { ?>
 							<div class="col-lg-2">
