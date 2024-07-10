@@ -67,11 +67,11 @@ $modem       = luna::recuperationConfigModem();
 					if($modem) {
 						if($modem['stateFailedReason'] == '--') {
 					?>
-						<div class="form-group">
+						<div class="form-group" style="display:flex;">
 							<label class="col-lg-3 control-label">{{Code Pin}}
 								<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
 							</label>
-							<div class="col-lg-2">
+							<div class="col-lg-2 input-group">
 								<input id="ltePin" class="eqLogicAttr form-control form-lte inputPassword" type="number" data-l1key="configuration" data-l2key="ltePin" />
 								<span class="input-group-btn">
 									<a class="btn btn-default form-control bt_showPass roundedRight"><i class="fas fa-eye"></i></a>
