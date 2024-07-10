@@ -68,13 +68,15 @@ function luna_install() {
 			  usleep(500000); 
 			}
 		}
-		if($waitFileExist){
-			$isLte = shell_exec('sudo cat /boot/jeedomLTE');
-			if(trim($isLte) == "2"){
-				config::save('isLte', 'NOLTE', 'luna');
-			} else {
-				config::save('isLte', 'LTE', 'luna');
-			}
+	} else  {
+		$waitFileExist = true;
+	}
+	if($waitFileExist){
+		$isLte = shell_exec('sudo cat /boot/jeedomLTE');
+		if(trim($isLte) == "2"){
+			config::save('isLte', 'NOLTE', 'luna');
+		} else {
+			config::save('isLte', 'LTE', 'luna');
 		}
 	}
 }
@@ -129,12 +131,15 @@ function luna_update() {
 		while (time() - $startTime < $maxWaitTime) {
 			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 			if(trim($result) != "exists"){
+				log::add('luna', 'debug', 'Wait for jeedomLTE file');
 				$waitFileExist = true;
 				break;
 			}else{
 			  usleep(500000); 
 			}
 		}
+	} else {
+		$waitFileExist = true;
 	}
 	if($waitFileExist){
 		$isLte = shell_exec('sudo cat /boot/jeedomLTE');
