@@ -61,7 +61,7 @@ function luna_install() {
 		$isLte = null;
 		while (time() - $startTime < $maxWaitTime) {
 			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
-			if(trim($result) != "exists"){
+			if(trim($result) == "exists"){
 				$waitFileExist = true;
 				break;
 			}else{
@@ -130,7 +130,7 @@ function luna_update() {
 		$isLte = null;
 		while (time() - $startTime < $maxWaitTime) {
 			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
-			if(trim($result) != "exists"){
+			if(trim($result) == "exists"){
 				log::add('luna', 'debug', 'Wait for jeedomLTE file');
 				$waitFileExist = true;
 				break;
