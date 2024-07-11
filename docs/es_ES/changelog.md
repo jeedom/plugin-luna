@@ -6,6 +6,11 @@
 >
 >Como recordatorio, si no hay información sobre la actualización, significa que solo se trata de la actualización de la documentación, la traducción o el texto.
 
+
+# 11/07/2024
+
+- Agregar herramientas de administración
+
 # 09/07/2024
 
 - Configurar un servicio LTE para volver a conectar el módem

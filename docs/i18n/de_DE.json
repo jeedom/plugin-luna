@@ -3,6 +3,8 @@
         "Changelog Luna": "Änderungsprotokoll Luna",
         "Changelog plugin luna": "Änderungsprotokoll Luna-Plugin",
         "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Zur Erinnerung: Wenn es keine Informationen über die Aktualisierung gibt, bedeutet dies, dass es sich nur um die Aktualisierung von Dokumentation, Übersetzung oder Text handelt",
+        "11\/07\/2024": "11.07.2024",
+        "Ajout Outils Administration": "Verwaltungstools hinzufügen",
         "09\/07\/2024": "07.09.2024",
         "Mise en place d'un service LTE pour reconnecter le modem": "Einrichten eines LTE-Dienstes zum erneuten Verbinden des Modems",
         "Reprise de l'UI sur la partie LTE": "Wiederaufnahme der Benutzeroberfläche auf dem LTE-Teil",
@@ -162,6 +164,9 @@
         "orange, free": "orange, kostenlos",
         "free). \/": "frei). \/",
         "\\": "\\",
+        "Je possede une Luna 4G, mais l'onglet LTE ne s'affiche pas": "Ich habe ein Luna 4G, aber die Registerkarte „LTE“ wird nicht angezeigt",
+        "Dans l'onglet Général, il y a des Options d'administration": "Auf der Registerkarte „Allgemein“ gibt es Verwaltungsoptionen",
+        "Cliquez sur Relancer configuration du Plugin": "Klicken Sie auf Plugin-Konfiguration neu starten",
         " ATTENTION.": " WARNUNG.",
         " ATTENTION?": " WARNUNG?",
         "ATTENTION ": "WARNUNG ",
@@ -217,6 +222,13 @@
         " ebouygtel]": " ebouygtel]",
         "[ebouygtel]": "[ebouygtel]",
         "*ebouygtel*": "*ebouygtel*",
-        " ebouygtel*": " ebouygtel*"
+        " ebouygtel*": " ebouygtel*",
+        " FAQ.": " FAQs.",
+        " FAQ?": " FAQs?",
+        "FAQ ": "FAQs ",
+        " FAQ]": " FAQs]",
+        "[FAQ]": "[FAQs]",
+        "*FAQ*": "*FAQs*",
+        " FAQ*": " FAQs*"
     }
 }
