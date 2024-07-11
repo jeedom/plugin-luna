@@ -53,32 +53,7 @@ function luna_install() {
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
-	$waitFileExist = false;
-	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
-	if (trim($result) != "exists") {
-		$maxWaitTime = 180; 
-		$startTime = time(); 
-		$isLte = null;
-		while (time() - $startTime < $maxWaitTime) {
-			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
-			if(trim($result) == "exists"){
-				$waitFileExist = true;
-				break;
-			}else{
-			  usleep(500000); 
-			}
-		}
-	} else  {
-		$waitFileExist = true;
-	}
-	if($waitFileExist){
-		$isLte = shell_exec('sudo cat /boot/jeedomLTE');
-		if(trim($isLte) == "2"){
-			config::save('isLte', 'NOLTE', 'luna');
-		} else {
-			config::save('isLte', 'LTE', 'luna');
-		}
-	}
+	luna::checkLunaLte();
 }
 
 function luna_update() {
@@ -122,31 +97,5 @@ function luna_update() {
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
-	$waitFileExist = false;
-	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
-	if (trim($result) != "exists") {
-		$maxWaitTime = 180; 
-		$startTime = time(); 
-		$isLte = null;
-		while (time() - $startTime < $maxWaitTime) {
-			$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
-			if(trim($result) == "exists"){
-				log::add('luna', 'debug', 'Wait for jeedomLTE file');
-				$waitFileExist = true;
-				break;
-			}else{
-			  usleep(500000); 
-			}
-		}
-	} else {
-		$waitFileExist = true;
-	}
-	if($waitFileExist){
-		$isLte = shell_exec('sudo cat /boot/jeedomLTE');
-		if(trim($isLte) == "2"){
-			config::save('isLte', 'NOLTE', 'luna');
-		} else {
-			config::save('isLte', 'LTE', 'luna');
-		}
-	}
+	luna::checkLunaLte();
 }

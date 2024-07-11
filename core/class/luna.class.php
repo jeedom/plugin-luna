@@ -1093,6 +1093,36 @@ class luna extends eqLogic {
     return $result; 
   }
 
+  public static function checkLunaLte() {
+    $waitFileExist = false;
+    $result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+    if (trim($result) != "exists") {
+      $maxWaitTime = 180; 
+      $startTime = time(); 
+      $isLte = null;
+      while (time() - $startTime < $maxWaitTime) {
+        $result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
+        if(trim($result) == "exists"){
+          log::add('luna', 'debug', 'Wait for jeedomLTE file');
+          $waitFileExist = true;
+          break;
+        }else{
+          usleep(500000); 
+        }
+      }
+    } else {
+      $waitFileExist = true;
+    }
+    if($waitFileExist){
+      $isLte = shell_exec('sudo cat /boot/jeedomLTE');
+      if(trim($isLte) == "2"){
+        config::save('isLte', 'NOLTE', 'luna');
+      } else {
+        config::save('isLte', 'LTE', 'luna');
+      }
+    }
+  }
+
   //Todo a supprimer dans l'avenir
   // public static function cronHourly() {
   //   // executer LTE si pas de ppp0 dans un ifconfig
@@ -1184,6 +1214,14 @@ class luna extends eqLogic {
   }
 
   /* ----- FIN SMS ----- */
+  /* ----- Outils d'aministration ----- */
+  public static function reloadConfig() {
+    shell_exec('sudo rm /boot/jeedomLTE');
+    shell_exec('sudo systemctl daemon-reload');
+    shell_exec('sudo systemctl enable jeedomLTE.service');
+    shell_exec('sudo systemctl start jeedomLTE.service');
+    self::checkLunaLte();
+  }
 
   public static function switchHost($activated = true) {
     //exec("sudo apt remove -y dnsmasq");
