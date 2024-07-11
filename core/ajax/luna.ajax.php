@@ -80,6 +80,11 @@ try {
     ajax::success();
   }
 
+  if (init('action') == 'reloadConfig') {
+    luna::reloadConfig();
+    ajax::success();
+  }
+
   if (init('action') == 'loraSwitchMaj') {
     luna::loraSwitchMaj(init('active'));
     ajax::success();
