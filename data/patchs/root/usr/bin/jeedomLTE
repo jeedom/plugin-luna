@@ -22,7 +22,8 @@
 # systemctl status jeedomLTE.service
 
 LOGFILE=/var/www/html/log/jeedomLTE
-DEBUG=false
+chown www-data:www-data $LOGFILE
+DEBUG=true
 
 #Todo: Add debug option with systemctl start jeedomLTE.service option
 # while [[ "$#" -gt 0 ]]; do
@@ -52,19 +53,36 @@ _modem_exists() {
     fi
 }
 
+_change_modem_state() {
+    local state="$1" # 1 pour allumer, 0 pour éteindre
+    debug_log "Changing modem state to $state"
+    local ltefile=("ltepwr" "lteldo" "lterst")
+    for lte in "${ltefile[@]}"; do
+        local modem="/sys/class/leds/$lte/brightness"
+        echo "$state" | tee $modem > /dev/null
+    done
+
+    if [ "$state" -eq 1 ]; then
+        sleep 40
+    fi
+}
+
 _modem_on() {
-    debug_log "Turning modem on"
-    echo 1 > /sys/class/leds/ltepwr/brightness
-    echo 1 > /sys/class/leds/lteldo/brightness
-    echo 1 > /sys/class/leds/lterst/brightness
-    sleep 40
+    _change_modem_state 1
 }
 
 _modem_off() {
-    debug_log "Turning modem off"
-    echo 0 > /sys/class/leds/ltepwr/brightness
-    echo 0 > /sys/class/leds/lteldo/brightness
-    echo 0 > /sys/class/leds/lterst/brightness
+    _change_modem_state 0
+}
+
+_modem_read_class_value() {
+    local ltefile=("ltepwr" "lteldo" "lterst")
+    for lte in "${ltefile[@]}"; do
+        local output=$(cat /sys/class/leds/$lte/brightness)
+        if [ "$output" != "1" ]; then
+            return 1 
+    done
+    return 0 
 }
 
 restart_modem() {
@@ -96,7 +114,11 @@ case "$1" in
             if [ $result -eq 1 ]; then
                 debug_log "Modem is already connected."
                 if [ ! -f /boot/jeedomLTE ]; then
-                    echo 1 > /boot/jeedomLTE
+                    echo "1" | tee /boot/jeedomLTE > /dev/null
+                fi
+                content=$(cat /boot/jeedomLTE)
+                if [ "$content" != "1" ]; then
+                    echo "1" | tee /boot/jeedomLTE > /dev/null
                 fi
             else
                 max_attempts=5
@@ -105,20 +127,25 @@ case "$1" in
                     _modem_off
                     sleep 5
                     _modem_on
+                    _modem_read_class_value
+                    if ! _modem_read_class_value; then
+                        debug_log "At least one value is different from 1, action required."
+                        break
+                    fi 
                     _modem_exists
                     result=$?
                     if [ $result -eq 1 ]; then
                         say="Modem successfully reconnected."
                         echo $say
                         debug_log $say
-                        echo 1 > /boot/jeedomLTE
+                        echo "1" | tee /boot/jeedomLTE > /dev/null
                         break
                     fi
                 done
 
                 if [ $result -ne 1 ]; then
                     say="Failure after $max_attempts attempts, disabling the service and stopping the shell."
-                    echo 2 > /boot/jeedomLTE
+                    echo "2" | tee /boot/jeedomLTE > /dev/null
                     echo $say
                     debug_log $say
                     systemctl stop jeedomLTE.service
