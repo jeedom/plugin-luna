@@ -1223,6 +1223,17 @@ class luna extends eqLogic {
     self::checkLunaLte();
   }
 
+  public static function readModemSysClass() {
+    $modem = array();
+    $modem['ltepwr'] = shell_exec('sudo cat /sys/class/leds/ltepwr/brightness');
+    $modem['lteldo'] = shell_exec('sudo cat /sys/class/leds/lteldo/brightness');
+    $modem['lterst'] = shell_exec('sudo cat /sys/class/leds/lterst/brightness');
+
+    return $modem;
+  }
+
+    /* ----- Fin Outils d'aministration ----- */
+
   public static function switchHost($activated = true) {
     //exec("sudo apt remove -y dnsmasq");
     exec("sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf");
