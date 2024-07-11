@@ -396,6 +396,11 @@ function ajax_start_percentage() {
 //   });
 // });
 
+
+document.getElementById('bt_reloadConfig')?.addEventListener('click', function() {
+
+})
+
 $('#saveLuna').off('click').on('click', function() {
     if (window.intervalAlertId) {
       clearInterval(window.intervalAlertId);

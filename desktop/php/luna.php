@@ -199,6 +199,17 @@ sendVarToJS('isLte', $isLte);
 										<span class="label label-info ipWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 								</div>
+								<legend><i class="fa fa-info-circle"></i> {{Outils Administration}}</legend>
+								<div class="form-group">
+								<div class="alert alert-warning">
+									<i class="fas fa-exclamation-triangle"></i> {{Se référer à la documentation du plugin pour plus d'informations}}
+									<a class="btn btn-info btn-sm tippied" target="_blank" href="https://doc.jeedom.com/fr_FR/plugins/home%20automation%20protocol/luna/beta" data-title="Accéder à la documentation du plugin"><i class="fas fa-book"></i> Documentation</a>
+								</div>
+									<label class="col-lg-4 control-label">{{Relancer configuration du Plugin}}</label>
+									<div class="col-lg-4">
+									   <a class="btn btn-success btn-xs" id="bt_reloadConfig"><i class="fas fa-play"></i></a>
+									</div>
+								</div>
 								<!-- <div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse MAC wifi 2}}</label>
 									<div class="col-lg-4">
