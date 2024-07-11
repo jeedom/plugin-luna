@@ -400,6 +400,12 @@ function ajax_start_percentage() {
 document.getElementById('bt_reloadConfig')?.addEventListener('click', function() {
   bootbox.confirm('{{Êtes-vous sûr de vouloir recharger la configuration de Luna ?}}', function(result) {
     if (result) {
+      window.intervalReloadAlert = setInterval(function() {
+        $('#div_alert').showAlert({ message: 'Configuration du plugin en cours .....', level: 'success' });
+    }, 2000);
+    var intervalConfig = setInterval(function() {
+      $.showLoading();
+  }, 1000);
       $.ajax({
         type: "POST",
         url: "plugins/luna/core/ajax/luna.ajax.php",
@@ -417,6 +423,8 @@ document.getElementById('bt_reloadConfig')?.addEventListener('click', function()
             $('#div_alert').showAlert({ message: data.result, level: 'danger' })
             return
           }
+          clearInterval(intervalReloadAlert);
+          clearInterval(intervalConfig);
           location.reload();
         }
       })
