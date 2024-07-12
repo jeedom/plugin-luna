@@ -4,6 +4,8 @@
         "Changelog plugin luna": "Changelog plugin luna",
         "IMPORTANT": "IMPORTANT",
         "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte",
+        "11\/07\/2024": "11\/07\/2024",
+        "Ajout Outils Administration": "Ajout Outils Administration",
         "09\/07\/2024": "09\/07\/2024",
         "Mise en place d'un service LTE pour reconnecter le modem": "Mise en place d'un service LTE pour reconnecter le modem",
         "Reprise de l'UI sur la partie LTE": "Reprise de l'UI sur la partie LTE",
@@ -157,6 +159,10 @@
         "com, Orange": "com, Orange",
         "orange, free": "orange, free",
         "free). \/": "free). \/",
-        "\\": "\\"
+        "\\": "\\",
+        "FAQ": "FAQ",
+        "Je possede une Luna 4G, mais l'onglet LTE ne s'affiche pas": "Je possede une Luna 4G, mais l'onglet LTE ne s'affiche pas",
+        "Dans l'onglet Général, il y a des Options d'administration": "Dans l'onglet Général, il y a des Options d'administration",
+        "Cliquez sur Relancer configuration du Plugin": "Cliquez sur Relancer configuration du Plugin"
     }
 }

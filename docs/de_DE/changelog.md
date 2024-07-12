@@ -6,6 +6,11 @@
 >
 >Zur Erinnerung: Wenn es keine Informationen über die Aktualisierung gibt, bedeutet dies, dass es sich nur um die Aktualisierung von Dokumentation, Übersetzung oder Text handelt.
 
+
+# 11.07.2024
+
+- Verwaltungstools hinzufügen
+
 # 07.09.2024
 
 - Einrichten eines LTE-Dienstes zum erneuten Verbinden des Modems

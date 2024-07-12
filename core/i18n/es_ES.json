@@ -93,6 +93,9 @@
         "Adresse Ip ethernet": "Dirección ip ethernet",
         "Adresse MAC wifi": "Dirección MAC wifi",
         "Adresse Ip wifi": "Dirección IP wifi",
+        "Outils Administration": "Herramientas de administración",
+        "Se référer à la documentation du plugin pour plus d'informations": "Consulte la documentación del complemento para obtener más información",
+        "Relancer configuration du Plugin": "Reiniciar la configuración del complemento",
         "Adresse MAC wifi 2": "Dirección MAC wifi 2",
         "Adresse Ip wifi 2": "Dirección ip wifi 2",
         "Adresse Ip LTE": "Dirección IP LTE",
@@ -217,7 +220,8 @@
         "Min": "Mín.",
         "Max": "Máx.",
         "Unité": "Unidad",
-        "Supprimer la commande": "Eliminar pedido"
+        "Supprimer la commande": "Eliminar pedido",
+        "Êtes-vous sûr de vouloir recharger la configuration de Luna ?": "¿Estás seguro de que quieres recargar la configuración de Luna?"
     },
     "plugins\/luna\/desktop\/js\/restore.js": {
         "Démarrage de la restauration": "Iniciando la restauración",

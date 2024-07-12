@@ -6,6 +6,11 @@
 >
 >As a reminder, if there is no information on the update, it means that it only concerns the update of documentation, translation or text.
 
+
+# 07/11/2024
+
+- Adding Administration Tools
+
 # 07/09/2024
 
 - Setting up an LTE service to reconnect the modem
