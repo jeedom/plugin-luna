@@ -112,7 +112,7 @@ $('#bt_saveLTE').off('click').on('click', function(event) {
       error: function(request, status, error) {
         handleAjaxError(request, status, error);
       },
-      success: function() {
+      success: function(data) {
         if (data.state != 'ok') {
           $('#div_alert').showAlert({ message: data.result, level: 'danger' });
         } else {

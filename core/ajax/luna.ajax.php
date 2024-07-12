@@ -155,7 +155,7 @@ try {
     if(empty($pin)){
       ajax::error('Le code PIN est vide');
     }
-    $return = luna::waitLuna('unlockSIM', $pin);
+    $return = luna::waitLuna('unlockSim', $pin);
     if($return){
       ajax::success();
     }
