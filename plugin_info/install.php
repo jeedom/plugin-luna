@@ -53,6 +53,7 @@ function luna_install() {
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
+	luna::startJeedomLTE();
 	luna::checkLunaLte();
 }
 
@@ -61,6 +62,7 @@ function luna_update() {
 	if (trim($result) != "exists") {
 		config::save('isLte', 'NOLTE', 'luna');
 	}
+	luna::stopJeedomLTE();
 	luna::patchLuna('update');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
@@ -97,5 +99,6 @@ function luna_update() {
 	luna::switchHost();
 	luna::installLora();
 	luna::onBattery();
+	luna::startJeedomLTE();
 	luna::checkLunaLte();
 }
