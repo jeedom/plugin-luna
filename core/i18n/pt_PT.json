@@ -93,12 +93,13 @@
         "Adresse Ip ethernet": "Endereço IP ethernet",
         "Adresse MAC wifi": "Endereço MAC wi-fi",
         "Adresse Ip wifi": "Endereço IP wi-fi",
+        "Adresse Ip LTE": "Endereço IP LTE",
         "Outils Administration": "Ferramentas de administração",
         "Se référer à la documentation du plugin pour plus d'informations": "Consulte a documentação do plugin para obter mais informações",
         "Relancer configuration du Plugin": "Reinicie a configuração do plugin",
+        "Nettoyer Configuration Wifi": "Configuração Wi-Fi limpa",
         "Adresse MAC wifi 2": "Endereço MAC wi-fi 2",
         "Adresse Ip wifi 2": "Endereço IP wi-fi 2",
-        "Adresse Ip LTE": "Endereço IP LTE",
         "Options": "Opções",
         "Etat": "Estado",
         "Actions": "Ações"
@@ -221,6 +222,7 @@
         "Max": "Máx.",
         "Unité": "Unidade",
         "Supprimer la commande": "Excluir pedido",
+        "Êtes-vous sûr de vouloir supprimer le profil Wifi ?": "Tem certeza de que deseja excluir o perfil Wifi?",
         "Êtes-vous sûr de vouloir recharger la configuration de Luna ?": "Tem certeza de que deseja recarregar a configuração do Luna?"
     },
     "plugins\/luna\/desktop\/js\/restore.js": {

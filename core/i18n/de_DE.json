@@ -93,12 +93,13 @@
         "Adresse Ip ethernet": "Ethernet-IP-Adresse",
         "Adresse MAC wifi": "WLAN-MAC-Adresse",
         "Adresse Ip wifi": "WLAN-IP-Adresse",
+        "Adresse Ip LTE": "LTE-IP-Adresse",
         "Outils Administration": "Verwaltungstools",
         "Se référer à la documentation du plugin pour plus d'informations": "Weitere Informationen finden Sie in der Plugin-Dokumentation",
         "Relancer configuration du Plugin": "Starten Sie die Plugin-Konfiguration neu",
+        "Nettoyer Configuration Wifi": "Saubere WLAN-Konfiguration",
         "Adresse MAC wifi 2": "WLAN-MAC-Adresse 2",
         "Adresse Ip wifi 2": "WLAN-IP-Adresse 2",
-        "Adresse Ip LTE": "LTE-IP-Adresse",
         "Options": "Optionen",
         "Etat": "Zustand",
         "Actions": "Aktionen"
@@ -221,6 +222,7 @@
         "Max": "Max",
         "Unité": "Einheit",
         "Supprimer la commande": "Auftrag löschen",
+        "Êtes-vous sûr de vouloir supprimer le profil Wifi ?": "Sind Sie sicher, dass Sie das WLAN-Profil löschen möchten?",
         "Êtes-vous sûr de vouloir recharger la configuration de Luna ?": "Sind Sie sicher, dass Sie Lunas Konfiguration neu laden möchten?"
     },
     "plugins\/luna\/desktop\/js\/restore.js": {
