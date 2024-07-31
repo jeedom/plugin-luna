@@ -199,16 +199,41 @@ sendVarToJS('isLte', $isLte);
 										<span class="label label-info ipWifi" style="font-size:1em;cursor:default;"></span>
 									</div>
 								</div>
+								<?php
+								if(config::byKey('isLte', 'luna') == 'LTE'){
+								?>
+									<div class="form-group">
+										<label class="col-lg-4 control-label" id="labelLTE">{{Adresse Ip LTE}}</label>
+										<div class="col-lg-4">
+											<span class="label label-info ipLte" style="font-size:1em;cursor:default;"></span>
+										</div>
+									</div>
+								<?php
+								}
+								?>
 								<legend><i class="fa fa-info-circle"></i> {{Outils Administration}}</legend>
 								<div class="form-group">
-								<div class="alert alert-warning">
-									<i class="fas fa-exclamation-triangle"></i> {{Se référer à la documentation du plugin pour plus d'informations}}
-									<a class="btn btn-info btn-sm tippied" target="_blank" href="https://doc.jeedom.com/fr_FR/plugins/home%20automation%20protocol/luna/beta" data-title="Accéder à la documentation du plugin"><i class="fas fa-book"></i> Documentation</a>
-								</div>
-									<label class="col-lg-4 control-label">{{Relancer configuration du Plugin}}</label>
-									<div class="col-lg-4">
-									   <a class="btn btn-success btn-xs" id="bt_reloadConfig"><i class="fas fa-play"></i></a>
-									</div>
+										<div class="alert alert-warning">
+											<i class="fas fa-exclamation-triangle"></i> {{Se référer à la documentation du plugin pour plus d'informations}}
+											<a class="btn btn-info btn-sm tippied" target="_blank" href="https://doc.jeedom.com/fr_FR/plugins/home%20automation%20protocol/luna/beta" data-title="Accéder à la documentation du plugin"><i class="fas fa-book"></i> Documentation</a>
+										</div>
+										<div style="display:flex;flex-direction:column;width:100%;">
+											   <div style="display:flex;">
+													<label>{{Relancer configuration du Plugin}}</label>
+														<div style="margin-left:20px;">
+														<a class="btn btn-success btn-xs" id="bt_reloadConfig"><i class="fas fa-play"></i></a>
+														</div>
+												</div>
+												<div style="display:flex;">
+													<label>{{Nettoyer Configuration Wifi}}</label>
+													<div style="margin-left:20px;">
+														<a class="btn btn-success btn-xs" id="bt_cleanWifi"><i class='icon fas fa-broom'></i></a>
+													</div>
+												</div>
+
+												
+										</div>
+									
 								</div>
 								<!-- <div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse MAC wifi 2}}</label>
@@ -223,18 +248,6 @@ sendVarToJS('isLte', $isLte);
 										<span class="label label-info ipWifi2" style="font-size:1em;cursor:default;"></span>
 									</div>
 								</div> -->
-								<?php
-								if(config::byKey('isLte', 'luna') == 'LTE'){
-								?>
-									<div class="form-group">
-										<label class="col-lg-4 control-label" id="labelLTE">{{Adresse Ip LTE}}</label>
-										<div class="col-lg-4">
-											<span class="label label-info ipLte" style="font-size:1em;cursor:default;"></span>
-										</div>
-									</div>
-								<?php
-								}
-								?>
 							</fieldset>
 						</form>
 					</div>

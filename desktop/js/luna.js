@@ -397,6 +397,35 @@ function ajax_start_percentage() {
 // });
 
 
+document.getElementById('bt_cleanWifi')?.addEventListener('click', function() {
+  bootbox.confirm('{{Êtes-vous sûr de vouloir supprimer le profil Wifi ?}}', function(result) {
+    if (result) {
+      $.ajax({
+        type: "POST",
+        url: "plugins/luna/core/ajax/luna.ajax.php",
+        data: {
+          action: "cleanWifi"
+        },
+        dataType: 'json',
+        async: true,
+        global: false,
+        error: function(request, status, error) {
+          handleAjaxError(request, status, error)
+        },
+        success: function(data) {
+          if (data.state != 'ok') {
+            $('#div_alert').showAlert({ message: data.result, level: 'danger' })
+            return
+          }
+          $('#div_alert').showAlert({ message: 'Profil Wifi supprimé avec succes', level: 'success' });
+        }
+      })
+    }
+  });
+
+})
+
+
 document.getElementById('bt_reloadConfig')?.addEventListener('click', function() {
   bootbox.confirm('{{Êtes-vous sûr de vouloir recharger la configuration de Luna ?}}', function(result) {
     if (result) {

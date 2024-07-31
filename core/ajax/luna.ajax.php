@@ -29,6 +29,14 @@ try {
     En V4 : autoriser l'exécution d'une méthode 'action' en GET en indiquant le(s) nom(s) de(s) action(s) dans un tableau en argument
   */
   ajax::init();
+  
+
+
+  if(init('action') == 'cleanWifi'){
+    luna::cleanWifi(1);
+    luna::cleanWifi(2);
+    ajax::success();
+  }
 
 
   if(init('action') == 'isLTELuna'){
