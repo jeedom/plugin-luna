@@ -79,12 +79,14 @@ function luna_update() {
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
 	}else{
+		$cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
 		foreach($cmdsToRemove as $logical){
 			$cmd = $eqLogic->getCmd(null, $logical);
 			if(is_object($cmd)){
 				$cmd->remove();
 			}
 		}
+		$eqLogic->save(true);
 	}
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
