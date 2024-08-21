@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
 function luna_install() {
-	$cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
+	
 	config::save('isLte', 'NOLTE', 'luna');
 	luna::patchLuna('install');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
@@ -37,6 +37,7 @@ function luna_install() {
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
 	}else{
+		$cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
 		foreach($cmdsToRemove as $logical){
 			$cmd = $eqLogic->getCmd(null, $logical);
 			if(is_object($cmd)){
