@@ -70,7 +70,7 @@ sendVarToJS('isLte', $isLte);
 			<li role="presentation"><a href="#wifitab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-wifi"></i> {{WIFI}}</a></li>
 			<li role="presentation"><a href="#ethernettab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-network-wired"></i> {{Ethernet}}</a></li>
 			<?php
-			if($isLte == 'LTE'){
+			if($isLte !== 'LTE'){
 				echo '<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal" ></i> {{LTE}}</a></li>';
 			}
 			?>
