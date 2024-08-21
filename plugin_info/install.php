@@ -43,6 +43,7 @@ function luna_install() {
 				$cmd->remove();
 			}
 		}
+		$eqLogic->save(true);
 	}
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->createArrayWidgets();
