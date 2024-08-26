@@ -3,6 +3,8 @@
         "Changelog Luna": "Changelog Luna",
         "Changelog plugin luna": "Plugin de registro de alterações luna",
         "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Relembramos que, se não houver informação sobre a atualização, significa que se trata apenas de atualização de documentação, tradução ou texto",
+        "26\/08\/2024": "26\/08\/2024",
+        "Mise en place une configuration pour limiter l'espace disque utilisé par les journaux, en ajustant les paramètres de rotation et de rétention": "Definir uma configuração para limitar o espaço em disco usado pelos logs, ajustando os parâmetros de rotação e retenção",
         "11\/07\/2024": "11\/07\/2024",
         "Ajout Outils Administration": "Adicionando ferramentas de administração",
         "09\/07\/2024": "09\/07\/2024",

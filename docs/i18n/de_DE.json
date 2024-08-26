@@ -3,6 +3,8 @@
         "Changelog Luna": "Änderungsprotokoll Luna",
         "Changelog plugin luna": "Änderungsprotokoll Luna-Plugin",
         "Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte": "Zur Erinnerung: Wenn es keine Informationen über die Aktualisierung gibt, bedeutet dies, dass es sich nur um die Aktualisierung von Dokumentation, Übersetzung oder Text handelt",
+        "26\/08\/2024": "26.08.2024",
+        "Mise en place une configuration pour limiter l'espace disque utilisé par les journaux, en ajustant les paramètres de rotation et de rétention": "Einrichten einer Konfiguration zur Begrenzung des von Protokollen verwendeten Speicherplatzes durch Anpassen der Rotations- und Aufbewahrungsparameter",
         "11\/07\/2024": "11.07.2024",
         "Ajout Outils Administration": "Verwaltungstools hinzufügen",
         "09\/07\/2024": "07.09.2024",
