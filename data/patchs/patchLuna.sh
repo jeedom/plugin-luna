@@ -78,6 +78,12 @@ if [ ! -f /boot/jeedomLTE ]; then
     fi
 fi
 
-
+if [ ! -f /etc/systemd/journald.conf.d/systemMaxUse.conf ]; then
+    touch /tmp/systemMaxUse.conf
+    echo '[Journal]' >> /tmp/systemMaxUse.conf
+    echo 'SystemMaxUse=512M' >> /tmp/systemMaxUse.conf
+    sudo /tmp/systemMaxUse.conf /etc/systemd/journald.conf.d/systemMaxUse.conf
+    sudo systemctl daemon-reload
+fi
 
 return 0
