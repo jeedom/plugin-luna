@@ -16,7 +16,6 @@ sudo apt-get install -y cloud-guest-utils
 echo 60 > ${PROGRESS_FILE}
 sudo apt-get install -y ethtool
 echo 70 > ${PROGRESS_FILE}
-#sudo apt-get install -y hostapd wireless-tools wvdial
-sudo apt-get install -y procps iproute2 dnsmasq iptables hostapd iw iwconfig haveged qrencode
+sudo apt-get install -y procps iproute2 iptables hostapd iw iwconfig haveged qrencode
 rm ${PROGRESS_FILE}
 echo "Everything is successfully installed!"
