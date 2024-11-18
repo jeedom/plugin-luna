@@ -76,7 +76,7 @@ sendVarToJS('isLte', $isLte);
 			?>
 			<?php
 			if(luna::detectedLora()){
-				echo '<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> {{Lora}}</a></li>';
+				echo '<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> Lora</a></li>';
 			}
 			?>
 			
