@@ -55,7 +55,7 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 			<li role="presentation"><a href="#wifitab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-wifi"></i> {{WIFI}}</a></li>
 			<li role="presentation"><a href="#ethernettab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-network-wired"></i> {{Ethernet}}</a></li>
 			<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal"></i> {{LTE}}</a></li>
-			<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> {{Lora}}</a></li>
+			<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> Lora</a></li>
 			<li role="presentation"><a href="#batterytab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-battery-full"></i> {{Batterie}}</a></li>
 			<li role="presentation"><a href="#sdtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-sd-card"></i> {{Carte SD}}</a></li>
 			<li role="presentation"><a href="#restoretab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-clone"></i> {{Restore}}</a></li>
