@@ -100,6 +100,16 @@ Les paramétrages se font dans la page LTE du plugin.
 /!\ Attention Le plugin SMS ne fonctionne pas en meme temps que la 4G sur la Luna 4G./!\
 /!\ Attention il faut des APN de type ipv4 (bouygue : ebouygtel.com, Orange : orange, free : free). /!\
 
+> Onglet Avancé
+
+L'onglet avancé est à manipuler avec précaution.
+
+Il permet :
+ - de modifier le mot de passe root
+ - de changer la conservation des logs système afin de réduire l'espace utilisé par les logs
+ - activer / désactiver le factory reset via l'appui long sur le bouton (+ de 30 secondes)
+ - activer / désactiver la supervision de la connectivité internet afin de prioriser l'ordre suivant : Ethernet -> Wifi -> LTE
+ - programmer le redémarrage de la box (de façon unique ou récurrente)
 
 # FAQ
 
