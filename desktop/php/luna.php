@@ -83,6 +83,7 @@ sendVarToJS('isLte', $isLte);
 			<li role="presentation"><a href="#batterytab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-battery-full"></i> {{Batterie}}</a></li>
 			<li role="presentation"><a href="#sdtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-sd-card"></i> {{Carte SD}}</a></li>
 			<li role="presentation"><a href="#restoretab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-clone"></i> {{Restore}}</a></li>
+			<li role="presentation"><a href="#advancedtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-cog"></i> {{Avancé}}</a></li>
 		</ul>
 		<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
 			<div role="tabpanel" class="tab-pane active" id="eqlogictab"><br />
@@ -275,6 +276,7 @@ sendVarToJS('isLte', $isLte);
 				include_file('desktop', 'battery', 'php', 'luna');
 				include_file('desktop', 'sd', 'php', 'luna');
 				include_file('desktop', 'restore', 'php', 'luna');
+				include_file('desktop', 'advanced', 'php', 'luna');
 			?>
 
 			<div role="tabpanel" class="tab-pane" id="commandtab">

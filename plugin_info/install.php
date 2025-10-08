@@ -106,4 +106,5 @@ function luna_update() {
 	luna::onBattery();
 	luna::startJeedomLTE();
 	luna::checkLunaLte();
+	luna::applyFsreset();
 }

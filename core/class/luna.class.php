@@ -1217,6 +1217,9 @@ class luna extends eqLogic {
   /* ----- Outils d'aministration ----- */
   public static function reloadConfig() {
     shell_exec('sudo rm /boot/jeedomLTE');
+    shell_exec('sudo cp ' . __DIR__ . '/../../resources/failover.sh /usr/local/bin/failover.sh');
+    shell_exec('sudo cp ' . __DIR__ . '/../../resources/failover.service /etc/systemd/system/failover.service');
+    shell_exec('sudo chmod +x /usr/local/bin/failover.sh');
     shell_exec('sudo systemctl daemon-reload');
     shell_exec('sudo systemctl enable jeedomLTE.service');
     shell_exec('sudo systemctl start jeedomLTE.service');
@@ -1251,6 +1254,135 @@ class luna extends eqLogic {
       exec("sudo chattr -i /etc/hosts");
     }
   }
+
+  /* ----- DEBUT Advanced ----- */
+  public static function changeRootPassword($newPassword) {
+    $escapedPassword = escapeshellarg($newPassword);
+    exec("echo 'root:$escapedPassword' | sudo chpasswd");
+    return true;
+  }
+
+  public static function applyLogRotate($type) {
+    $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
+    if (is_object($eqLogic)) {
+      $eqLogic->setConfiguration('logRotate', $type);
+      $eqLogic->save(true);
+    }
+    $src  = __DIR__ . '/../../resources/logrotate.conf';
+    $dest = '/etc/logrotate.conf';
+    shell_exec("sudo cp " . escapeshellarg($src) . " " . escapeshellarg($dest));
+
+    switch ($type) {
+      case 'light':
+        $newValues = [
+          'var.periodrotate' => 'daily',
+          'var.periodbacklog' => '2',
+          'var.maxlogsize' => 'maxsize 250M'
+        ];
+        break;
+      case 'heavy':
+        $newValues = [
+          'var.periodrotate' => 'weekly',
+          'var.periodbacklog' => '4',
+          'var.maxlogsize' => '# maxsize 250M'
+        ];
+        break;
+      default:
+        return false;
+    }
+    foreach ($newValues as $var => $value) {
+      $cmd = sprintf(
+        "sudo sed -i 's|%s|%s|g' %s",
+        $var,
+        $value,
+        escapeshellarg($dest)
+      );
+      shell_exec($cmd);
+    }
+    shell_exec("sudo mv /etc/cron.daily/logrotate /etc/cron.hourly");
+    shell_exec("sudo /usr/sbin/logrotate -f /etc/logrotate.conf");
+    return true;
+  }
+
+  public static function applyFsreset($type="") {
+    $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
+    if (is_object($eqLogic)) {
+      if($type=="") {
+        $type = $eqLogic->getConfiguration('fsReset', 'activateFsreset');
+      }
+      else {
+        $eqLogic->setConfiguration('fsReset', $type);
+        $eqLogic->save(true);
+      }
+    }
+    $filePath = '/var/www/html/plugins/luna/data/patchs/root/etc/rc.button/battery_power_switch';
+
+    if (!file_exists($filePath)) {
+      log::add(__CLASS__, 'error', "Fichier non trouvé : $filePath");
+    } else {
+      if ($type == 'desactivateFsreset') {
+        log::add(__CLASS__, 'debug', "Commenter la ligne fsreset dans $filePath");
+        shell_exec("sudo sed -i 's/^\\([[:space:]]*\\)\\(#\\?\\)[[:space:]]*fsreset$/\\1#fsreset/' " . escapeshellarg($filePath));
+      } elseif ($type == 'activateFsreset') {
+        log::add(__CLASS__, 'debug', "Décommenter la ligne fsreset dans $filePath");
+        shell_exec("sudo sed -i 's/^\\([[:space:]]*\\)\\(#\\?\\)[[:space:]]*fsreset$/\\1fsreset/' " . escapeshellarg($filePath));
+      } else {
+        log::add(__CLASS__, 'warning', "Type inconnu pour fsreset : $type");
+      }
+    }
+    luna::patchLuna('update');
+    return true;
+  }
+
+  public static function applyFailover($type="") {
+    $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
+    if (is_object($eqLogic)) {
+      if($type=="") {
+        $type = $eqLogic->getConfiguration('failover', 'activateFailover');
+      }
+      else {
+        $eqLogic->setConfiguration('failover', $type);
+        $eqLogic->save(true);
+      }
+    }
+    if ($type == 'desactivateFailover') {
+      shell_exec("sudo systemctl stop failover.service");
+      shell_exec("sudo systemctl disable failover.service");
+    } elseif ($type == 'activateFailover') {
+      shell_exec("sudo systemctl enable failover.service");
+      shell_exec("sudo systemctl start failover.service");
+      shell_exec("sudo sed -i '/^\[connectivity\]/!b;n;c\enabled=false' /etc/NetworkManager/NetworkManager.conf || echo -e '\n[connectivity]\nenabled=false' | sudo tee -a /etc/NetworkManager/NetworkManager.conf");
+      shell_exec("sudo systemctl restart NetworkManager");
+    } else {
+      log::add(__CLASS__, 'warning', "Type inconnu pour failover : $type");
+    }
+    return true;
+  }
+
+  public static function applyCronRebootBox($schedule) {
+    $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
+    if (is_object($eqLogic)) {
+      $eqLogic->setConfiguration('cronRebootBox', $schedule);
+      $eqLogic->save(true);
+    }
+    $cron = cron::byClassAndFunction('luna', "scheduleRebootBox");
+    if (is_object($cron)) {
+      $cron->remove();
+    }
+    $cron = new cron();
+    $cron->setClass('luna');
+    $cron->setFunction("scheduleRebootBox");
+    $cron->setEnable(1);
+    $cron->setSchedule($schedule);
+    $cron->save();
+  }
+
+  public static function scheduleRebootBox() {
+    log::add(__CLASS__, 'info', 'Redémarrage de la box programmé par le cron luna');
+    jeedom::rebootSystem();
+  }
+
+  /* ----- FIN Advanced ----- */
 
   public function postSave() {
     $connect = $this->getCmd(null, 'connect');

@@ -1,0 +1,13 @@
+[Unit]
+Description=Failover Internet Connection (Ethernet -> Wi-Fi -> LTE)
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/failover.sh
+Restart=always
+User=root
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="CHECK_MAIN_INTERVAL=60"
+
+[Install]
+WantedBy=multi-user.target

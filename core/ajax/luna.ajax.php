@@ -173,6 +173,26 @@ try {
     ajax::success(luna::getModemInfo());
   }
 
+  if(init('action') == 'changeRootPassword'){
+    ajax::success(luna::changeRootPassword(init('password')));
+  }
+
+  if(init('action') == 'applyLogRotate'){
+    ajax::success(luna::applyLogRotate(init('type')));
+  }
+
+  if(init('action') == 'applyFsreset'){
+    ajax::success(luna::applyFsreset(init('type')));
+  }
+
+  if(init('action') == 'applyFailover'){
+    ajax::success(luna::applyFailover(init('type')));
+  }
+
+  if(init('action') == 'applyCronRebootBox'){
+    ajax::success(luna::applyCronRebootBox(init('type')));
+  }
+
   throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
   /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
