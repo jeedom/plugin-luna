@@ -1300,7 +1300,7 @@ class luna extends eqLogic {
       shell_exec($cmd);
     }
     shell_exec("sudo mv /etc/cron.daily/logrotate /etc/cron.hourly");
-    shell_exec("sudo /usr/sbin/logrotate -f /etc/logrotate.conf");
+    shell_exec("sudo /usr/sbin/logrotate -f /etc/logrotate.conf &");
     return true;
   }
 
