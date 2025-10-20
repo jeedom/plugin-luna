@@ -185,7 +185,7 @@
         "Lora": "Lora",
         "Service": "Service",
         "Gateway UID": "Gateway UID",
-        "Votre Luna ne possède de module Lora integré.": "Votre Luna ne possède de module Lora integré."
+        "Votre Luna ne possède pas de module Lora intégré.": "Votre Luna ne possède pas de module Lora intégré."
     },
     "plugins\/luna\/desktop\/php\/battery.php": {
         "401 - Accès non autorisé": "401 - Accès non autorisé",
@@ -273,7 +273,12 @@
         "Annuler": "Annuler",
         "Démarrer": "Démarrer",
         "Desactiver le module Lora": "Desactiver le module Lora",
-        "le lora sera désactivé sur la box.": "le lora sera désactivé sur la box."
+        "le lora sera désactivé sur la box.": "le lora sera désactivé sur la box.",
+        "Reconfigurer le packet forwarder": "Reconfigurer le packet forwarder",
+        "Cette action va relancer la configuration du packet forwarder Lora.<br><br>Souhaitez-vous continuer ?": "Cette action va relancer la configuration du packet forwarder Lora.<br><br>Souhaitez-vous continuer ?",
+        "Reconfigurer": "Reconfigurer",
+        "Reconfiguration en cours...": "Reconfiguration en cours...",
+        "Le packet forwarder a été reconfiguré avec succès !": "Le packet forwarder a été reconfiguré avec succès !"
     },
     "plugins\/luna\/core\/ajax\/luna.ajax.php": {
         "401 - Accès non autorisé": "401 - Accès non autorisé",
