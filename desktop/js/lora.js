@@ -97,3 +97,55 @@ $('#bt_stop_lora')
       }
     })
   })
+
+$('#bt_reconfig_lora')
+  .off('click')
+  .on('click', function () {
+    var dialog_title = '<i class="fas fa-cog"></i> {{Reconfigurer le packet forwarder}}'
+    var dialog_message = '<center>{{Cette action va relancer la configuration du packet forwarder Lora.<br><br>Souhaitez-vous continuer ?}}</center>'
+    
+    bootbox.dialog({
+      title: dialog_title,
+      message: dialog_message,
+      buttons: {
+        "{{Annuler}}": {
+          className: "btn-danger",
+          callback: function () {}
+        },
+        success: {
+          label: "{{Reconfigurer}}",
+          className: "btn-warning",
+          callback: function () {
+            $('#div_alert').showAlert({
+              message: '{{Reconfiguration en cours...}}',
+              level: 'warning'
+            })
+            $.ajax({
+              type: "POST",
+              url: "plugins/luna/core/ajax/luna.ajax.php",
+              data: {
+                action: "reconfigPacketForwarder"
+              },
+              dataType: 'json',
+              error: function (request, status, error) {
+                handleAjaxError(request, status, error)
+              },
+              success: function (data) {
+                if (data.state != 'ok') {
+                  $('#div_alert').showAlert({
+                    message: data.result,
+                    level: 'danger'
+                  })
+                  return
+                }
+                $('#div_alert').showAlert({
+                  message: '{{Le packet forwarder a été reconfiguré avec succès !}}',
+                  level: 'success'
+                })
+              }
+            })
+          }
+        }
+      }
+    })
+  })

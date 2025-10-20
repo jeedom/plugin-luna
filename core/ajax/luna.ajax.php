@@ -98,6 +98,11 @@ try {
     ajax::success();
   }
 
+  if (init('action') == 'reconfigPacketForwarder') {
+    luna::reconfigPacketForwarder();
+    ajax::success();
+  }
+
   if (init('action') == 'changeBackupToSD') {
     luna::changeBackupToSD();
     ajax::success();

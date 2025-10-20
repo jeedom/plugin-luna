@@ -816,6 +816,22 @@ class luna extends eqLogic {
     }
   }
 
+  public static function reconfigPacketForwarder() {
+    shell_exec('sudo systemctl disable --now lora.service > /dev/null 2>/dev/null &');
+    $UID = exec('cd /usr/bin/lora && sudo ./chip_id -d /dev/spidev32766.0 | grep -io "concentrator EUI: 0x*[0-9a-fA-F][0-9a-fA-F]*\+"');
+    if ($UID != "") {
+      config::save('gatewayUID', luna::formatUid($UID), 'luna');
+      log::add('luna', 'debug', 'UID > ' . $UID);
+    } else {
+      config::save('gatewayUID', false, 'luna');
+      return false;
+    }
+    if (luna::configurationLora()) {
+      sleep(3);
+      luna::loraSwitchMaj();
+    }
+  }
+
   /* ----- FIN LORA ------ */
 
   /* ----- DEBUT 4G ----- */
@@ -1380,6 +1396,10 @@ class luna extends eqLogic {
   public static function scheduleRebootBox() {
     log::add(__CLASS__, 'info', 'Redémarrage de la box programmé par le cron luna');
     jeedom::rebootSystem();
+  }
+
+  public static function gestionKernelPanic() {
+    shell_exec("sudo sysctl kernel.hung_task_panic=1; sudo sysctl kernel.panic=5; grep -q '^kernel.hung_task_panic=1' /etc/sysctl.conf || echo 'kernel.hung_task_panic=1' | sudo tee -a /etc/sysctl.conf; grep -q '^kernel.panic=5' /etc/sysctl.conf || echo 'kernel.panic=5' | sudo tee -a /etc/sysctl.conf");
   }
 
   /* ----- FIN Advanced ----- */

@@ -58,6 +58,7 @@ function luna_install() {
 	luna::onBattery();
 	luna::startJeedomLTE();
 	luna::checkLunaLte();
+	luna::gestionKernelPanic();
 }
 
 function luna_update() {
@@ -107,4 +108,5 @@ function luna_update() {
 	luna::startJeedomLTE();
 	luna::checkLunaLte();
 	luna::applyFsreset();
+	luna::gestionKernelPanic();
 }
