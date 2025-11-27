@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
 function luna_install() {
-	
+	log::add('luna', 'debug', 'Lancement de l\'installation du plugin Luna');
 	config::save('isLte', 'NOLTE', 'luna');
 	luna::patchLuna('install');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');

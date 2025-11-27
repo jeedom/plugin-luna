@@ -25,6 +25,22 @@ $batteryPourcentage = luna::batteryPourcentage();
       </div>
       <!-- =============================================== -->
 
+      <!-- === Swap disponible === -->
+      <legend><i class="icon fas fa-microchip"></i> {{Changement du swap disponible}}</legend>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{Swap disponible}}</label>
+        <div class="input-group col-sm-3">
+            <select class="eqLogicAttr roundedLeft form-control" id="swapAvailable" data-l1key="configuration" data-l2key="swapAvailable">
+              <option value="512M">{{512 Mo}}</option>
+              <option value="1G">{{1024 Mo}}</option>
+            </select><br>
+            <span class="input-group-btn">
+                <a class="btn btn-success pull-right" id="applySwapAvailable"><i class="fas fa-check-circle icon-white"></i> {{Appliquer}}</a>
+            </span>
+        </div>
+      </div>
+      <!-- =============================================== -->
+
       <!-- === Fichier de log rotate === -->
       <legend><i class="far fa-file"></i> {{Configuration du log rotate}}</legend>
       <div class="form-group">
@@ -76,12 +92,11 @@ $batteryPourcentage = luna::batteryPourcentage();
       </div>
       <!-- =============================================== -->
 
-      <!-- === Failover script === -->
+      <!-- === Reboot automatique === -->
       <legend><i class="fas fa-redo"></i> {{Programmation redémarrage box}}</legend>
       <div class="form-group">
         <label class="col-sm-3 control-label">{{Programmation}}</label>
-      <div class="col-sm-3">
-        <div class="input-group">
+        <div class="input-group col-sm-3">
           <input type="text" class="form-control eqLogicAttr" id="cronRebootBox" data-l1key="configuration" data-l2key="cronRebootBox" placeholder="Assistant cron">
           <span class="input-group-btn">
             <a class="btn btn-default jeeHelper" data-helper="cron" title="Assistant cron">
@@ -90,7 +105,6 @@ $batteryPourcentage = luna::batteryPourcentage();
             <a class="btn btn-success" id="applyCronRebootBox"><i class="fas fa-check"></i> {{Appliquer}}</a>
           </span>
         </div>
-      </div>
       </div>
       <!-- =============================================== -->
 
@@ -213,6 +227,29 @@ $('#applyCronRebootBox').off('click').on('click', function() {
         return;
       }
       alert('Modification du cron de redémarrage avec succès');
+    },
+    error: function (request, status, error) {
+      alert('Erreur AJAX : ' + error);
+    }
+  });
+});
+
+$('#applySwapAvailable').off('click').on('click', function() {
+  var swapAvailable = $('#swapAvailable').val();
+  $.ajax({
+    type: "POST",
+    url: "plugins/luna/core/ajax/luna.ajax.php",
+    data: {
+      action: "applySwapAvailable",
+      type: swapAvailable
+    },
+    dataType: 'json',
+    success: function (data) {
+      if (data.state !== 'ok') {
+        alert('Erreur : ' + data.result);
+        return;
+      }
+      alert('Modification du swap disponible avec succès');
     },
     error: function (request, status, error) {
       alert('Erreur AJAX : ' + error);

@@ -34,7 +34,9 @@ class luna extends eqLogic {
   }
 
   public static function dependancy_install() {
+    log::add(__CLASS__, 'error', __('Lancement de l\'installation des dépendances Luna', __FILE__));
     log::remove(__CLASS__ . '_update');
+    plugin::byId('luna')->callInstallFunction('install');
     return array('script' => __DIR__ . '/../../resources/install_#stype#.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependance', 'log' => log::getPathToLog(__CLASS__ . '_update'));
   }
 
@@ -1239,7 +1241,7 @@ class luna extends eqLogic {
     shell_exec('sudo systemctl daemon-reload');
     shell_exec('sudo systemctl enable jeedomLTE.service');
     shell_exec('sudo systemctl start jeedomLTE.service');
-    self::checkLunaLte();
+    plugin::byId('luna')->callInstallFunction('install');
   }
 
   public static function readModemSysClass() {
@@ -1392,6 +1394,17 @@ class luna extends eqLogic {
     $cron->setSchedule($schedule);
     $cron->save();
   }
+
+  public static function applySwapAvailable($size) {
+    log::add(__CLASS__, 'info', 'Changement du swap : ' . $size);
+    shell_exec("sudo swapoff /swapfile");
+    shell_exec("sudo rm -f /swapfile");
+    shell_exec("sudo fallocate -l {$size} /swapfile");
+    shell_exec("sudo mkswap /swapfile");
+    shell_exec("sudo chmod 0600 /swapfile");  
+    shell_exec("sudo swapon /swapfile");
+  }
+
 
   public static function scheduleRebootBox() {
     log::add(__CLASS__, 'info', 'Redémarrage de la box programmé par le cron luna');

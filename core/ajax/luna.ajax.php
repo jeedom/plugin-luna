@@ -198,6 +198,10 @@ try {
     ajax::success(luna::applyCronRebootBox(init('type')));
   }
 
+  if(init('action') == 'applySwapAvailable'){
+    ajax::success(luna::applySwapAvailable(init('type')));
+  }
+
   throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
   /*     * *********Catch exeption*************** */
 } catch (Exception $e) {
