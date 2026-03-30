@@ -293,7 +293,7 @@ class luna extends eqLogic {
     $countProfile = substr_count($result, $ssid);
     if ($countProfile > 1) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
-      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep " . $type . " | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
+      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep " . $type . " | awk '{print $1}' | while read line; do nmcli con delete uuid  \$line; done");
       return true;
     } else if ($countProfile == 1) {
       return true;
@@ -307,7 +307,7 @@ class luna extends eqLogic {
     $countProfile = substr_count($result, $ssid);
     if ($countProfile > 0) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
-      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep wifi | awk '{print $1}' | while read line; do nmcli con delete uuid  $line; done");
+      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep wifi | awk '{print $1}' | while read line; do nmcli con delete uuid  \$line; done");
       return true;
     } else {
       return false;
