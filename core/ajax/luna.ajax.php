@@ -175,7 +175,7 @@ try {
   }
 
   if (init('action') == 'getModemInfo') {
-    ajax::success(luna::getModemInfo());
+    ajax::success(luna::getModemInfo()); // FIXME: undefined method getModemInfo()
   }
 
   if (init('action') == 'changeRootPassword') {

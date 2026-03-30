@@ -74,7 +74,7 @@ if ($methode == 'activeHotSpot') {
     $luna->setConfiguration('mdpHotspot', $params['mdpHotspot']);
   }
   $luna->save();
-  luna::testHotspot();
+  luna::testHotspot(); // FIXME: undefined method testHotspot()
   $jsonrpc->makeSuccess();
 }
 
