@@ -11,11 +11,11 @@ $eqLogic = luna::byLogicalId('wifi', 'luna');
 $isLte = null;
 $lte = config::byKey('isLte', 'luna');
 if (isset($lte)) {
-	if($lte == 'LTE'){
+	if ($lte == 'LTE') {
 		$isLte = 'LTE';
-	}else if($lte == 'NOLTE'){
+	} else if ($lte == 'NOLTE') {
 		$isLte = 'NOLTE';
-	}else{
+	} else {
 		$isLte = null;
 	}
 }
@@ -41,14 +41,14 @@ sendVarToJS('isLte', $isLte);
 				$eqLogic->save();
 			}
 		}
-			// Liste des équipements du plugin
-			echo '<div class="eqLogicThumbnailContainer" >';
-				echo '<div class="eqLogicDisplayCard cursor" style="display:none;" data-eqLogic_id="' . $eqLogic->getId() . '">';
-				echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
-				echo '<br>';
-				echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
-				echo '</div>';
-			echo '</div>';
+		// Liste des équipements du plugin
+		echo '<div class="eqLogicThumbnailContainer" >';
+		echo '<div class="eqLogicDisplayCard cursor" style="display:none;" data-eqLogic_id="' . $eqLogic->getId() . '">';
+		echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
+		echo '<br>';
+		echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
+		echo '</div>';
+		echo '</div>';
 
 		?>
 	</div> <!-- /.eqLogicThumbnailDisplay -->
@@ -70,16 +70,16 @@ sendVarToJS('isLte', $isLte);
 			<li role="presentation"><a href="#wifitab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-wifi"></i> {{WIFI}}</a></li>
 			<li role="presentation"><a href="#ethernettab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-network-wired"></i> {{Ethernet}}</a></li>
 			<?php
-			if($isLte == 'LTE'){
+			if ($isLte == 'LTE') {
 				echo '<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal" ></i> {{LTE}}</a></li>';
 			}
 			?>
 			<?php
-			if(luna::detectedLora()){
+			if (luna::detectedLora()) {
 				echo '<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> Lora</a></li>';
 			}
 			?>
-			
+
 			<li role="presentation"><a href="#batterytab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-battery-full"></i> {{Batterie}}</a></li>
 			<li role="presentation"><a href="#sdtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-sd-card"></i> {{Carte SD}}</a></li>
 			<li role="presentation"><a href="#restoretab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-clone"></i> {{Restore}}</a></li>
@@ -127,38 +127,39 @@ sendVarToJS('isLte', $isLte);
 									<table id="table_connexions" class="table table-bordered table-condensed">
 										<thead>
 											<tr>
-											    <th style="width:50px;"></th>
+												<th style="width:50px;"></th>
 												<th style="min-width:50px;width:70px;"> {{Priorité}}</th>
 												<th style="min-width:50px;width:70px;"> {{Type}}</th>
 												<th style="min-width:120px;width:250px;">{{Nom}}</th>
 												<th style="width:130px;">{{Metric}}</th>
-												
+
 											</tr>
 										</thead>
 										<tbody>
 											<?php
-											 $scanresult = shell_exec('sudo nmcli -f UUID,NAME,TYPE,ACTIVE -t -m tabular con show --active');
-											 $results = explode("\n", $scanresult);
-											 $return = array();
-											 foreach ($results as $result) {
-											   	$result = str_replace('\:', '$%$%', $result);
-											   	$result = preg_replace("#(\r\n|\n\r|\n|\r)#","",$result);
-											   	$conDetail = explode(':', $result);
-											   	$conUUID = $conDetail[0];
-											   	$conName = $conDetail[1];
-											   	$conType = $conDetail[2];
-												$conMetric = shell_exec('sudo nmcli -f ipv4.route-metric -t -m tabular con show '.$conUUID);
-												$conMetric = preg_replace("#(\r\n|\n\r|\n|\r)#","",$conMetric);
-											   	$return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'metric' => $conMetric);
-											   	log::add('luna', 'debug', json_encode($return));
-
-											 }
-											 usort($return, function($a, $b) { return $a['metric'] <=> $b['metric']; });
+											$scanresult = shell_exec('sudo nmcli -f UUID,NAME,TYPE,ACTIVE -t -m tabular con show --active');
+											$results = explode("\n", $scanresult);
+											$return = array();
+											foreach ($results as $result) {
+												$result = str_replace('\:', '$%$%', $result);
+												$result = preg_replace("#(\r\n|\n\r|\n|\r)#", "", $result);
+												$conDetail = explode(':', $result);
+												$conUUID = $conDetail[0];
+												$conName = $conDetail[1];
+												$conType = $conDetail[2];
+												$conMetric = shell_exec('sudo nmcli -f ipv4.route-metric -t -m tabular con show ' . $conUUID);
+												$conMetric = preg_replace("#(\r\n|\n\r|\n|\r)#", "", $conMetric);
+												$return[] = array('UUID' => $conUUID, 'name' => $conName, 'type' => $conType, 'metric' => $conMetric);
+												log::add('luna', 'debug', json_encode($return));
+											}
+											usort($return, function ($a, $b) {
+												return $a['metric'] <=> $b['metric'];
+											});
 											// usort($return, fn($a, $b) => $a['metric'] <=> $b['metric']);
 											$displayIndex = 1;
-											foreach($return as $index => $conn){											
-												if($conn['name'] != 'tun0' && $conn['name'] != "" ){
-													echo '<tr class="conn" id="'.$conn['UUID'].'"><td class="arrowSortable"><i class="icon fas fa-arrows-alt-v"></i></td><td>'.($displayIndex).'</td><td>'.$conn['type'].'</td><td>'.$conn['name'].'</td><td>'.$conn['metric'].'</td></tr>';
+											foreach ($return as $index => $conn) {
+												if ($conn['name'] != 'tun0' && $conn['name'] != "") {
+													echo '<tr class="conn" id="' . $conn['UUID'] . '"><td class="arrowSortable"><i class="icon fas fa-arrows-alt-v"></i></td><td>' . ($displayIndex) . '</td><td>' . $conn['type'] . '</td><td>' . $conn['name'] . '</td><td>' . $conn['metric'] . '</td></tr>';
 													$displayIndex++;
 												}
 											}
@@ -201,7 +202,7 @@ sendVarToJS('isLte', $isLte);
 									</div>
 								</div>
 								<?php
-								if(config::byKey('isLte', 'luna') == 'LTE'){
+								if (config::byKey('isLte', 'luna') == 'LTE') {
 								?>
 									<div class="form-group">
 										<label class="col-lg-4 control-label" id="labelLTE">{{Adresse Ip LTE}}</label>
@@ -214,27 +215,27 @@ sendVarToJS('isLte', $isLte);
 								?>
 								<legend><i class="fa fa-info-circle"></i> {{Outils Administration}}</legend>
 								<div class="form-group">
-										<div class="alert alert-warning">
-											<i class="fas fa-exclamation-triangle"></i> {{Se référer à la documentation du plugin pour plus d'informations}}
-											<a class="btn btn-info btn-sm tippied" target="_blank" href="https://doc.jeedom.com/fr_FR/plugins/home%20automation%20protocol/luna/beta" data-title="Accéder à la documentation du plugin"><i class="fas fa-book"></i> Documentation</a>
+									<div class="alert alert-warning">
+										<i class="fas fa-exclamation-triangle"></i> {{Se référer à la documentation du plugin pour plus d'informations}}
+										<a class="btn btn-info btn-sm tippied" target="_blank" href="https://doc.jeedom.com/fr_FR/plugins/home%20automation%20protocol/luna/beta" data-title="Accéder à la documentation du plugin"><i class="fas fa-book"></i> Documentation</a>
+									</div>
+									<div style="display:flex;flex-direction:column;width:100%;">
+										<div style="display:flex;">
+											<label>{{Relancer configuration du Plugin}}</label>
+											<div style="margin-left:20px;">
+												<a class="btn btn-success btn-xs" id="bt_reloadConfig"><i class="fas fa-play"></i></a>
+											</div>
 										</div>
-										<div style="display:flex;flex-direction:column;width:100%;">
-											   <div style="display:flex;">
-													<label>{{Relancer configuration du Plugin}}</label>
-														<div style="margin-left:20px;">
-														<a class="btn btn-success btn-xs" id="bt_reloadConfig"><i class="fas fa-play"></i></a>
-														</div>
-												</div>
-												<div style="display:flex;">
-													<label>{{Nettoyer Configuration Wifi}}</label>
-													<div style="margin-left:20px;">
-														<a class="btn btn-success btn-xs" id="bt_cleanWifi"><i class='icon fas fa-broom'></i></a>
-													</div>
-												</div>
+										<div style="display:flex;">
+											<label>{{Nettoyer Configuration Wifi}}</label>
+											<div style="margin-left:20px;">
+												<a class="btn btn-success btn-xs" id="bt_cleanWifi"><i class='icon fas fa-broom'></i></a>
+											</div>
+										</div>
 
-												
-										</div>
-									
+
+									</div>
+
 								</div>
 								<!-- <div class="form-group">
 									<label class="col-lg-4 control-label">{{Adresse MAC wifi 2}}</label>
@@ -268,19 +269,19 @@ sendVarToJS('isLte', $isLte);
 			</div>
 
 			<?php
-				//include des Tabs
-				include_file('desktop', 'wifi', 'php', 'luna');
-				include_file('desktop', 'ethernet', 'php', 'luna');
-				include_file('desktop', 'lte', 'php', 'luna');
-				include_file('desktop', 'lora', 'php', 'luna');
-				include_file('desktop', 'battery', 'php', 'luna');
-				include_file('desktop', 'sd', 'php', 'luna');
-				include_file('desktop', 'restore', 'php', 'luna');
-				include_file('desktop', 'advanced', 'php', 'luna');
+			//include des Tabs
+			include_file('desktop', 'wifi', 'php', 'luna');
+			include_file('desktop', 'ethernet', 'php', 'luna');
+			include_file('desktop', 'lte', 'php', 'luna');
+			include_file('desktop', 'lora', 'php', 'luna');
+			include_file('desktop', 'battery', 'php', 'luna');
+			include_file('desktop', 'sd', 'php', 'luna');
+			include_file('desktop', 'restore', 'php', 'luna');
+			include_file('desktop', 'advanced', 'php', 'luna');
 			?>
 
 			<div role="tabpanel" class="tab-pane" id="commandtab">
-	
+
 				<div class="table-responsive">
 					<table id="table_cmd" class="table table-bordered table-condensed">
 						<thead>
@@ -304,71 +305,73 @@ sendVarToJS('isLte', $isLte);
 
 
 <style>
+	.arrowSortable:hover {
+		cursor: move;
 
-.arrowSortable:hover{
-	cursor: move;
+	}
 
-}
-
-.conn.hover-style {
-  border: 1px solid #94CA00;
-  transform: scale(1.02);
-}
-
-
+	.conn.hover-style {
+		border: 1px solid #94CA00;
+		transform: scale(1.02);
+	}
 </style>
 
 <!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
 <?php include_file('desktop', 'luna', 'js', 'luna'); ?>
 <script>
+	if (isLte === null || isLte == undefined || isLte == '') {
 
-
-
-  if(isLte === null || isLte == undefined || isLte == ''){
- 
-	if (window.intervalAlertLTE) {
-      clearInterval(window.intervalAlertLTE);
-  	}
-  	window.intervalAlertLTE = setInterval(function() {
-      $('#div_alert').showAlert({ message: 'Configuration en cours de votre plugin...', level: 'success' });
-  	}, 2000);
-	var intervalLTE = setInterval(function() {
-		$.showLoading();
-	}, 1000);
-    $.ajax({
-      type: "POST",
-      url: "plugins/luna/core/ajax/luna.ajax.php",
-      data: {
-        action: "isLTELuna",
-      },
-      dataType: 'json',
-	  async: true,
-      global: false,
-      error: function(request, status, error) {
-        handleAjaxError(request, status, error);
-      },
-      success: function(data) {
-        if (data.state != 'ok') {
-          $('#div_alert').showAlert({ message: data.result, level: 'danger' });
-        } else {
+		if (window.intervalAlertLTE) {
 			clearInterval(window.intervalAlertLTE);
-			clearInterval(intervalLTE);		
-			if(data.result == 'LTE'){
-				$('#div_alert').showAlert({ message: 'LTE Operationnel', level: 'danger' });
+		}
+		window.intervalAlertLTE = setInterval(function() {
+			$('#div_alert').showAlert({
+				message: 'Configuration en cours de votre plugin...',
+				level: 'success'
+			});
+		}, 2000);
+		var intervalLTE = setInterval(function() {
+			$.showLoading();
+		}, 1000);
+		$.ajax({
+			type: "POST",
+			url: "plugins/luna/core/ajax/luna.ajax.php",
+			data: {
+				action: "isLTELuna",
+			},
+			dataType: 'json',
+			async: true,
+			global: false,
+			error: function(request, status, error) {
+				handleAjaxError(request, status, error);
+			},
+			success: function(data) {
+				if (data.state != 'ok') {
+					$('#div_alert').showAlert({
+						message: data.result,
+						level: 'danger'
+					});
+				} else {
+					clearInterval(window.intervalAlertLTE);
+					clearInterval(intervalLTE);
+					if (data.result == 'LTE') {
+						$('#div_alert').showAlert({
+							message: 'LTE Operationnel',
+							level: 'danger'
+						});
+					}
+					$.hideLoading();
+					location.reload();
+				}
 			}
-			$.hideLoading();
-			location.reload();
-        }
-      }
-    });
-  }
+		});
+	}
 
 
 
 	setTimeout(() => {
 		document.querySelector('.eqLogicDisplayCard[data-eqlogic_id="<?php echo $eqLogic->getId() ?>"]')?.click()
 	}, 100);
-
 </script>
 
 <!-- Inclusion du fichier javascript du core - NE PAS MODIFIER NI SUPPRIMER -->

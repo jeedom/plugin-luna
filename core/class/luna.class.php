@@ -257,7 +257,7 @@ class luna extends eqLogic {
       $luna->refreshWidget();
     }
     $isLte = config::byKey('isLte', 'luna', null);
-    if($isLte == 'LTE'){
+    if ($isLte == 'LTE') {
       $TTYLTE = exec('sudo find /sys/devices/platform/ -name "ttyUSB*" | grep "2-1\.1\/" | grep "2-1\.1:1\.2" | grep -v "tty\/"');
     }
   }
@@ -478,23 +478,39 @@ class luna extends eqLogic {
   }
 
 
-  public function createArrayWidgets(){
+  public function createArrayWidgets() {
     $jsonTemplate = dirname(__FILE__) . '/../../data/widgetTemplate/widget.json';
-    if(!file_exists($jsonTemplate)){
-      log::add(__CLASS__, 'info', '┌──────────▶︎ :fg-warning: Fichier de template non trouvé :/fg: ◀︎───────────' );
+    if (!file_exists($jsonTemplate)) {
+      log::add(__CLASS__, 'info', '┌──────────▶︎ :fg-warning: Fichier de template non trouvé :/fg: ◀︎───────────');
       return;
     }
     $json = file_get_contents($jsonTemplate);
     $logicalEqlogic = $this->getLogicalId();
     $arrayCommands = array();
     $logicalsCmds = array(
-      'activationBattery','status','refresh','battery', 'tempBattery', 'onBattery', 'offBattery', 
-      'dsled', 'lanip','isconnect', 'isconnect2','ssid', 'ssid2', 'wifiip', 'wifiip2',
-      'connect', 'disconnect', 'connect2', 'disconnect2'
+      'activationBattery',
+      'status',
+      'refresh',
+      'battery',
+      'tempBattery',
+      'onBattery',
+      'offBattery',
+      'dsled',
+      'lanip',
+      'isconnect',
+      'isconnect2',
+      'ssid',
+      'ssid2',
+      'wifiip',
+      'wifiip2',
+      'connect',
+      'disconnect',
+      'connect2',
+      'disconnect2'
     );
     $cmds = $this->getCmd();
-    foreach($cmds as $cmd){
-      if(in_array($cmd->getLogicalId(), $logicalsCmds)){
+    foreach ($cmds as $cmd) {
+      if (in_array($cmd->getLogicalId(), $logicalsCmds)) {
         $arrayCommands[] = array(
           'logicalId' => $cmd->getLogicalId(),
           'id' => $cmd->getId()
@@ -504,21 +520,21 @@ class luna extends eqLogic {
     $jsonArray = json_decode($json, true);
 
     foreach ($arrayCommands as $command) {
-       $logicalIdWithDelimiter = $command['logicalId'] . "::";
-        foreach ($jsonArray as $key => $value) {
-            if (strpos($key, $logicalIdWithDelimiter) !== false) {
-              $newKey = str_replace($logicalIdWithDelimiter, $command['id'] ."::", $key);
-              unset($jsonArray[$key]);
-              $jsonArray[$newKey] = $value;              
-            }
+      $logicalIdWithDelimiter = $command['logicalId'] . "::";
+      foreach ($jsonArray as $key => $value) {
+        if (strpos($key, $logicalIdWithDelimiter) !== false) {
+          $newKey = str_replace($logicalIdWithDelimiter, $command['id'] . "::", $key);
+          unset($jsonArray[$key]);
+          $jsonArray[$newKey] = $value;
         }
+      }
     }
-    foreach($jsonArray as $key => $value){
-     $this->setDisplay($key, $value);
+    foreach ($jsonArray as $key => $value) {
+      $this->setDisplay($key, $value);
     }
     $this->save(true);
   }
-  
+
 
   public static function listConnections($interface = 1) {
     $interface = $interface - 1;
@@ -610,11 +626,10 @@ class luna extends eqLogic {
 
   public static function activationBattery() {
     $battery = exec('sudo i2cget -f -y 0 0x6a 0x09');
-    if($battery == '0x44') {
+    if ($battery == '0x44') {
       // ON
       return 1;
-    }
-    else if($battery == '0x20') {
+    } else if ($battery == '0x20') {
       // OFF
       return 0;
     }
@@ -633,9 +648,9 @@ class luna extends eqLogic {
   /* root etc Patch */
 
   public static function patchLuna($_type = null) {
-    if(!is_null($_type))  
+    if (!is_null($_type))
       $arg = '--' . $_type;
-    
+
     message::add(__CLASS__, __('Patch Luna', __FILE__));
     exec('sudo cp -r ' . __DIR__ . '/../../data/patchs/root/* /');
     exec('sudo ' . __DIR__ . '/../../data/patchs/patchLuna.sh ' . $arg);
@@ -868,7 +883,7 @@ class luna extends eqLogic {
   }
 
   //non utilisé
-  public static function verifLTEScript(){
+  public static function verifLTEScript() {
     $ltetrouver = exec('sudo cat /boot/jeedomLTE');
     if ($ltetrouver == 1) {
       config::save('isLte', 'LTE', 'luna');
@@ -876,24 +891,24 @@ class luna extends eqLogic {
     } elseif ($ltetrouver == 2) {
       config::save('isLte', 'NOLTE', 'luna');
       message::add(__CLASS__, __('Détection de la puce LTE fini > Puce non presente', __FILE__));
-    } 
+    }
   }
 
   //utilisé dans ajax pas sur que ce soit encore utile
-  public static function isLTELuna(){
+  public static function isLTELuna() {
     luna::verifLTEScript();
-    $maxWaitTime = 60; 
-    $startTime = time(); 
+    $maxWaitTime = 60;
+    $startTime = time();
     $isLte = null;
     while (time() - $startTime < $maxWaitTime) {
-        $isLte = config::byKey('isLte', 'luna', null);
-        if($isLte != null){
-          break;
-        }else{
-          usleep(500000); 
-        }
+      $isLte = config::byKey('isLte', 'luna', null);
+      if ($isLte != null) {
+        break;
+      } else {
+        usleep(500000);
+      }
     }
-    return $isLte; 
+    return $isLte;
   }
 
   public static function detectedLte() {
@@ -925,7 +940,7 @@ class luna extends eqLogic {
     //   return;
     // }
     $isLte = config::byKey('isLte', 'luna', null);
-    if($isLte == 'NOLTE' || $isLte == null){
+    if ($isLte == 'NOLTE' || $isLte == null) {
       return;
     }
     $luna = eqLogic::byLogicalId('wifi', __CLASS__);
@@ -977,7 +992,7 @@ class luna extends eqLogic {
     log::add(__CLASS__, 'debug', 'Fin de la configuration LTE > ' . exec("sudo nmcli connection show JeedomLTE"));
     if (is_object($luna)) {
       $actived = $luna->getConfiguration('lteActivation');
-      if($actived == 1){
+      if ($actived == 1) {
         luna::scanLTEModule();
       }
       luna::lteSwitchMaj();
@@ -1027,20 +1042,20 @@ class luna extends eqLogic {
       $signalPercent          = $modem['generic']['signal-quality']['value'];
       $state                  = $modem['generic']['state'];
       $stateFailedReason      = $modem['generic']['state-failed-reason'];
-      
+
       $unlockRequired         = $modem['generic']['unlock-required'];
       $unlockRetries          = $modem['generic']['unlock-retries'];
 
-      $simID= false;
+      $simID = false;
       log::add(__CLASS__, 'debug', 'simID string > ' . $modem['generic']['sim']);
-      if($modem['generic']['state-failed-reason'] == 'sim-missing') {
-        $stateFailedReasonLabel ='{{SIM absente}}';
+      if ($modem['generic']['state-failed-reason'] == 'sim-missing') {
+        $stateFailedReasonLabel = '{{SIM absente}}';
       } else {
         $stateFailedReasonLabel = $modem['generic']['state-failed-reason'];
         $simID = substr($modem['generic']['sim'], strrpos($modem['generic']['sim'], '/') + 1);
       }
       log::add(__CLASS__, 'debug', 'simID string > ' . $simID);
-  
+
       log::add(__CLASS__, 'debug', 'IMEI > ' . $imei);
       log::add(__CLASS__, 'debug', 'OPERATOR NAME > ' . $operatorName);
       log::add(__CLASS__, 'debug', 'SIGNAL PERCENT > ' . $signalPercent);
@@ -1048,7 +1063,7 @@ class luna extends eqLogic {
       log::add(__CLASS__, 'debug', 'STATE FAILED REASON > ' . $stateFailedReason);
       log::add(__CLASS__, 'debug', 'UNLOCK REQUIRED > ' . $unlockRequired);
       log::add(__CLASS__, 'debug', 'UNLOCK RETRIES > ' . print_r($unlockRetries, true));
-  
+
       return [
         'imei'                   => $imei,
         'operatorName'           => $operatorName,
@@ -1070,10 +1085,10 @@ class luna extends eqLogic {
     if (is_object($eqLogic)) {
       $eqLogic->setConfiguration('ltePin', $_pin);
       $eqLogic->save(true);
-    } 
+    }
     $modem = self::recuperationConfigModem();
-    if($modem['simID']) {
-      $unlockCmd = 'sudo mmcli -i '.$modem['simID'].' --pin='.$_pin;
+    if ($modem['simID']) {
+      $unlockCmd = 'sudo mmcli -i ' . $modem['simID'] . ' --pin=' . $_pin;
       log::add(__CLASS__, 'debug', 'UNLOCK SIM CMD > ' . $unlockCmd);
       return shell_exec($unlockCmd);
     }
@@ -1091,49 +1106,49 @@ class luna extends eqLogic {
   }
 
   public static function waitLuna($_method, $_params = null) {
-    $maxWaitTime = 60; 
-    $startTime = time(); 
+    $maxWaitTime = 60;
+    $startTime = time();
     $result = null;
     $reflectedMethod = new ReflectionMethod(__CLASS__, $_method);
     $acceptsParams = $reflectedMethod->getNumberOfParameters() > 0;
     while (time() - $startTime < $maxWaitTime) {
       if ($acceptsParams && $_params !== null) {
-          $result = self::$_method($_params);
+        $result = self::$_method($_params);
       } else {
-          $result = self::$_method();
+        $result = self::$_method();
       }
-      if($result != null){
+      if ($result != null) {
         break;
-      }else{
-        usleep(500000); 
+      } else {
+        usleep(500000);
       }
     }
-    return $result; 
+    return $result;
   }
 
   public static function checkLunaLte() {
     $waitFileExist = false;
     $result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
     if (trim($result) != "exists") {
-      $maxWaitTime = 180; 
-      $startTime = time(); 
+      $maxWaitTime = 180;
+      $startTime = time();
       $isLte = null;
       while (time() - $startTime < $maxWaitTime) {
         $result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
-        if(trim($result) == "exists"){
+        if (trim($result) == "exists") {
           log::add('luna', 'debug', 'Wait for jeedomLTE file');
           $waitFileExist = true;
           break;
-        }else{
-          usleep(500000); 
+        } else {
+          usleep(500000);
         }
       }
     } else {
       $waitFileExist = true;
     }
-    if($waitFileExist){
+    if ($waitFileExist) {
       $isLte = shell_exec('sudo cat /boot/jeedomLTE');
-      if(trim($isLte) == "2"){
+      if (trim($isLte) == "2") {
         config::save('isLte', 'NOLTE', 'luna');
       } else {
         config::save('isLte', 'LTE', 'luna');
@@ -1253,7 +1268,7 @@ class luna extends eqLogic {
     return $modem;
   }
 
-    /* ----- Fin Outils d'aministration ----- */
+  /* ----- Fin Outils d'aministration ----- */
 
   public static function switchHost($activated = true) {
     //exec("sudo apt remove -y dnsmasq");
@@ -1322,13 +1337,12 @@ class luna extends eqLogic {
     return true;
   }
 
-  public static function applyFsreset($type="") {
+  public static function applyFsreset($type = "") {
     $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($eqLogic)) {
-      if($type=="") {
+      if ($type == "") {
         $type = $eqLogic->getConfiguration('fsReset', 'activateFsreset');
-      }
-      else {
+      } else {
         $eqLogic->setConfiguration('fsReset', $type);
         $eqLogic->save(true);
       }
@@ -1352,13 +1366,12 @@ class luna extends eqLogic {
     return true;
   }
 
-  public static function applyFailover($type="") {
+  public static function applyFailover($type = "") {
     $eqLogic = eqLogic::byLogicalId('wifi', __CLASS__);
     if (is_object($eqLogic)) {
-      if($type=="") {
+      if ($type == "") {
         $type = $eqLogic->getConfiguration('failover', 'activateFailover');
-      }
-      else {
+      } else {
         $eqLogic->setConfiguration('failover', $type);
         $eqLogic->save(true);
       }
@@ -1401,7 +1414,7 @@ class luna extends eqLogic {
     shell_exec("sudo rm -f /swapfile");
     shell_exec("sudo fallocate -l {$size} /swapfile");
     shell_exec("sudo mkswap /swapfile");
-    shell_exec("sudo chmod 0600 /swapfile");  
+    shell_exec("sudo chmod 0600 /swapfile");
     shell_exec("sudo swapon /swapfile");
   }
 
@@ -1647,7 +1660,7 @@ class luna extends eqLogic {
     $onBattery->setTemplate('dashboard', 'luna::ActivationBattery');
     $onBattery->setValue($activationBattery->getId());
     $onBattery->save();
-  
+
 
     $offBattery = $this->getCmd(null, 'offBattery');
     if (!is_object($offBattery)) {
@@ -1666,9 +1679,6 @@ class luna extends eqLogic {
     $offBattery->setTemplate('dashboard', 'luna::ActivationBattery');
     $offBattery->setValue($activationBattery->getId());
     $offBattery->save();
-
-
-
   }
 
   public function postAjax() {
@@ -1692,7 +1702,7 @@ class lunaCmd extends cmd {
         luna::disconnectWifi(1);
         break;
       // case 'connect2':
-      //   luna::connectWifi(2); 
+      //   luna::connectWifi(2);
       //   break;
       // case 'disconnect2':
       //   luna::disconnectWifi(2);

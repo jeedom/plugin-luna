@@ -62,97 +62,96 @@ $modem       = luna::recuperationConfigModem();
 						?>
 					</div>
 					<div class="col-sm-6">
-					<h3><i class="fa fa-signal"></i> {{Configuration GSM-LTE}}</h3>
-					<?php
-					if($modem) {
-						if($modem['stateFailedReason'] == '--') {
-					?>
-						<div class="form-group" style="display:flex;">
-							<label class="col-lg-3 control-label">{{Code Pin}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
-							</label>
-							<div class="col-lg-2 input-group">
-								<input id="ltePin" class="eqLogicAttr form-control form-lte inputPassword" type="number" data-l1key="configuration" data-l2key="ltePin" />
-								<span class="input-group-btn">
-									<a class="btn btn-default form-control bt_showPass roundedRight"><i class="fas fa-eye"></i></a>
-								</span>
-							</div>
-							<?php if( $modem['state'] == 'locked' ) { ?>
-							<div class="col-lg-2">
-								<a class="btn btn-info" id="bt_saveUnlockSim"><i class="fas fa-check-circle"></i> {{Débloquer carte SIM}}</a>
-							</div>
-							<?php } ?>
-						</div>
-						<br />
-						<?php if( $modem['state'] != 'locked' ) { ?>
-						<div class="alert alert-warning">
-							<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Activer données cellulaires}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{Prise en charge de la data via la connexion LTE, pour les sim avec data}}"></i></sup>
-							</label>
-							<div class="col-lg-4">
-								<input type="checkbox" class="eqLogicAttr form-control  form-lte" data-l1key="configuration" data-l2key="lteActivation" checked />
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-lg-3">
-							</div>
-							<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">*{{APN}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{APN pour la partie LTE /!\ Attention il faut des APN de type ipv4 (bouygue : ebouygtel.com, Orange : orange, free : free).}}"></i></sup>
-							</label>
-							<div class="col-lg-4">
-								<input class="eqLogicAttr form-control form-lte" data-l1key="configuration" data-l2key="lteApn" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Utilisateur}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{User pour la partie LTE}}"></i></sup>
-							</label>
-							<div class="col-lg-4">
-								<input class="eqLogicAttr form-control form-lte" data-l1key="configuration" data-l2key="lteUser" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Mot de passe}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{Password pour la partie LTE}}"></i></sup>
-							</label>
-							<div class="col-lg-4">
-								<input class="eqLogicAttr form-control input-password form-lte" data-l1key="configuration" data-l2key="ltePassword" />
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-lg-3 control-label">{{Connexion LTE}}
-								<sup><i class="fas fa-question-circle tooltips" title="{{Verification si votre 4G est bien connecté}}"></i></sup>
-							</label>
-							<div class="col-lg-4 macLteCoche">
-							</div>
-						</div>
-						<br />
-						<div class="form-actions">
-							<div class="col-lg-12">
-								<a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i> {{Sauvegarder les APN}}</a>
-							</div>
-						</div>
-						<br /><br /><br />
-						<i>*{{Seul l'apn est obligatoire}}</i>
-						<br /><br /><br />
+						<h3><i class="fa fa-signal"></i> {{Configuration GSM-LTE}}</h3>
 						<?php
-							} //End if modem locked
-						} else {
-							$stateFailedReasonLabel = '';
-							switch ($modem['stateFailedReason']) {
-								case 'sim-missing':
-									$stateFailedReasonLabel = "{{La carte SIM ne semble pas être présente, l'avez vous insérée correctement ?}}"; //Prévoir un lien vers tuto
-									break;
-								
+						if ($modem) {
+							if ($modem['stateFailedReason'] == '--') {
+						?>
+								<div class="form-group" style="display:flex;">
+									<label class="col-lg-3 control-label">{{Code Pin}}
+										<sup><i class="fas fa-question-circle tooltips" title="{{ne rien mettre si pas de code pin}}"></i></sup>
+									</label>
+									<div class="col-lg-2 input-group">
+										<input id="ltePin" class="eqLogicAttr form-control form-lte inputPassword" type="number" data-l1key="configuration" data-l2key="ltePin" />
+										<span class="input-group-btn">
+											<a class="btn btn-default form-control bt_showPass roundedRight"><i class="fas fa-eye"></i></a>
+										</span>
+									</div>
+									<?php if ($modem['state'] == 'locked') { ?>
+										<div class="col-lg-2">
+											<a class="btn btn-info" id="bt_saveUnlockSim"><i class="fas fa-check-circle"></i> {{Débloquer carte SIM}}</a>
+										</div>
+									<?php } ?>
+								</div>
+								<br />
+								<?php if ($modem['state'] != 'locked') { ?>
+									<div class="alert alert-warning">
+										<i class="fas fa-exclamation-triangle"></i> {{Uniquement si vous avez une carte SIM LTE avec data}}
+									</div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label">{{Activer données cellulaires}}
+											<sup><i class="fas fa-question-circle tooltips" title="{{Prise en charge de la data via la connexion LTE, pour les sim avec data}}"></i></sup>
+										</label>
+										<div class="col-lg-4">
+											<input type="checkbox" class="eqLogicAttr form-control  form-lte" data-l1key="configuration" data-l2key="lteActivation" checked />
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="col-lg-3">
+										</div>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
+									</div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label">*{{APN}}
+											<sup><i class="fas fa-question-circle tooltips" title="{{APN pour la partie LTE /!\ Attention il faut des APN de type ipv4 (bouygue : ebouygtel.com, Orange : orange, free : free).}}"></i></sup>
+										</label>
+										<div class="col-lg-4">
+											<input class="eqLogicAttr form-control form-lte" data-l1key="configuration" data-l2key="lteApn" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label">{{Utilisateur}}
+											<sup><i class="fas fa-question-circle tooltips" title="{{User pour la partie LTE}}"></i></sup>
+										</label>
+										<div class="col-lg-4">
+											<input class="eqLogicAttr form-control form-lte" data-l1key="configuration" data-l2key="lteUser" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label">{{Mot de passe}}
+											<sup><i class="fas fa-question-circle tooltips" title="{{Password pour la partie LTE}}"></i></sup>
+										</label>
+										<div class="col-lg-4">
+											<input class="eqLogicAttr form-control input-password form-lte" data-l1key="configuration" data-l2key="ltePassword" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-lg-3 control-label">{{Connexion LTE}}
+											<sup><i class="fas fa-question-circle tooltips" title="{{Verification si votre 4G est bien connecté}}"></i></sup>
+										</label>
+										<div class="col-lg-4 macLteCoche">
+										</div>
+									</div>
+									<br />
+									<div class="form-actions">
+										<div class="col-lg-12">
+											<a class="btn btn-info" id="bt_saveLTE"><i class="fas fa-check-circle"></i> {{Sauvegarder les APN}}</a>
+										</div>
+									</div>
+									<br /><br /><br />
+									<i>*{{Seul l'apn est obligatoire}}</i>
+									<br /><br /><br />
+							<?php
+								} //End if modem locked
+							} else {
+								$stateFailedReasonLabel = '';
+								switch ($modem['stateFailedReason']) {
+									case 'sim-missing':
+										$stateFailedReasonLabel = "{{La carte SIM ne semble pas être présente, l'avez vous insérée correctement ?}}"; //Prévoir un lien vers tuto
+										break;
+								}
+								echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> ' . $stateFailedReasonLabel . '</div>';
 							}
-							echo '<div class="alert alert-danger"><i class="fas fa-exclamation-triangle"></i> '. $stateFailedReasonLabel .'</div>';
-						}
 							?>
 							<div class="form-group">
 								<label class="col-lg-3 control-label">{{IMEI}}
@@ -203,7 +202,7 @@ $modem       = luna::recuperationConfigModem();
 							</div>
 						<?php
 						}
-					?>
+						?>
 					</div>
 	</form>
 </div>

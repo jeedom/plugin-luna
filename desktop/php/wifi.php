@@ -6,7 +6,7 @@ if (!isConnect('admin')) {
 
 <div role="tabpanel" class="tab-pane" id="wifitab"><br />
 	<div class="row" style="display:flex;flex-direction:column; align-items:center;align-content:center;justify-content:center;">
-		<div class="col-sm-12" >
+		<div class="col-sm-12">
 			<form id="wifi1Panel" class="form-horizontal">
 				<fieldset>
 					<legend><i class="fa fa-wifi"></i> {{Wifi}}</legend>

@@ -5,7 +5,7 @@ if (!isConnect('admin')) {
 ?>
 <div role="tabpanel" class="tab-pane" id="restoretab"><br />
 	<fieldset>
-	  	<legend><i class="fa fa-clone"></i> {{Restore}}</legend>
+		<legend><i class="fa fa-clone"></i> {{Restore}}</legend>
 		<div class="row">
 			<div class="col-sm-6">
 				<h3><i class="fas fa-highlighter warning"></i> {{Mise à jour du Recovery}}</h3>
@@ -26,7 +26,7 @@ if (!isConnect('admin')) {
 				<div class="alert alert-danger">
 					<i class="fas fa-exclamation-triangle"></i> {{Attention, cette opération est irréversible.}}
 				</div>
-				<span>{{Le recovery, permet une}} <b>{{remise a zero d'usine}}</b> {{de la Luna avec l'image inclus dans celle-ci (vous pouvez la mettre à jour via Mise à jour du recovery).}} <br/> {{Attention à bien}} <b>{{sauvegarder}}</b> {{votre box et récuperer celle-ci sur votre ordinateur avant de lancer le recovery.}}</span>
+				<span>{{Le recovery, permet une}} <b>{{remise a zero d'usine}}</b> {{de la Luna avec l'image inclus dans celle-ci (vous pouvez la mettre à jour via Mise à jour du recovery).}} <br /> {{Attention à bien}} <b>{{sauvegarder}}</b> {{votre box et récuperer celle-ci sur votre ordinateur avant de lancer le recovery.}}</span>
 				<br /><br />
 				<center>
 					<a class="btn btn-danger" id="bt_recovery">
@@ -36,7 +36,7 @@ if (!isConnect('admin')) {
 				</center>
 			</div>
 		</div>
-  </fieldset> 
+	</fieldset>
 </div>
 
 <?php include_file('desktop', 'restore', 'js', 'luna'); ?>

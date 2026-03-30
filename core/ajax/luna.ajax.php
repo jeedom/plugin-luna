@@ -29,19 +29,19 @@ try {
     En V4 : autoriser l'exécution d'une méthode 'action' en GET en indiquant le(s) nom(s) de(s) action(s) dans un tableau en argument
   */
   ajax::init();
-  
 
 
-  if(init('action') == 'cleanWifi'){
+
+  if (init('action') == 'cleanWifi') {
     luna::cleanWifi(1);
     luna::cleanWifi(2);
     ajax::success();
   }
 
 
-  if(init('action') == 'isLTELuna'){
+  if (init('action') == 'isLTELuna') {
     $return = luna::isLTELuna();
-    if($return){
+    if ($return) {
       ajax::success();
     }
   }
@@ -52,7 +52,7 @@ try {
   }
 
 
-  if(init('action') == 'mountSD'){
+  if (init('action') == 'mountSD') {
     luna::mountSD();
     luna::mountPersistent();
     ajax::success();
@@ -116,7 +116,7 @@ try {
   if (init('action') == 'savePriority') {
     log::add('luna', 'debug', 'savePriority');
     $return = luna::savePriority(init('priority'));
-    if($return == true){
+    if ($return == true) {
       ajax::success();
     }
   }
@@ -128,7 +128,7 @@ try {
   }
 
   if (init('action') == 'saveWifi') {
-    ajax::success(luna::saveWifi(init('data'),init('interface')));
+    ajax::success(luna::saveWifi(init('data'), init('interface')));
   }
 
   if (init('action') == 'saveEthernet') {
@@ -155,50 +155,50 @@ try {
     ajax::success(luna::configurationPortSms());
   }
 
-  if(init('action') == 'startJeedomLTE'){
+  if (init('action') == 'startJeedomLTE') {
     luna::startJeedomLTE();
     $return = luna::waitLuna('recuperationConfigModem');
-    if($return){
+    if ($return) {
       ajax::success();
     }
   }
-  
-  if(init('action') == 'unlockSim'){
+
+  if (init('action') == 'unlockSim') {
     $pin = init('pin');
-    if(empty($pin)){
+    if (empty($pin)) {
       ajax::error('Le code PIN est vide');
     }
     $return = luna::waitLuna('unlockSim', $pin);
-    if($return){
+    if ($return) {
       ajax::success();
     }
   }
 
-  if(init('action') == 'getModemInfo'){
+  if (init('action') == 'getModemInfo') {
     ajax::success(luna::getModemInfo());
   }
 
-  if(init('action') == 'changeRootPassword'){
+  if (init('action') == 'changeRootPassword') {
     ajax::success(luna::changeRootPassword(init('password')));
   }
 
-  if(init('action') == 'applyLogRotate'){
+  if (init('action') == 'applyLogRotate') {
     ajax::success(luna::applyLogRotate(init('type')));
   }
 
-  if(init('action') == 'applyFsreset'){
+  if (init('action') == 'applyFsreset') {
     ajax::success(luna::applyFsreset(init('type')));
   }
 
-  if(init('action') == 'applyFailover'){
+  if (init('action') == 'applyFailover') {
     ajax::success(luna::applyFailover(init('type')));
   }
 
-  if(init('action') == 'applyCronRebootBox'){
+  if (init('action') == 'applyCronRebootBox') {
     ajax::success(luna::applyCronRebootBox(init('type')));
   }
 
-  if(init('action') == 'applySwapAvailable'){
+  if (init('action') == 'applySwapAvailable') {
     ajax::success(luna::applySwapAvailable(init('type')));
   }
 
