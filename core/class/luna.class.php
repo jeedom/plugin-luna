@@ -1656,7 +1656,7 @@ class luna extends eqLogic {
     $onBattery->setSubType('other');
     $arr = [];
     $arr['time'] = 'duration';
-    $onBattery->setDisplay(parameters, $arr);
+    $onBattery->setDisplay('parameters', $arr);
     $onBattery->setTemplate('dashboard', 'luna::ActivationBattery');
     $onBattery->setValue($activationBattery->getId());
     $onBattery->save();
@@ -1675,7 +1675,7 @@ class luna extends eqLogic {
     $offBattery->setSubType('other');
     $arr = [];
     $arr['time'] = 'duration';
-    $offBattery->setDisplay(parameters, $arr);
+    $offBattery->setDisplay('parameters', $arr);
     $offBattery->setTemplate('dashboard', 'luna::ActivationBattery');
     $offBattery->setValue($activationBattery->getId());
     $offBattery->save();

@@ -6,11 +6,16 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
-# 27/11/1025 (Beta)
+# 31/03/2026 (Beta)
+
+- Correction sur les paramètres d'affichage des commandes action pour la batterie
+- Correction sur la gestion des profiles wifi lors de la config lte
+
+# 27/11/2025 (Beta)
 
 - Ajout du changement du swap disponible via l'onget Avancé
 
-- Ajout du lancement du LTE via le bouton *Relancer configuration du Plugin* 
+- Ajout du lancement du LTE via le bouton *Relancer configuration du Plugin*
 
 # 20/10/2025 (Beta)
 
@@ -24,7 +29,7 @@
 
 # 26/08/2024
 
-- Mise en place une configuration pour limiter l'espace disque utilisé par les journaux, en ajustant les paramètres de rotation et de rétention. 
+- Mise en place une configuration pour limiter l'espace disque utilisé par les journaux, en ajustant les paramètres de rotation et de rétention.
 
 # 11/07/2024
 
@@ -40,7 +45,6 @@
 
 - Fix Js
 - Optimisation UI priorites des connexions
-
 
 # 19/06/2024
 
@@ -64,7 +68,6 @@
 # 07/12/2023
 
 - Nouveau module pour le hotspot avec dhcp.
-
 
 # 18/11/2023
 
