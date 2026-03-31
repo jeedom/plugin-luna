@@ -6,8 +6,10 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
-# 31/03/2026 (Beta)
+# 01/04/2026 (Beta)
 
+- Ajout d'une commande *Température CPU*
+- Modification du type de la commande *Température Batterie* en *Numérique* au lieu de *Autre*
 - Correction sur les paramètres d'affichage des commandes action pour la batterie
 - Correction sur la gestion des profiles wifi lors de la config lte
 

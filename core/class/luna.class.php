@@ -242,6 +242,7 @@ class luna extends eqLogic {
       $luna->checkAndUpdateCmd('status', luna::batteryStatusLuna());
       $luna->checkAndUpdateCmd('activationBattery', luna::activationBattery());
       $luna->checkAndUpdateCmd('tempBattery', luna::batteryTemp());
+      $luna->checkAndUpdateCmd('tempCPU', luna::cpuTemp());
       $luna->checkAndUpdateCmd('ssid', $luna->getConfiguration('wifi1Ssid'));
       if ($ssid != null) {
         $luna->checkAndUpdateCmd('isconnect', luna::isWificonnected($ssid));
@@ -485,7 +486,6 @@ class luna extends eqLogic {
       return;
     }
     $json = file_get_contents($jsonTemplate);
-    $logicalEqlogic = $this->getLogicalId();
     $arrayCommands = array();
     $logicalsCmds = array(
       'activationBattery',
@@ -534,7 +534,6 @@ class luna extends eqLogic {
     }
     $this->save(true);
   }
-
 
   public static function listConnections($interface = 1) {
     $interface = $interface - 1;
@@ -608,6 +607,12 @@ class luna extends eqLogic {
   public static function batteryTemp() {
     $temp = exec('sudo cat /sys/class/power_supply/bq27546-0/temp');
     $temp = $temp / 10;
+    return $temp;
+  }
+
+  public static function cpuTemp() {
+    $temp = exec('sudo cat /sys/class/thermal/thermal_zone0/temp');
+    $temp = $temp / 1000;
     return $temp;
   }
 
@@ -1616,6 +1621,18 @@ class luna extends eqLogic {
     $status->setSubType('string');
     $status->save();
 
+    $tempCPU = $this->getCmd(null, 'tempCPU');
+    if (!is_object($tempCPU)) {
+      $tempCPU = new lunaCmd();
+      $tempCPU->setName(__('Température CPU', __FILE__));
+      $tempCPU->setUnite('°C');
+      $tempCPU->setEqLogic_id($this->getId());
+      $tempCPU->setLogicalId('tempCPU');
+      $tempCPU->setType('info');
+      $tempCPU->setSubType('numeric');
+      $tempCPU->save();
+    }
+
     $tempBattery = $this->getCmd(null, 'tempBattery');
     if (!is_object($tempBattery)) {
       $tempBattery = new lunaCmd();
@@ -1626,7 +1643,7 @@ class luna extends eqLogic {
     $tempBattery->setEqLogic_id($this->getId());
     $tempBattery->setLogicalId('tempBattery');
     $tempBattery->setType('info');
-    $tempBattery->setSubType('string');
+    $tempBattery->setSubType('numeric');
     $tempBattery->save();
 
     $activationBattery = $this->getCmd(null, 'activationBattery');
