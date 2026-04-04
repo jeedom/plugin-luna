@@ -346,6 +346,7 @@
         "Couleur Led": "Color LED",
         "Battery": "Battery",
         "Status alimentation": "Power status",
+        "Température CPU": "Température CPU",
         "Température Batterie": "Battery Temperature",
         "Batterie Activée": "Battery Activated",
         "Allumer la batterie": "Turn on the battery",
