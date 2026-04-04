@@ -295,6 +295,9 @@ class luna extends eqLogic {
 
   public static function isWifiProfileexist(string $ssid, string $type = 'wifi') {
     $result = shell_exec("nmcli --fields NAME con show");
+    if (!is_string($result)) {
+      return false;
+    }
     $countProfile = substr_count($result, $ssid);
     if ($countProfile > 1) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
