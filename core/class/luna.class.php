@@ -280,8 +280,12 @@ class luna extends eqLogic {
 
   /* ----- WIFI ----- */
 
-  public static function isWificonnected($ssid) {
-    $result = shell_exec("sudo nmcli d | grep '" . $ssid . "'");
+  public static function isWificonnected(string $ssid) {
+    $safeSsid = escapeshellarg($ssid);
+    $result = shell_exec("sudo nmcli d | grep -F -- {$safeSsid}");
+    if (!is_string($result)) {
+      return false;
+    }
     log::add(__CLASS__, 'debug', $result);
     if (strpos($result, 'connected') === false && strpos($result, 'connecté') === false) {
       return false;
@@ -289,12 +293,13 @@ class luna extends eqLogic {
     return true;
   }
 
-  public static function isWifiProfileexist($ssid, $type = 'wifi') {
+  public static function isWifiProfileexist(string $ssid, string $type = 'wifi') {
     $result = shell_exec("nmcli --fields NAME con show");
     $countProfile = substr_count($result, $ssid);
     if ($countProfile > 1) {
       log::add(__CLASS__, 'debug', __('Suppression des profils.', __FILE__));
-      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep " . $type . " | awk '{print $1}' | while read line; do nmcli con delete uuid  \$line; done");
+      $safeType = escapeshellarg($type);
+      shell_exec("nmcli --pretty --fields UUID,TYPE con show | grep -F -- {$safeType} | awk '{print $1}' | while read line; do nmcli con delete uuid \$line; done");
       return true;
     } else if ($countProfile == 1) {
       return true;
@@ -303,7 +308,7 @@ class luna extends eqLogic {
     }
   }
 
-  public static function deleteProfile($ssid) {
+  public static function deleteProfile(string $ssid) {
     $result = shell_exec("nmcli --fields NAME con show");
     $countProfile = substr_count($result, $ssid);
     if ($countProfile > 0) {
