@@ -286,7 +286,7 @@ class luna extends eqLogic {
     if (!is_string($result)) {
       return false;
     }
-    log::add(__CLASS__, 'debug', $result);
+    log::add(__CLASS__, 'debug','Result : '. $result);
     if (strpos($result, 'connected') === false && strpos($result, 'connecté') === false) {
       return false;
     }
