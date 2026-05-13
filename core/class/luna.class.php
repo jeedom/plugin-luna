@@ -280,7 +280,7 @@ class luna extends eqLogic {
 
   public static function isWificonnected($ssid) {
     $result = shell_exec("sudo nmcli d | grep '" . $ssid . "'");
-    log::add(__CLASS__, 'debug', $result);
+    log::add(__CLASS__, 'debug','Result : '. $result);
     if (strpos($result, 'connected') === false && strpos($result, 'connecté') === false) {
       return false;
     }
