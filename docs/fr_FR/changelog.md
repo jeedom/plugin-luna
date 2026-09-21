@@ -8,7 +8,8 @@
 
 # 21/09/2026
 
-- Suppression de l'appel d'un fichier js introuvable
+- Correction des sources Debian pour l'installation des dépendances de plugins
+- Suppression de l'appel à un fichier Javascript inexistant
 
 # 05/04/2026
 
