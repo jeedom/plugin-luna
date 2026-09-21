@@ -40,10 +40,11 @@ try {
 
 
   if (init('action') == 'isLTELuna') {
-    $return = luna::isLTELuna();
-    if ($return) {
-      ajax::success();
-    }
+    ajax::success(luna::isLTELuna());
+  }
+
+  if (init('action') == 'detectLte') {
+    ajax::success(luna::detectLte());
   }
 
   if (init('action') == 'loop_percentage') {

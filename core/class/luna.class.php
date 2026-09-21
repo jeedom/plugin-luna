@@ -895,7 +895,6 @@ class luna extends eqLogic {
     }
   }
 
-  //non utilisé
   public static function verifLTEScript() {
     $ltetrouver = exec('sudo cat /boot/jeedomLTE');
     if ($ltetrouver == 1) {
@@ -907,21 +906,30 @@ class luna extends eqLogic {
     }
   }
 
-  //utilisé dans ajax pas sur que ce soit encore utile
   public static function isLTELuna() {
-    luna::verifLTEScript();
     $maxWaitTime = 60;
     $startTime = time();
-    $isLte = null;
     while (time() - $startTime < $maxWaitTime) {
+      luna::verifLTEScript();
       $isLte = config::byKey('isLte', 'luna', null);
       if ($isLte != null) {
-        break;
-      } else {
-        usleep(500000);
+        return $isLte;
       }
+      usleep(500000);
     }
-    return $isLte;
+    return null;
+  }
+
+  /**
+   * Relance une detection complete du modem
+   */
+  public static function detectLte() {
+    config::remove('isLte', 'luna');
+    config::remove('4G', 'luna');
+    shell_exec('sudo rm -f /boot/jeedomLTE');
+    shell_exec('sudo systemctl enable jeedomLTE.service');
+    luna::startJeedomLTE();
+    return luna::checkLunaLte();
   }
 
   public static function detectedLte() {
@@ -1143,13 +1151,12 @@ class luna extends eqLogic {
     $waitFileExist = false;
     $result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
     if (trim($result) != "exists") {
-      $maxWaitTime = 180;
+      $maxWaitTime = 300;
       $startTime = time();
-      $isLte = null;
+      log::add('luna', 'debug', 'Attente du fichier /boot/jeedomLTE');
       while (time() - $startTime < $maxWaitTime) {
         $result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
         if (trim($result) == "exists") {
-          log::add('luna', 'debug', 'Wait for jeedomLTE file');
           $waitFileExist = true;
           break;
         } else {
@@ -1166,7 +1173,10 @@ class luna extends eqLogic {
       } else {
         config::save('isLte', 'LTE', 'luna');
       }
+      return config::byKey('isLte', 'luna', null);
     }
+    log::add('luna', 'debug', 'Detection LTE non aboutie, isLte reste indetermine');
+    return null;
   }
 
   //Todo a supprimer dans l'avenir
