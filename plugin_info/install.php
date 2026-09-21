@@ -23,7 +23,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 function luna_install() {
 	log::add('luna', 'debug', 'Lancement de l\'installation du plugin Luna');
-	config::save('isLte', 'NOLTE', 'luna');
+	config::remove('isLte', 'luna');
 	luna::patchLuna('install');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
@@ -64,7 +64,7 @@ function luna_install() {
 function luna_update() {
 	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
-		config::save('isLte', 'NOLTE', 'luna');
+		config::remove('isLte', 'luna');
 	}
 	luna::stopJeedomLTE();
 	luna::patchLuna('update');

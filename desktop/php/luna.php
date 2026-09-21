@@ -69,11 +69,7 @@ sendVarToJS('isLte', $isLte);
 			<li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i> {{Commandes}}</a></li>
 			<li role="presentation"><a href="#wifitab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-wifi"></i> {{WIFI}}</a></li>
 			<li role="presentation"><a href="#ethernettab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-network-wired"></i> {{Ethernet}}</a></li>
-			<?php
-			if ($isLte == 'LTE') {
-				echo '<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal" ></i> {{LTE}}</a></li>';
-			}
-			?>
+			<li role="presentation"><a href="#LTEtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-signal"></i> {{LTE}}</a></li>
 			<?php
 			if (luna::detectedLora()) {
 				echo '<li role="presentation"><a href="#LORAtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-satellite-dish"></i> Lora</a></li>';
@@ -354,14 +350,15 @@ sendVarToJS('isLte', $isLte);
 				} else {
 					clearInterval(window.intervalAlertLTE);
 					clearInterval(intervalLTE);
-					if (data.result == 'LTE') {
+					$.hideLoading();
+					if (data.result == 'LTE' || data.result == 'NOLTE') {
+						location.reload();
+					} else {
 						$('#div_alert').showAlert({
-							message: 'LTE Operationnel',
-							level: 'danger'
+							message: '{{La détection du module LTE n\'a pas abouti. Relancez-la depuis l\'onglet LTE.}}',
+							level: 'warning'
 						});
 					}
-					$.hideLoading();
-					location.reload();
 				}
 			}
 		});

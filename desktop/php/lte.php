@@ -210,7 +210,20 @@ $modem       = luna::recuperationConfigModem();
 			} else {
 ?>
 	<div class="row">
-		<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> {{Votre Luna ne possède pas le module LTE}}</div>
+		<?php
+				if ($isLte == 'NOLTE') {
+					echo '<div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> {{Aucun module LTE n\'a été détecté sur votre Luna.}}</div>';
+				} else {
+					echo '<div class="alert alert-info"><i class="fas fa-info-circle"></i> {{La détection du module LTE n\'a pas encore abouti.}}</div>';
+				}
+		?>
+		<center>
+			<a class="btn btn-info" id="bt_detectLte"><i class="fas fa-sync"></i> {{Détecter le module LTE}}</a>
+		</center>
+		<br />
+		<div class="alert alert-warning">
+			<i class="fas fa-exclamation-triangle"></i> {{La détection redémarre le modem et peut prendre jusqu'à 5 minutes.}}
+		</div>
 	</div>
 <?php
 			}

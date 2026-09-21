@@ -61,21 +61,22 @@ if [ $UPDATE_FLAG -eq 1 ]; then
     echo "UPDATE"
 fi
 
-if [ ! -f /boot/jeedomLTE ]; then
-    sudo cp /var/www/html/plugins/luna/data/patchs/root/usr/bin/jeedomLTE /usr/bin/jeedomLTE
-    sudo chmod +x /usr/bin/jeedomLTE
+# Le service se desactive lui-meme quand il ecrit "2" dans /boot/jeedomLTE.
+# L'installation ne doit donc pas etre conditionnee a l'absence de ce fichier,
+# sinon une detection negative rend la reinstallation impossible.
+sudo cp /var/www/html/plugins/luna/data/patchs/root/usr/bin/jeedomLTE /usr/bin/jeedomLTE
+sudo chmod +x /usr/bin/jeedomLTE
 
-    sudo cp /var/www/html/plugins/luna/data/patchs/lte/jeedomLTE.service /etc/systemd/system/jeedomLTE.service
-    sudo chmod 644 /etc/systemd/system/jeedomLTE.service
-    sudo systemctl daemon-reload
-    sudo systemctl enable jeedomLTE.service
-    sudo systemctl start jeedomLTE.service
+sudo cp /var/www/html/plugins/luna/data/patchs/lte/jeedomLTE.service /etc/systemd/system/jeedomLTE.service
+sudo chmod 644 /etc/systemd/system/jeedomLTE.service
+sudo systemctl daemon-reload
+sudo systemctl enable jeedomLTE.service
+sudo systemctl start jeedomLTE.service
 
-    if [ -f /etc/NetworkManager/system-connections/JeedomLTE.nmconnection ]; then
-        sudo nmcli connection modify JeedomLTE connection.multi-connect 3
-        sudo nmcli connection modify JeedomLTE connection.autoconnect-retries 0
-        sudo nmcli connection modify JeedomLTE connection.auth-retries 0
-    fi
+if [ -f /etc/NetworkManager/system-connections/JeedomLTE.nmconnection ]; then
+    sudo nmcli connection modify JeedomLTE connection.multi-connect 3
+    sudo nmcli connection modify JeedomLTE connection.autoconnect-retries 0
+    sudo nmcli connection modify JeedomLTE connection.auth-retries 0
 fi
 
 if [ ! -f /etc/systemd/journald.conf.d/systemMaxUse.conf ]; then

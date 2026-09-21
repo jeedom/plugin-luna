@@ -159,3 +159,42 @@ $('#bt_saveLTE').off('click').on('click', function(event) {
       }
     });
   });
+
+document.getElementById('bt_detectLte')?.addEventListener('click', function() {
+  if (window.intervalAlertDetectLte) {
+    clearInterval(window.intervalAlertDetectLte);
+  }
+  window.intervalAlertDetectLte = setInterval(function() {
+    $('#div_alert').showAlert({ message: '{{Détection du module LTE en cours}}...', level: 'success' });
+  }, 5000);
+  var intervalDetectLte = setInterval(function() {
+    $.showLoading();
+  }, 1000);
+  domUtils.ajax({
+    type: "POST",
+    url: "plugins/luna/core/ajax/luna.ajax.php",
+    data: {
+      action: "detectLte"
+    },
+    dataType: 'json',
+    timeout: 330000,
+    error: function(request, status, error) {
+      clearInterval(window.intervalAlertDetectLte);
+      clearInterval(intervalDetectLte);
+      $.hideLoading();
+      handleAjaxError(request, status, error);
+    },
+    success: function(data) {
+      clearInterval(window.intervalAlertDetectLte);
+      clearInterval(intervalDetectLte);
+      $.hideLoading();
+      if (data.state != 'ok') {
+        $('#div_alert').showAlert({ message: data.result, level: 'danger' });
+      } else if (data.result == 'LTE' || data.result == 'NOLTE') {
+        location.reload();
+      } else {
+        $('#div_alert').showAlert({ message: '{{La détection n\'a pas abouti, réessayez.}}', level: 'warning' });
+      }
+    }
+  });
+});

@@ -6,6 +6,11 @@
 >
 >Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
 
+# 21/09/2026
+
+- L'onglet LTE est désormais toujours visible et propose un bouton *Détecter le module LTE* permettant de relancer une détection
+- Le service *jeedomLTE* est réinstallé et réactivé à chaque mise à jour, même après une détection négative
+
 # 05/04/2026
 
 - Ajout d'une commande *Température CPU*
