@@ -20,6 +20,8 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 
 function luna_install() {
+	exec('sudo chmod +x ' . __DIR__ . '/../resources/fix_debian_repo.sh');
+	exec('sudo ' . __DIR__ . '/../resources/fix_debian_repo.sh');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Installation du module Luna', __FILE__));
@@ -44,6 +46,8 @@ function luna_install() {
 }
 
 function luna_update() {
+	exec('sudo chmod +x ' . __DIR__ . '/../resources/fix_debian_repo.sh');
+	exec('sudo ' . __DIR__ . '/../resources/fix_debian_repo.sh');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
 	if (!is_object($eqLogic)) {
 		message::add('luna', __('Mise à jour du module Luna', __FILE__));
