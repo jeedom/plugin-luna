@@ -18,11 +18,10 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-
-
-
 function luna_install() {
 	log::add('luna', 'debug', 'Lancement de l\'installation du plugin Luna');
+	exec('sudo chmod +x ' . __DIR__ . '/../resources/fix_debian_repo.sh');
+	exec('sudo ' . __DIR__ . '/../resources/fix_debian_repo.sh');
 	config::save('isLte', 'NOLTE', 'luna');
 	luna::patchLuna('install');
 	$eqLogic = luna::byLogicalId('wifi', 'luna');
@@ -36,11 +35,11 @@ function luna_install() {
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
-	}else{
+	} else {
 		$cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
-		foreach($cmdsToRemove as $logical){
+		foreach ($cmdsToRemove as $logical) {
 			$cmd = $eqLogic->getCmd(null, $logical);
-			if(is_object($cmd)){
+			if (is_object($cmd)) {
 				$cmd->remove();
 			}
 		}
@@ -49,7 +48,6 @@ function luna_install() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->createArrayWidgets();
 		$luna->save();
-		
 	}
 	luna::mountSD();
 	luna::mountPersistent();
@@ -62,6 +60,8 @@ function luna_install() {
 }
 
 function luna_update() {
+	exec('sudo chmod +x ' . __DIR__ . '/../resources/fix_debian_repo.sh');
+	exec('sudo ' . __DIR__ . '/../resources/fix_debian_repo.sh');
 	$result = shell_exec('sudo test -f /boot/jeedomLTE && echo "exists" || echo "not exists"');
 	if (trim($result) != "exists") {
 		config::save('isLte', 'NOLTE', 'luna');
@@ -79,11 +79,11 @@ function luna_update() {
 		$eqLogic->setIsVisible(1);
 		$eqLogic->setIsEnable(1);
 		$eqLogic->save();
-	}else{
+	} else {
 		$cmdsToRemove = array('ssid2', 'isconnect2', 'connect2', 'disconnect2', 'wifiip2');
-		foreach($cmdsToRemove as $logical){
+		foreach ($cmdsToRemove as $logical) {
 			$cmd = $eqLogic->getCmd(null, $logical);
-			if(is_object($cmd)){
+			if (is_object($cmd)) {
 				$cmd->remove();
 			}
 		}
@@ -92,9 +92,9 @@ function luna_update() {
 	foreach (eqLogic::byType('luna') as $luna) {
 		$luna->save();
 	}
-	for ($i=1; $i < 3; $i++) { 
-		if($ssid = $eqLogic->getConfiguration('wifi'.$i.'Ssid', null)){
-			log::add('luna', 'debug', 'Update wifi'.$i.'Ssid : '.$ssid);
+	for ($i = 1; $i < 3; $i++) {
+		if ($ssid = $eqLogic->getConfiguration('wifi' . $i . 'Ssid', null)) {
+			log::add('luna', 'debug', 'Update wifi' . $i . 'Ssid : ' . $ssid);
 			shell_exec('sudo nmcli con modify "' . $ssid . '" connection.autoconnect-retries 0');
 			shell_exec('sudo nmcli con modify "' . $ssid . '" connection.multi-connect 3');
 			shell_exec('sudo nmcli con modify "' . $ssid . '" connection.auth-retries 0');
