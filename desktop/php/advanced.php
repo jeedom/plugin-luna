@@ -111,7 +111,6 @@ $batteryPourcentage = luna::batteryPourcentage();
   </fieldset>
 </div>
 
-<?php include_file('desktop', 'advanced', 'js', 'luna'); ?>
 <script>
   $('#saveMdpRoot').off('click').on('click', function() {
     var newPassword = $('#rootPassword').val();
